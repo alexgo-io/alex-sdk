@@ -5,7 +5,7 @@ import { getRoute } from './helpers/RouteHelper';
 import { getYAmountFromXAmount } from './helpers/RateHelper';
 import { runSpot, TxToBroadCast } from './helpers/SwapHelper';
 import { findCurrencyByNativeAddress } from './utils/currencyUtils';
-import { Currency } from './Currency';
+import { Currency } from './currency';
 
 export class AlexSDK {
   getFee(from: Currency, to: Currency): Promise<bigint> {

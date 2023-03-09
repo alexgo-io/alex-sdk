@@ -1,4 +1,4 @@
-import { Currency } from '../Currency';
+import { Currency } from '../currency';
 
 const tokenNativeAddressDefinition = {
   'age000-governance-token':

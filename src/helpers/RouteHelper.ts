@@ -2,7 +2,7 @@ import { AlexSDK } from '../index';
 import { AMMSwapPool } from '../utils/ammPool';
 import { unwrapResponse } from 'clarity-codegen';
 import { readonlyCall } from '../utils/readonlyCallExecutor';
-import { Currency } from '../Currency';
+import { Currency } from '../currency';
 
 export async function getRoute(
   from: Currency,
