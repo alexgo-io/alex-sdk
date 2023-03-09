@@ -15,7 +15,7 @@ describe.skip('AlexSDK', () => {
   });
   it('Get Rate', async () => {
     const sdk = new AlexSDK();
-    const result = await sdk.getRate(
+    const result = await sdk.getAmountTo(
       Currency.STX,
       BigInt(2) * BigInt(1e8),
       Currency.DIKO
