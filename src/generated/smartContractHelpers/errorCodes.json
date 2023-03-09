@@ -1,0 +1,676 @@
+{
+  "ERR-NOT-AUTHORIZED": [
+    {
+      "code": 1000,
+      "comment": "token-xbtc.clar:12"
+    }
+  ],
+  "ERR-TRANSFER-FAILED": [
+    {
+      "code": 3000,
+      "comment": "token-apower.clar:5"
+    }
+  ],
+  "ERR-NO-ARB-EXISTS": [
+    {
+      "code": 9000,
+      "comment": "flash-loan-user-autoalex-to-alex.clar:5"
+    }
+  ],
+  "ERR-GET-BALANCE-FIXED-FAIL": [
+    {
+      "code": 6001,
+      "comment": "flash-loan-user-autoalex-to-alex.clar:6"
+    }
+  ],
+  "ERR-EXCEEDS-MAX-USE": [
+    {
+      "code": 9000,
+      "comment": "faucet.clar:8"
+    }
+  ],
+  "ERR-UNKNOWN-TOKEN": [
+    {
+      "code": 1001,
+      "comment": "faucet.clar:9"
+    }
+  ],
+  "ERR-EXPIRY-IS-NONE": [
+    {
+      "code": 2027,
+      "comment": "flash-loan-user-margin-usda-wbtc.clar:5"
+    }
+  ],
+  "ERR-INVALID-TOKEN": [
+    {
+      "code": 2026,
+      "comment": "flash-loan-user-margin-usda-wbtc.clar:6"
+    }
+  ],
+  "ERR-TOO-MANY-POOLS": [
+    {
+      "code": 2004,
+      "comment": "staked-fwp-wstx-alex-50-50-v1-01.clar:6"
+    }
+  ],
+  "ERR-INVALID-BALANCE": [
+    {
+      "code": 2008,
+      "comment": "staked-fwp-wstx-alex-50-50-v1-01.clar:7"
+    },
+    {
+      "code": 1001,
+      "comment": "yield-token-equation.clar:13"
+    }
+  ],
+  "ERR-TOKEN-NOT-AUTHORIZED": [
+    {
+      "code": 1001,
+      "comment": "bridge-endpoint.clar:5"
+    }
+  ],
+  "ERR-RECIPIENT-NOT-AUTHORIZED": [
+    {
+      "code": 1002,
+      "comment": "bridge-endpoint.clar:6"
+    }
+  ],
+  "ERR-WRAPPER-NOT-AUTHORIZED": [
+    {
+      "code": 1004,
+      "comment": "bridge-endpoint.clar:7"
+    }
+  ],
+  "ERR-UNKNOWN-USER-ID": [
+    {
+      "code": 1005,
+      "comment": "bridge-endpoint.clar:8"
+    }
+  ],
+  "ERR-UNKNOWN-VALIDATOR-ID": [
+    {
+      "code": 1006,
+      "comment": "bridge-endpoint.clar:9"
+    }
+  ],
+  "ERR-USER-ALREADY-REGISTERED": [
+    {
+      "code": 1007,
+      "comment": "bridge-endpoint.clar:10"
+    },
+    {
+      "code": 10001,
+      "comment": "alex-reserve-pool.clar:8"
+    }
+  ],
+  "ERR-VALIDATOR-ALREADY-REGISTERED": [
+    {
+      "code": 1008,
+      "comment": "bridge-endpoint.clar:11"
+    }
+  ],
+  "ERR-DUPLICATE-SIGNATURE": [
+    {
+      "code": 1009,
+      "comment": "bridge-endpoint.clar:12"
+    }
+  ],
+  "ERR-ORDER-HASH-MISMATCH": [
+    {
+      "code": 1010,
+      "comment": "bridge-endpoint.clar:13"
+    }
+  ],
+  "ERR-INVALID-SIGNATURE": [
+    {
+      "code": 1011,
+      "comment": "bridge-endpoint.clar:14"
+    }
+  ],
+  "ERR-UKNOWN-RELAYER": [
+    {
+      "code": 1012,
+      "comment": "bridge-endpoint.clar:15"
+    }
+  ],
+  "ERR-REQUIRED-VALIDATORS": [
+    {
+      "code": 1013,
+      "comment": "bridge-endpoint.clar:16"
+    }
+  ],
+  "ERR-ORDER-ALREADY-SENT": [
+    {
+      "code": 1014,
+      "comment": "bridge-endpoint.clar:17"
+    }
+  ],
+  "ERR-PAUSED": [
+    {
+      "code": 1015,
+      "comment": "bridge-endpoint.clar:18"
+    },
+    {
+      "code": 1001,
+      "comment": "amm-swap-pool.clar:19"
+    }
+  ],
+  "ERR-USER-NOT-WHITELISTED": [
+    {
+      "code": 1016,
+      "comment": "bridge-endpoint.clar:19"
+    }
+  ],
+  "ERR-AMOUNT-LESS-THAN-MIN-FEE": [
+    {
+      "code": 1017,
+      "comment": "bridge-endpoint.clar:20"
+    }
+  ],
+  "ERR-UNKNOWN-CHAIN-ID": [
+    {
+      "code": 1018,
+      "comment": "bridge-endpoint.clar:21"
+    }
+  ],
+  "ERR-NO-LIQUIDITY": [
+    {
+      "code": 2002,
+      "comment": "weighted-equation-v1-01.clar:10"
+    }
+  ],
+  "ERR-WEIGHT-SUM": [
+    {
+      "code": 4000,
+      "comment": "weighted-equation-v1-01.clar:11"
+    }
+  ],
+  "ERR-MAX-IN-RATIO": [
+    {
+      "code": 4001,
+      "comment": "weighted-equation-v1-01.clar:12"
+    }
+  ],
+  "ERR-MAX-OUT-RATIO": [
+    {
+      "code": 4002,
+      "comment": "weighted-equation-v1-01.clar:13"
+    }
+  ],
+  "ERR-X-OUT-OF-BOUNDS": [
+    {
+      "code": 5009,
+      "comment": "weighted-equation-v1-01.clar:485"
+    }
+  ],
+  "ERR-Y-OUT-OF-BOUNDS": [
+    {
+      "code": 5010,
+      "comment": "weighted-equation-v1-01.clar:486"
+    }
+  ],
+  "ERR-PRODUCT-OUT-OF-BOUNDS": [
+    {
+      "code": 5011,
+      "comment": "weighted-equation-v1-01.clar:487"
+    }
+  ],
+  "ERR-INVALID-EXPONENT": [
+    {
+      "code": 5012,
+      "comment": "weighted-equation-v1-01.clar:488"
+    }
+  ],
+  "ERR-OUT-OF-BOUNDS": [
+    {
+      "code": 5013,
+      "comment": "weighted-equation-v1-01.clar:489"
+    }
+  ],
+  "ERR-NO-FEE-CHANGE": [
+    {
+      "code": 8001,
+      "comment": "multisig-fwp-alex-autoalex.clar:6"
+    }
+  ],
+  "ERR-BLOCK-HEIGHT-NOT-REACHED": [
+    {
+      "code": 8003,
+      "comment": "multisig-fwp-alex-autoalex.clar:8"
+    },
+    {
+      "code": 2042,
+      "comment": "alex-lottery.clar:5"
+    }
+  ],
+  "ERR-INVALID-LIQUIDITY": [
+    {
+      "code": 2003,
+      "comment": "auto-fwp-alex-usda.clar:227"
+    }
+  ],
+  "ERR-REWARD-CYCLE-NOT-COMPLETED": [
+    {
+      "code": 10017,
+      "comment": "auto-fwp-alex-usda.clar:228"
+    }
+  ],
+  "ERR-STAKING-NOT-AVAILABLE": [
+    {
+      "code": 10015,
+      "comment": "auto-fwp-alex-usda.clar:229"
+    },
+    {
+      "code": 2027,
+      "comment": "yield-vault-alex.clar:13"
+    }
+  ],
+  "ERR-NOT-ACTIVATED": [
+    {
+      "code": 2043,
+      "comment": "auto-fwp-alex-usda.clar:231"
+    }
+  ],
+  "ERR-ACTIVATED": [
+    {
+      "code": 2044,
+      "comment": "auto-fwp-alex-usda.clar:232"
+    }
+  ],
+  "ERR-USER-ID-NOT-FOUND": [
+    {
+      "code": 10003,
+      "comment": "auto-fwp-alex-usda.clar:233"
+    }
+  ],
+  "ERR-INSUFFICIENT-BALANCE": [
+    {
+      "code": 2045,
+      "comment": "auto-fwp-alex-usda.clar:234"
+    }
+  ],
+  "ERR-INVALID-PERCENT": [
+    {
+      "code": 5000,
+      "comment": "auto-fwp-alex-usda.clar:235"
+    }
+  ],
+  "ERR-AVAILABLE-ALEX": [
+    {
+      "code": 20000,
+      "comment": "auto-fwp-alex-usda-100x.clar:6"
+    }
+  ],
+  "ERR-BLOCK-HEIGHT": [
+    {
+      "code": 2043,
+      "comment": "auto-fwp-alex-autoalex-x-v1-01.clar:9"
+    }
+  ],
+  "ERR-NOT-ENOUGH-ALEX": [
+    {
+      "code": 20001,
+      "comment": "auto-fwp-alex-autoalex-x-v1-01.clar:10"
+    }
+  ],
+  "ERR-X-OUT-OF-BOUNDS-MANTISSA": [
+    {
+      "code": 50091,
+      "comment": "math-fixed-point-v2.clar:116"
+    }
+  ],
+  "ERR-X-OUT-OF-BOUNDS-EXP": [
+    {
+      "code": 50092,
+      "comment": "math-fixed-point-v2.clar:117"
+    }
+  ],
+  "ERR-Y-OUT-OF-BOUNDS-MANTISSA": [
+    {
+      "code": 50101,
+      "comment": "math-fixed-point-v2.clar:119"
+    }
+  ],
+  "ERR-Y-OUT-OF-BOUNDS-EXP": [
+    {
+      "code": 50102,
+      "comment": "math-fixed-point-v2.clar:120"
+    }
+  ],
+  "ERR-NOT-POSITIVE": [
+    {
+      "code": 5014,
+      "comment": "math-fixed-point-v2.clar:124"
+    }
+  ],
+  "ERR-MINT-FAILED": [
+    {
+      "code": 6002,
+      "comment": "token-wxusd.clar:16"
+    }
+  ],
+  "ERR-BURN-FAILED": [
+    {
+      "code": 6003,
+      "comment": "token-wxusd.clar:17"
+    }
+  ],
+  "ERR-NOT-SUPPORTED": [
+    {
+      "code": 6004,
+      "comment": "token-wxusd.clar:19"
+    }
+  ],
+  "ERR-CONTRACT-NOT-ACTIVATED": [
+    {
+      "code": 10005,
+      "comment": "alex-reserve-pool.clar:10"
+    }
+  ],
+  "ERR-CANNOT-STAKE": [
+    {
+      "code": 10016,
+      "comment": "alex-reserve-pool.clar:12"
+    }
+  ],
+  "ERR-AMOUNT-EXCEED-RESERVE": [
+    {
+      "code": 2024,
+      "comment": "alex-reserve-pool.clar:14"
+    }
+  ],
+  "ERR-INVALID-POOL": [
+    {
+      "code": 2001,
+      "comment": "collateral-rebalancing-pool.clar:9"
+    }
+  ],
+  "ERR-POOL-ALREADY-EXISTS": [
+    {
+      "code": 2000,
+      "comment": "collateral-rebalancing-pool.clar:12"
+    }
+  ],
+  "ERR-GET-WEIGHT-FAIL": [
+    {
+      "code": 2012,
+      "comment": "collateral-rebalancing-pool.clar:15"
+    }
+  ],
+  "ERR-EXPIRY": [
+    {
+      "code": 2017,
+      "comment": "collateral-rebalancing-pool.clar:16"
+    }
+  ],
+  "ERR-LTV-TOO-HIGH": [
+    {
+      "code": 2019,
+      "comment": "collateral-rebalancing-pool.clar:19"
+    }
+  ],
+  "ERR-EXCEEDS-MAX-SLIPPAGE": [
+    {
+      "code": 2020,
+      "comment": "collateral-rebalancing-pool.clar:20"
+    }
+  ],
+  "ERR-POOL-AT-CAPACITY": [
+    {
+      "code": 2027,
+      "comment": "collateral-rebalancing-pool.clar:22"
+    }
+  ],
+  "ERR-ROLL-FLASH-LOAN-FEE": [
+    {
+      "code": 2028,
+      "comment": "collateral-rebalancing-pool.clar:23"
+    }
+  ],
+  "ERR-ORACLE-NOT-ENABLED": [
+    {
+      "code": 7002,
+      "comment": "collateral-rebalancing-pool.clar:24"
+    }
+  ],
+  "ERR-PERCENT-GREATER-THAN-ONE": [
+    {
+      "code": 5000,
+      "comment": "fixed-weight-pool-alex.clar:14"
+    }
+  ],
+  "ERR-ORACLE-ALREADY-ENABLED": [
+    {
+      "code": 7003,
+      "comment": "fixed-weight-pool-alex.clar:17"
+    }
+  ],
+  "ERR-ORACLE-AVERAGE-BIGGER-THAN-ONE": [
+    {
+      "code": 7004,
+      "comment": "fixed-weight-pool-alex.clar:18"
+    }
+  ],
+  "ERR-UNKNOWN-LOTTERY": [
+    {
+      "code": 2045,
+      "comment": "alex-lottery.clar:3"
+    }
+  ],
+  "ERR-UNKNOWN-LOTTERY-ROUND": [
+    {
+      "code": 2047,
+      "comment": "alex-lottery.clar:4"
+    }
+  ],
+  "ERR-INVALID-SEQUENCE": [
+    {
+      "code": 2046,
+      "comment": "alex-lottery.clar:6"
+    }
+  ],
+  "ERR-INVALID-LOTTERY-TOKEN": [
+    {
+      "code": 2026,
+      "comment": "alex-lottery.clar:7"
+    }
+  ],
+  "ERR-INVALID-LOTTERY-SETTING": [
+    {
+      "code": 110,
+      "comment": "alex-lottery.clar:8"
+    }
+  ],
+  "ERR-ALREADY-REGISTERED": [
+    {
+      "code": 10001,
+      "comment": "alex-lottery.clar:9"
+    }
+  ],
+  "ERR-LOTTERY-ROUND-ALREADY-CLAIMED": [
+    {
+      "code": 2048,
+      "comment": "alex-lottery.clar:11"
+    }
+  ],
+  "ERR-BONUS-TICKETS-EXCEED-MAX": [
+    {
+      "code": 2049,
+      "comment": "alex-lottery.clar:12"
+    }
+  ],
+  "ERR-NOT-REGISTERED": [
+    {
+      "code": 2050,
+      "comment": "alex-lottery.clar:13"
+    }
+  ],
+  "ERR-SWITCH-THRESHOLD-BIGGER-THAN-ONE": [
+    {
+      "code": 7005,
+      "comment": "amm-swap-pool.clar:20"
+    }
+  ],
+  "ERR-STAKING-IN-PROGRESS": [
+    {
+      "code": 2018,
+      "comment": "yield-vault-alex.clar:12"
+    }
+  ],
+  "ERR-ALREADY-EXPIRED": [
+    {
+      "code": 2011,
+      "comment": "liquidity-bootstrapping-pool.clar:16"
+    }
+  ],
+  "ERR-PRICE-LOWER-THAN-MIN": [
+    {
+      "code": 2021,
+      "comment": "liquidity-bootstrapping-pool.clar:18"
+    }
+  ],
+  "ERR-PRICE-GREATER-THAN-MAX": [
+    {
+      "code": 2022,
+      "comment": "liquidity-bootstrapping-pool.clar:19"
+    }
+  ],
+  "ERR-NO-FEE": [
+    {
+      "code": 2005,
+      "comment": "yield-token-pool.clar:14"
+    }
+  ],
+  "ERR-NO-FEE-Y": [
+    {
+      "code": 2006,
+      "comment": "yield-token-pool.clar:15"
+    }
+  ],
+  "ERR-INVALID-EXPIRY": [
+    {
+      "code": 2009,
+      "comment": "yield-token-pool.clar:16"
+    }
+  ],
+  "ERR-GET-EXPIRY-FAIL-ERR": [
+    {
+      "code": 2013,
+      "comment": "yield-token-pool.clar:17"
+    }
+  ],
+  "ERR-DY-BIGGER-THAN-AVAILABLE": [
+    {
+      "code": 2016,
+      "comment": "yield-token-pool.clar:18"
+    }
+  ],
+  "ERR-NOT-FOUND": [
+    {
+      "code": 1003,
+      "comment": "dual-farming-pool.clar:8"
+    }
+  ],
+  "ERR-INVALID-TICKET": [
+    {
+      "code": 2028,
+      "comment": "alex-launchpad.clar:12"
+    }
+  ],
+  "ERR-NO-VRF-SEED-FOUND": [
+    {
+      "code": 2030,
+      "comment": "alex-launchpad.clar:13"
+    }
+  ],
+  "ERR-CLAIM-NOT-AVAILABLE": [
+    {
+      "code": 2031,
+      "comment": "alex-launchpad.clar:14"
+    }
+  ],
+  "ERR-REGISTRATION-STARTED": [
+    {
+      "code": 2033,
+      "comment": "alex-launchpad.clar:15"
+    }
+  ],
+  "ERR-REGISTRATION-NOT-STARTED": [
+    {
+      "code": 2034,
+      "comment": "alex-launchpad.clar:16"
+    }
+  ],
+  "ERR-LISTING-ACTIVATED": [
+    {
+      "code": 2035,
+      "comment": "alex-launchpad.clar:17"
+    }
+  ],
+  "ERR-LISTING-NOT-ACTIVATED": [
+    {
+      "code": 2036,
+      "comment": "alex-launchpad.clar:18"
+    }
+  ],
+  "ERR-INVALID-REGISTRATION-PERIOD": [
+    {
+      "code": 2037,
+      "comment": "alex-launchpad.clar:19"
+    }
+  ],
+  "ERR-REGISTRATION-ENDED": [
+    {
+      "code": 2038,
+      "comment": "alex-launchpad.clar:20"
+    }
+  ],
+  "ERR-REGISTRATION-NOT-ENDED": [
+    {
+      "code": 2039,
+      "comment": "alex-launchpad.clar:21"
+    }
+  ],
+  "ERR-CLAIM-ENDED": [
+    {
+      "code": 2040,
+      "comment": "alex-launchpad.clar:22"
+    }
+  ],
+  "ERR-CLAIM-NOT-ENDED": [
+    {
+      "code": 2041,
+      "comment": "alex-launchpad.clar:23"
+    }
+  ],
+  "ERR-INVALID-CLAIM-PERIOD": [
+    {
+      "code": 2042,
+      "comment": "alex-launchpad.clar:24"
+    }
+  ],
+  "ERR-REFUND-NOT-AVAILABLE": [
+    {
+      "code": 2043,
+      "comment": "alex-launchpad.clar:25"
+    }
+  ],
+  "ERR-ALREADY-PROCESSED": [
+    {
+      "code": 1409,
+      "comment": "fwp-wstx-alex-tranched-64.clar:15"
+    }
+  ],
+  "ERR-DISTRIBUTION": [
+    {
+      "code": 1410,
+      "comment": "fwp-wstx-alex-tranched-64.clar:16"
+    }
+  ],
+  "ERR-CHAIN-NOT-AUTHORIZED": [
+    {
+      "code": 1003,
+      "comment": "bridge-helper.clar:7"
+    }
+  ]
+}
