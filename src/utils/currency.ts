@@ -64,3 +64,11 @@ export function getCurrencyNativeAddress(currency: Currency) {
   }
   return address.assetIdentifier;
 }
+
+export function findCurrencyByNativeAddress(
+  address: string
+): Currency | undefined {
+  return Object.values(Currency).find(
+    (a) => getCurrencyNativeAddress(a).split('::')[0] === address.split('::')[0]
+  );
+}

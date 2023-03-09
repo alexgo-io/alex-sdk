@@ -13,6 +13,7 @@ import { defaultReadonlyCallExecutor } from './utils/readonlyCallExecutor';
 import { getRoute } from './helpers/RouteHelper';
 import { getYAmountFromXAmount } from './helpers/RateHelper';
 import { runSpot, TxToBroadCast } from './helpers/SwapHelper';
+import { findCurrencyByNativeAddress } from './utils/currency';
 
 export type Contracts = typeof AlexContracts;
 
@@ -107,5 +108,8 @@ export class AlexSDK {
       middleSteps,
       ammPools
     );
+  }
+  getCurrencyFrom(address: string): Currency | undefined {
+    return findCurrencyByNativeAddress(address);
   }
 }
