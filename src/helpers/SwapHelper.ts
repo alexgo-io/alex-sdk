@@ -57,10 +57,11 @@ export function runSpot(
   currencyY: Currency,
   fromAmount: bigint,
   minDy: bigint,
-  middleSteps: Currency[],
+  router: Currency[],
   ammPools: AMMSwapPool.PoolTokens[]
 ): TxToBroadCast {
   const ammRoute = AMMSwapPool.getRoute(currencyX, currencyY, ammPools);
+  const middleSteps = router.slice(1, -1);
   if (ammRoute.length === 0) {
     const reachableInAMM = AMMSwapPool.reachableInAMM(
       currencyX,

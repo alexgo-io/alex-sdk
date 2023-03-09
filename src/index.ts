@@ -9,7 +9,6 @@ import {
 import { CONTRACT_DEPLOYER } from './config';
 import { getLiquidityProviderFee } from './helpers/FeeHelper';
 import { AMMSwapPool } from './utils/ammPool';
-import { defaultReadonlyCallExecutor } from './utils/readonlyCallExecutor';
 import { getRoute } from './helpers/RouteHelper';
 import { getYAmountFromXAmount } from './helpers/RateHelper';
 import { runSpot, TxToBroadCast } from './helpers/SwapHelper';
@@ -39,56 +38,14 @@ export type ReadonlyCallExecutor = (
 ) => Promise<ClarityValue>;
 
 export class AlexSDK {
-  private readonly readonlyCallExecutor: ReadonlyCallExecutor;
-  constructor(options?: { readonlyCallExecutor?: ReadonlyCallExecutor }) {
-    this.readonlyCallExecutor =
-      options?.readonlyCallExecutor ?? defaultReadonlyCallExecutor;
-  }
-
-  readonlyCall: <
-    T extends keyof Contracts,
-    F extends keyof Contracts[T],
-    Descriptor extends Contracts[T][F]
-  >(
-    contractName: T,
-    functionName: F,
-    args: Descriptor extends ReadonlyFunctionDescriptor
-      ? ParameterObjOfDescriptor<Descriptor>
-      : never
-  ) => Promise<
-    Descriptor extends ReadonlyFunctionDescriptor
-      ? ReturnTypeOfDescriptor<Descriptor>
-      : never
-  > = async (contractName, functionName, args) => {
-    const functionDescriptor = AlexContracts[contractName][
-      functionName
-    ] as any as ReadonlyFunctionDescriptor;
-    const clarityArgs = functionDescriptor.input.map((arg) =>
-      arg.type.encode(args[arg.name])
-    );
-    const result = await this.readonlyCallExecutor({
-      contractName,
-      functionName: String(functionName),
-      functionArgs: clarityArgs,
-      contractAddress: CONTRACT_DEPLOYER,
-    });
-    return functionDescriptor.output.decode(result);
-  };
-
   getFee(from: Currency, to: Currency): Promise<bigint> {
-    return getLiquidityProviderFee(this, from, to, AMMSwapPool.ammTokens);
+    return getLiquidityProviderFee(from, to, AMMSwapPool.ammTokens);
   }
   getRouter(from: Currency, to: Currency): Promise<Currency[]> {
-    return getRoute(this, from, to, AMMSwapPool.ammTokens);
+    return getRoute(from, to, AMMSwapPool.ammTokens);
   }
   getRate(from: Currency, fromAmount: bigint, to: Currency): Promise<bigint> {
-    return getYAmountFromXAmount(
-      this,
-      from,
-      to,
-      fromAmount,
-      AMMSwapPool.ammTokens
-    );
+    return getYAmountFromXAmount(from, to, fromAmount, AMMSwapPool.ammTokens);
   }
   runSwap(
     stxAddress: string,
@@ -96,8 +53,7 @@ export class AlexSDK {
     currencyY: Currency,
     fromAmount: bigint,
     minDy: bigint,
-    middleSteps: Currency[],
-    ammPools: AMMSwapPool.PoolTokens[]
+    router: Currency[]
   ): TxToBroadCast {
     return runSpot(
       stxAddress,
@@ -105,8 +61,8 @@ export class AlexSDK {
       currencyY,
       fromAmount,
       minDy,
-      middleSteps,
-      ammPools
+      router,
+      AMMSwapPool.ammTokens
     );
   }
   getCurrencyFrom(address: string): Currency | undefined {

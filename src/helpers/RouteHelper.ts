@@ -1,9 +1,9 @@
 import { AlexSDK, Currency } from '../index';
 import { AMMSwapPool } from '../utils/ammPool';
 import { unwrapResponse } from 'clarity-codegen';
+import { readonlyCall } from '../utils/readonlyCallExecutor';
 
 export async function getRoute(
-  sdk: AlexSDK,
   from: Currency,
   to: Currency,
   pools: AMMSwapPool.PoolTokens[]
@@ -14,32 +14,34 @@ export async function getRoute(
   }
   const reachableInAmm = AMMSwapPool.reachableInAMM(from, to, pools);
   if (reachableInAmm.type === 'fromAmm') {
-    const result = await sdk
-      .readonlyCall('swap-helper-bridged', 'route-helper-from-amm', {
+    const result = await readonlyCall(
+      'swap-helper-bridged',
+      'route-helper-from-amm',
+      {
         'token-x': reachableInAmm.tokenX,
         'token-y': reachableInAmm.tokenY,
         'token-z': reachableInAmm.tokenZ,
         'factor-x': reachableInAmm.factorX,
-      })
-      .then(unwrapResponse);
+      }
+    ).then(unwrapResponse);
     return result.map((x) => x as Currency);
   }
   if (reachableInAmm.type === 'toAmm') {
-    const result = await sdk
-      .readonlyCall('swap-helper-bridged', 'route-helper-to-amm', {
+    const result = await readonlyCall(
+      'swap-helper-bridged',
+      'route-helper-to-amm',
+      {
         'token-x': reachableInAmm.tokenX,
         'token-y': reachableInAmm.tokenY,
         'token-z': reachableInAmm.tokenZ,
         'factor-y': reachableInAmm.factorY,
-      })
-      .then(unwrapResponse);
+      }
+    ).then(unwrapResponse);
     return result.map((x) => x as Currency);
   }
-  const result = await sdk
-    .readonlyCall('swap-helper-v1-03', 'route-helper', {
-      'token-x': from,
-      'token-y': to,
-    })
-    .then(unwrapResponse);
+  const result = await readonlyCall('swap-helper-v1-03', 'route-helper', {
+    'token-x': from,
+    'token-y': to,
+  }).then(unwrapResponse);
   return result.map((x) => x as Currency);
 }
