@@ -1,41 +1,11 @@
-import { ReadOnlyFunctionOptions } from '@stacks/transactions/src/builders';
-import { ClarityValue } from '@stacks/transactions';
 import { AlexContracts } from './generated/smartContract/contracts_Alex';
-import {
-  ParameterObjOfDescriptor,
-  ReadonlyFunctionDescriptor,
-  ReturnTypeOfDescriptor,
-} from 'clarity-codegen';
-import { CONTRACT_DEPLOYER } from './config';
 import { getLiquidityProviderFee } from './helpers/FeeHelper';
 import { AMMSwapPool } from './utils/ammPool';
 import { getRoute } from './helpers/RouteHelper';
 import { getYAmountFromXAmount } from './helpers/RateHelper';
 import { runSpot, TxToBroadCast } from './helpers/SwapHelper';
-import { findCurrencyByNativeAddress } from './utils/currency';
-
-export type Contracts = typeof AlexContracts;
-
-export enum Currency {
-  ALEX = 'age000-governance-token',
-  USDA = 'token-wusda',
-  STX = 'token-wstx',
-  BANANA = 'token-wban',
-  XBTC = 'token-wbtc',
-  DIKO = 'token-wdiko',
-  SLIME = 'token-wslm',
-  XUSD = 'token-wxusd',
-  MIA = 'token-wmia',
-  NYCC = 'token-wnycc',
-  CORGI = 'token-wcorgi',
-}
-
-export type ReadonlyCallExecutor = (
-  options: Pick<
-    ReadOnlyFunctionOptions,
-    'functionArgs' | 'functionName' | 'contractName' | 'contractAddress'
-  >
-) => Promise<ClarityValue>;
+import { findCurrencyByNativeAddress } from './utils/currencyUtils';
+import { Currency } from './Currency';
 
 export class AlexSDK {
   getFee(from: Currency, to: Currency): Promise<bigint> {

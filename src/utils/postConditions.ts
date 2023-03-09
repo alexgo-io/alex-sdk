@@ -6,8 +6,8 @@ import {
   STXPostCondition,
 } from '@stacks/transactions';
 import { CONTRACT_DEPLOYER } from '../config';
-import { Currency } from '../index';
-import { getCurrencyNativeAddress, getCurrencyNativeScale } from './currency';
+import { getCurrencyNativeAddress, getCurrencyNativeScale } from './currencyUtils';
+import { Currency } from '../Currency';
 
 export const AlexVault = `${CONTRACT_DEPLOYER}.alex-vault`;
 

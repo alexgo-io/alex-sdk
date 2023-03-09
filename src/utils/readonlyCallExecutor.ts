@@ -1,5 +1,5 @@
-import { Contracts, ReadonlyCallExecutor } from '../index';
-import { callReadOnlyFunction } from '@stacks/transactions';
+import { Contracts } from '../index';
+import { callReadOnlyFunction, ClarityValue } from '@stacks/transactions';
 import { API_HOST, CONTRACT_DEPLOYER } from '../config';
 import { StacksMainnet } from '@stacks/network';
 import {
@@ -8,6 +8,14 @@ import {
   ReturnTypeOfDescriptor,
 } from 'clarity-codegen';
 import { AlexContracts } from '../generated/smartContract/contracts_Alex';
+import { ReadOnlyFunctionOptions } from '@stacks/transactions/src/builders';
+
+type ReadonlyCallExecutor = (
+  options: Pick<
+    ReadOnlyFunctionOptions,
+    'functionArgs' | 'functionName' | 'contractName' | 'contractAddress'
+  >
+) => Promise<ClarityValue>;
 
 const defaultReadonlyCallExecutor: ReadonlyCallExecutor = async (options) => {
   return callReadOnlyFunction({

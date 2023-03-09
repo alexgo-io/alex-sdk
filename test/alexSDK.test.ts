@@ -1,5 +1,6 @@
-import { AlexSDK, Currency } from '../src';
+import { AlexSDK } from '../src';
 import { CONTRACT_DEPLOYER } from '../src/config';
+import { Currency } from '../src/Currency';
 
 describe.skip('AlexSDK', () => {
   it('Get fee', async () => {

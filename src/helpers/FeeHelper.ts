@@ -1,7 +1,8 @@
-import { AlexSDK, Currency } from '../index';
+import { AlexSDK } from '../index';
 import { AMMSwapPool } from '../utils/ammPool';
 import { unwrapResponse } from 'clarity-codegen';
 import { readonlyCall } from '../utils/readonlyCallExecutor';
+import { Currency } from '../Currency';
 
 export async function getLiquidityProviderFee(
   tokenX: Currency,

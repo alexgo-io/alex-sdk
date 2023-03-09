@@ -1,4 +1,4 @@
-import { Contracts, Currency } from '../index';
+import { Contracts } from '../index';
 import { AMMSwapPool } from '../utils/ammPool';
 import { AlexVault, transfer } from '../utils/postConditions';
 import {
@@ -15,6 +15,7 @@ import {
 } from 'clarity-codegen';
 import { AlexContracts } from '../generated/smartContract/contracts_Alex';
 import { CONTRACT_DEPLOYER } from '../config';
+import { Currency } from '../Currency';
 
 export type TxToBroadCast = {
   contractAddress: string;
