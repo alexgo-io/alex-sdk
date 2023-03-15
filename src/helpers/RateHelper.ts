@@ -1,7 +1,8 @@
-import { AlexSDK, Currency } from '../index';
 import { AMMSwapPool } from '../utils/ammPool';
 import { unwrapResponse } from 'clarity-codegen';
 import { readonlyCall } from '../utils/readonlyCallExecutor';
+import { Currency } from '../currency';
+import { AlexSDK } from '../alexSDK';
 
 export const getYAmountFromXAmount = async (
   tokenX: Currency,

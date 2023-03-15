@@ -14,7 +14,7 @@ import {
 } from 'clarity-codegen';
 import { AlexContracts } from '../generated/smartContract/contracts_Alex';
 import { CONTRACT_DEPLOYER } from '../config';
-import { Currency } from '../index';
+import { Currency } from '../currency';
 
 export type TxToBroadCast = {
   contractAddress: string;

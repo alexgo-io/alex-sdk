@@ -1,7 +1,7 @@
 import { AMMSwapRoute, resolveAmmRoute } from './ammRouteResolver';
 import { bridgeHelperResolver } from './bridgeHelperResolver';
 import { assertNever } from './utils';
-import { Currency } from '../index';
+import { Currency } from '../currency';
 
 export namespace AMMSwapPool {
   export enum Pool {

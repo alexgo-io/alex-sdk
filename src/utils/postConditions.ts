@@ -7,7 +7,7 @@ import {
 } from '@stacks/transactions';
 import { CONTRACT_DEPLOYER } from '../config';
 import { getCurrencyNativeAddress, getCurrencyNativeScale } from './currencyUtils';
-import { Currency } from '../index';
+import { Currency } from '../currency';
 
 export const AlexVault = `${CONTRACT_DEPLOYER}.alex-vault`;
 

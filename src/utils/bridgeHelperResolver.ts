@@ -1,6 +1,6 @@
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 import { AMMSwapPool } from './ammPool';
-import { Currency } from '../index';
+import { Currency } from '../currency';
 
 export function bridgeHelperResolver(
   from: Currency,
