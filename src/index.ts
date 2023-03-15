@@ -1,11 +1,23 @@
-import { AlexContracts } from './generated/smartContract/contracts_Alex';
 import { getLiquidityProviderFee } from './helpers/FeeHelper';
 import { AMMSwapPool } from './utils/ammPool';
 import { getRoute } from './helpers/RouteHelper';
 import { getYAmountFromXAmount } from './helpers/RateHelper';
 import { runSpot, TxToBroadCast } from './helpers/SwapHelper';
 import { findCurrencyByNativeAddress } from './utils/currencyUtils';
-import { Currency } from './currency';
+
+export enum Currency {
+  ALEX = 'age000-governance-token',
+  USDA = 'token-wusda',
+  STX = 'token-wstx',
+  BANANA = 'token-wban',
+  XBTC = 'token-wbtc',
+  DIKO = 'token-wdiko',
+  SLIME = 'token-wslm',
+  XUSD = 'token-wxusd',
+  MIA = 'token-wmia',
+  NYCC = 'token-wnycc',
+  CORGI = 'token-wcorgi',
+}
 
 export class AlexSDK {
   getFee(from: Currency, to: Currency): Promise<bigint> {
