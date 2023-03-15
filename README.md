@@ -1,103 +1,130 @@
-# TSDX User Guide
+# Alex-SDK
 
-Congrats! You just saved yourself hours of work by bootstrapping this project with TSDX. Let’s get you oriented with what’s here and how to use it.
+Alex-SDK is a easy-to-use library that exposes the swap functionality from [alexlab.co](https://app.alexlab.co/swap) to be integrated into any app or wallet. It enables users to perform swaps with a wide variety of supported currencies.
 
-> This TSDX setup is meant for developing libraries (not apps!) that can be published to NPM. If you’re looking to build a Node app, you could use `ts-node-dev`, plain `ts-node`, or simple `tsc`.
+## Supported Currencies
 
-> If you’re new to TypeScript, checkout [this handy cheatsheet](https://devhints.io/typescript)
+The SDK supports the following currencies:
 
-## Commands
-
-TSDX scaffolds your new library inside `/src`.
-
-To run TSDX, use:
-
-```bash
-npm start # or yarn start
-```
-
-This builds to `/dist` and runs the project in watch mode so any edits you save inside `src` causes a rebuild to `/dist`.
-
-To do a one-off build, use `npm run build` or `yarn build`.
-
-To run tests, use `npm test` or `yarn test`.
-
-## Configuration
-
-Code quality is set up for you with `prettier`, `husky`, and `lint-staged`. Adjust the respective fields in `package.json` accordingly.
-
-### Jest
-
-Jest tests are set up to run with `npm test` or `yarn test`.
-
-### Bundle Analysis
-
-[`size-limit`](https://github.com/ai/size-limit) is set up to calculate the real cost of your library with `npm run size` and visualize the bundle with `npm run analyze`.
-
-#### Setup Files
-
-This is the folder structure we set up for you:
-
-```txt
-/src
-  index.tsx       # EDIT THIS
-/test
-  blah.test.tsx   # EDIT THIS
-.gitignore
-package.json
-README.md         # EDIT THIS
-tsconfig.json
-```
-
-### Rollup
-
-TSDX uses [Rollup](https://rollupjs.org) as a bundler and generates multiple rollup configs for various module formats and build settings. See [Optimizations](#optimizations) for details.
-
-### TypeScript
-
-`tsconfig.json` is set up to interpret `dom` and `esnext` types, as well as `react` for `jsx`. Adjust according to your needs.
-
-## Continuous Integration
-
-### GitHub Actions
-
-Two actions are added by default:
-
-- `main` which installs deps w/ cache, lints, tests, and builds on all pushes against a Node and OS matrix
-- `size` which comments cost comparison of your library on every pull request using [`size-limit`](https://github.com/ai/size-limit)
-
-## Optimizations
-
-Please see the main `tsdx` [optimizations docs](https://github.com/palmerhq/tsdx#optimizations). In particular, know that you can take advantage of development-only optimizations:
-
-```js
-// ./types/index.d.ts
-declare var __DEV__: boolean;
-
-// inside your code...
-if (__DEV__) {
-  console.log('foo');
+```javascript
+export enum Currency {
+  ALEX = 'age000-governance-token',
+  USDA = 'token-wusda',
+  STX = 'token-wstx',
+  BANANA = 'token-wban',
+  XBTC = 'token-wbtc',
+  DIKO = 'token-wdiko',
+  SLIME = 'token-wslm',
+  XUSD = 'token-wxusd',
+  MIA = 'token-wmia',
+  NYCC = 'token-wnycc',
+  CORGI = 'token-wcorgi',
 }
 ```
 
-You can also choose to install and use [invariant](https://github.com/palmerhq/tsdx#invariant) and [warning](https://github.com/palmerhq/tsdx#warning) functions.
+## Functions
 
-## Module Formats
+The AlexSDK class includes the following functions:
 
-CJS, ESModules, and UMD module formats are supported.
+```javascript
+export declare class AlexSDK {
+    getFee(from: Currency, to: Currency): Promise<bigint>;
+    getRouter(from: Currency, to: Currency): Promise<Currency[]>;
+    getAmountTo(from: Currency, fromAmount: bigint, to: Currency): Promise<bigint>;
+    runSwap(stxAddress: string, currencyX: Currency, currencyY: Currency, fromAmount: bigint, minDy: bigint, router: Currency[]): TxToBroadCast;
+    getCurrencyFrom(address: string): Currency | undefined;
+}
+```
 
-The appropriate paths are configured in `package.json` and `dist/index.js` accordingly. Please report if any issues are found.
+### getFee
 
-## Named Exports
+Get the swap fee (liquidity provider fee) between two currencies.
 
-Per Palmer Group guidelines, [always use named exports.](https://github.com/palmerhq/typescript#exports) Code split inside your React app instead of your React library.
+```javascript
+async function getFee(from: Currency, to: Currency): Promise<bigint>;
+```
 
-## Including Styles
+### getRouter
 
-There are many ways to ship styles, including with CSS-in-JS. TSDX has no opinion on this, configure how you like.
+Get the router path for swapping between two currencies.
 
-For vanilla CSS, you can include it at the root directory and add it to the `files` section in your `package.json`, so that it can be imported separately by your users and run through their bundler's loader.
+```javascript
+async function getRouter(from: Currency, to: Currency): Promise<Currency[]>;
+```
 
-## Publishing to NPM
+### getAmountTo
 
-We recommend using [np](https://github.com/sindresorhus/np).
+Get the amount of destination currency that will be received when swapping from one currency to another.
+
+```javascript
+async function getAmountTo(from: Currency, fromAmount: bigint, to: Currency): Promise<bigint>;
+```
+
+### runSwap
+
+Perform a swap between two currencies using the specified route and amount.
+
+```javascript
+function runSwap(stxAddress: string, currencyX: Currency, currencyY: Currency, fromAmount: bigint, minDy: bigint, router: Currency[]): TxToBroadCast;
+```
+
+### getCurrencyFrom
+
+Get the corresponding currency for a given address.
+
+```javascript
+function getCurrencyFrom(address: string): Currency | undefined;
+```
+
+## Installation
+
+You can install Alex-SDK using npm:
+
+```bash
+npm install alex-sdk
+```
+
+## Usage
+
+To use the AlexSDK, you can import it into your project and instantiate a new object:
+
+```javascript
+import { AlexSDK, Currency } from 'alex-sdk';
+
+const alex = new AlexSDK();
+
+(async () => {
+  // Get swap fee between ALEX and USDA
+  const fee = await alex.getFee(Currency.ALEX, Currency.USDA);
+  console.log('Swap fee:', fee);
+
+  // Get the router path for swapping ALEX to USDA
+  const router = await alex.getRouter(Currency.ALEX, Currency.USDA);
+  console.log('Router path:', router);
+
+  // Get the amount of USDA that will be received when swapping 100 ALEX
+  const amountTo = await alex.getAmountTo(
+    Currency.ALEX,
+    BigInt(100),
+    Currency.USDA
+  );
+  console.log('Amount to receive:', amountTo);
+
+  // To get the transaction to broadcast
+  const tx = await alex.runSwap(
+    stxAddress,
+    Currency.ALEX,
+    Currency.USDA,
+    BigInt(Number(amount) * 1e8),
+    BigInt(0),
+    router
+  );
+
+  // Then broadcast the transaction yourself
+  await openContractCall(tx);
+})();
+```
+
+## Contributing
+
+Contributions to the project are welcome. Please fork the repository, make your changes, and submit a pull request. Ensure your changes follow the code style and conventions used
