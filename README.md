@@ -28,7 +28,7 @@ The AlexSDK class includes the following functions:
 
 ```javascript
 export declare class AlexSDK {
-    getFee(from: Currency, to: Currency): Promise<bigint>;
+    getFeeRate(from: Currency, to: Currency): Promise<bigint>;
     getRouter(from: Currency, to: Currency): Promise<Currency[]>;
     getAmountTo(from: Currency, fromAmount: bigint, to: Currency): Promise<bigint>;
     runSwap(stxAddress: string, currencyX: Currency, currencyY: Currency, fromAmount: bigint, minDy: bigint, router: Currency[]): TxToBroadCast;
@@ -37,11 +37,11 @@ export declare class AlexSDK {
 ```
 
 ### getFee
-
+Rate
 Get the swap fee (liquidity provider fee) between two currencies.
 
 ```javascript
-async function getFee(from: Currency, to: Currency): Promise<bigint>;
+async function getFeeRate(from: Currency, to: Currency): Promise<bigint>;
 ```
 
 ### getRouter
@@ -95,8 +95,8 @@ const alex = new AlexSDK();
 
 (async () => {
   // Get swap fee between ALEX and USDA
-  const fee = await alex.getFee(Currency.ALEX, Currency.USDA);
-  console.log('Swap fee:', fee);
+  const feeRate = await alex.getFeeRate(Currency.ALEX, Currency.USDA);
+  console.log('Swap fee:', feeRate);
 
   // Get the router path for swapping ALEX to USDA
   const router = await alex.getRouter(Currency.ALEX, Currency.USDA);

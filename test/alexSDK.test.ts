@@ -5,7 +5,7 @@ import { AlexSDK } from '../src/alexSDK';
 describe.skip('AlexSDK', () => {
   it('Get fee', async () => {
     const sdk = new AlexSDK();
-    const result = await sdk.getFee(Currency.ALEX, Currency.STX);
+    const result = await sdk.getFeeRate(Currency.ALEX, Currency.STX);
     console.log(result);
   });
   it('Get Route', async () => {

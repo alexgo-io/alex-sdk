@@ -7,7 +7,7 @@ import { runSpot, TxToBroadCast } from './helpers/SwapHelper';
 import { findCurrencyByNativeAddress } from './utils/currencyUtils';
 
 export class AlexSDK {
-  getFee(from: Currency, to: Currency): Promise<bigint> {
+  getFeeRate(from: Currency, to: Currency): Promise<bigint> {
     return getLiquidityProviderFee(from, to, AMMSwapPool.ammTokens);
   }
 
@@ -18,7 +18,7 @@ export class AlexSDK {
   getAmountTo(
     from: Currency,
     fromAmount: bigint,
-    to: Currency,
+    to: Currency
   ): Promise<bigint> {
     return getYAmountFromXAmount(from, to, fromAmount, AMMSwapPool.ammTokens);
   }
@@ -29,7 +29,7 @@ export class AlexSDK {
     currencyY: Currency,
     fromAmount: bigint,
     minDy: bigint,
-    router: Currency[],
+    router: Currency[]
   ): TxToBroadCast {
     return runSpot(
       stxAddress,
@@ -38,7 +38,7 @@ export class AlexSDK {
       fromAmount,
       minDy,
       router,
-      AMMSwapPool.ammTokens,
+      AMMSwapPool.ammTokens
     );
   }
 
