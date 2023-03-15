@@ -1,4 +1,3 @@
-import { Contracts } from '../index';
 import { callReadOnlyFunction, ClarityValue } from '@stacks/transactions';
 import { API_HOST, CONTRACT_DEPLOYER } from '../config';
 import { StacksMainnet } from '@stacks/network';
@@ -9,6 +8,8 @@ import {
 } from 'clarity-codegen';
 import { AlexContracts } from '../generated/smartContract/contracts_Alex';
 import { ReadOnlyFunctionOptions } from '@stacks/transactions/src/builders';
+
+type Contracts = typeof AlexContracts;
 
 type ReadonlyCallExecutor = (
   options: Pick<

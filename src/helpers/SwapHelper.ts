@@ -1,4 +1,3 @@
-import { Contracts } from '../index';
 import { AMMSwapPool } from '../utils/ammPool';
 import { AlexVault, transfer } from '../utils/postConditions';
 import {
@@ -24,6 +23,8 @@ export type TxToBroadCast = {
   functionArgs: ClarityValue[];
   postConditions: Array<FungiblePostCondition | STXPostCondition>;
 };
+
+type Contracts = typeof AlexContracts;
 
 const composeTx: <
   T extends keyof Contracts,
