@@ -125,6 +125,8 @@ const alex = new AlexSDK();
 })();
 ```
 
+There is a fully working example in the [alex-sdk-example](https://github.com/alexgo-io/alex-sdk-example)
+
 ## Contributing
 
 Contributions to the project are welcome. Please fork the repository, make your changes, and submit a pull request. Ensure your changes follow the code style and conventions used
