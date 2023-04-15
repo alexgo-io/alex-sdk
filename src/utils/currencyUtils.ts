@@ -68,7 +68,10 @@ export function getCurrencyNativeAddress(currency: Currency) {
 export function findCurrencyByNativeAddress(
   address: string
 ): Currency | undefined {
-  return Object.values(Currency).find(
-    (a) => getCurrencyNativeAddress(a).split('::')[0] === address.split('::')[0]
-  );
+  return Object.values(Currency)
+    .filter((a) => a !== Currency.STX)
+    .find(
+      (a) =>
+        getCurrencyNativeAddress(a).split('::')[0] === address.split('::')[0]
+    );
 }
