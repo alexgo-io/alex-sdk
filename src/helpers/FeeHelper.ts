@@ -1,19 +1,14 @@
 import { AMMSwapPool } from '../utils/ammPool';
 import { unwrapResponse } from 'clarity-codegen';
+import { readonlyCall } from '../utils/readonlyCallExecutor';
 import { Currency } from '../currency';
 import { AlexSDK } from '../alexSDK';
-import {
-  ReadonlyCallExecutor,
-  readonlyCallWith,
-} from '../utils/readonlyCallExecutor';
 
 export async function getLiquidityProviderFee(
   tokenX: Currency,
   tokenY: Currency,
-  ammPools: AMMSwapPool.PoolTokens[],
-  readonlyCallExecutor: ReadonlyCallExecutor
+  ammPools: AMMSwapPool.PoolTokens[]
 ): Promise<bigint> {
-  const readonlyCall = readonlyCallWith(readonlyCallExecutor);
   const ammRoute = AMMSwapPool.getRoute(tokenX, tokenY, ammPools);
   if (ammRoute.length === 0) {
     const reachableInAmm = AMMSwapPool.reachableInAMM(tokenX, tokenY, ammPools);

@@ -1,9 +1,6 @@
 import { AMMSwapPool } from '../utils/ammPool';
 import { unwrapResponse } from 'clarity-codegen';
-import {
-  ReadonlyCallExecutor,
-  readonlyCallWith,
-} from '../utils/readonlyCallExecutor';
+import { readonlyCall } from '../utils/readonlyCallExecutor';
 import { Currency } from '../currency';
 import { AlexSDK } from '../alexSDK';
 
@@ -11,10 +8,8 @@ export const getYAmountFromXAmount = async (
   tokenX: Currency,
   tokenY: Currency,
   fromAmount: bigint,
-  ammPools: AMMSwapPool.PoolTokens[],
-  readonlyCallExecutor: ReadonlyCallExecutor
+  ammPools: AMMSwapPool.PoolTokens[]
 ): Promise<bigint> => {
-  const readonlyCall = readonlyCallWith(readonlyCallExecutor);
   const ammRoute = AMMSwapPool.getRoute(tokenX, tokenY, ammPools);
   if (ammRoute.length === 0) {
     const reachableInAMM = AMMSwapPool.reachableInAMM(tokenX, tokenY, ammPools);

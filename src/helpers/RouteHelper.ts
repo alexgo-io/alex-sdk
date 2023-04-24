@@ -1,19 +1,14 @@
 import { AMMSwapPool } from '../utils/ammPool';
 import { unwrapResponse } from 'clarity-codegen';
-import {
-  ReadonlyCallExecutor,
-  readonlyCallWith,
-} from '../utils/readonlyCallExecutor';
+import { readonlyCall } from '../utils/readonlyCallExecutor';
 import { Currency } from '../currency';
 import { AlexSDK } from '../alexSDK';
 
 export async function getRoute(
   from: Currency,
   to: Currency,
-  pools: AMMSwapPool.PoolTokens[],
-  readonlyCallExecutor: ReadonlyCallExecutor
+  pools: AMMSwapPool.PoolTokens[]
 ): Promise<Currency[]> {
-  const readonlyCall = readonlyCallWith(readonlyCallExecutor);
   const ammRoute = AMMSwapPool.getRoute(from, to, pools);
   if (ammRoute.length > 0) {
     return [from, ...ammRoute.map((a) => a.neighbour)];
