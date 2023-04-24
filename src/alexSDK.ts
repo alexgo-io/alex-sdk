@@ -9,6 +9,7 @@ import {
   defaultReadonlyCallExecutor,
   ReadonlyCallExecutor,
 } from './utils/readonlyCallExecutor';
+import { fetchLatestPrices } from './utils/currencyPrice';
 
 export class AlexSDK {
   constructor(
@@ -63,5 +64,13 @@ export class AlexSDK {
 
   getCurrencyFrom(address: string): Currency | undefined {
     return findCurrencyByNativeAddress(address);
+  }
+
+  getLatestPrices(): Promise<
+    Partial<{
+      [currency in Currency]: number;
+    }>
+  > {
+    return fetchLatestPrices();
   }
 }
