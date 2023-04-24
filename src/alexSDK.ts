@@ -5,14 +5,27 @@ import { getRoute } from './helpers/RouteHelper';
 import { getYAmountFromXAmount } from './helpers/RateHelper';
 import { runSpot, TxToBroadCast } from './helpers/SwapHelper';
 import { findCurrencyByNativeAddress } from './utils/currencyUtils';
+import {
+  defaultReadonlyCallExecutor,
+  ReadonlyCallExecutor,
+} from './utils/readonlyCallExecutor';
 
 export class AlexSDK {
+  constructor(
+    readonly readonlyCallExecutor: ReadonlyCallExecutor = defaultReadonlyCallExecutor
+  ) {}
+
   getFeeRate(from: Currency, to: Currency): Promise<bigint> {
-    return getLiquidityProviderFee(from, to, AMMSwapPool.ammTokens);
+    return getLiquidityProviderFee(
+      from,
+      to,
+      AMMSwapPool.ammTokens,
+      this.readonlyCallExecutor
+    );
   }
 
   getRouter(from: Currency, to: Currency): Promise<Currency[]> {
-    return getRoute(from, to, AMMSwapPool.ammTokens);
+    return getRoute(from, to, AMMSwapPool.ammTokens, this.readonlyCallExecutor);
   }
 
   getAmountTo(
@@ -20,7 +33,13 @@ export class AlexSDK {
     fromAmount: bigint,
     to: Currency
   ): Promise<bigint> {
-    return getYAmountFromXAmount(from, to, fromAmount, AMMSwapPool.ammTokens);
+    return getYAmountFromXAmount(
+      from,
+      to,
+      fromAmount,
+      AMMSwapPool.ammTokens,
+      this.readonlyCallExecutor
+    );
   }
 
   runSwap(
