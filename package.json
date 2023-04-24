@@ -20,7 +20,6 @@
     "gen:contract": "node -r esm ./scripts/gen-contract.ts",
     "analyze": "size-limit --why"
   },
-  "peerDependencies": {},
   "husky": {
     "hooks": {
       "pre-commit": "tsdx lint"
@@ -46,10 +45,15 @@
     }
   ],
   "dependencies": {
-    "@stacks/transactions": "^6.2.0",
     "clarity-codegen": "^0.2.0"
   },
+  "peerDependencies": {
+    "@stacks/network": "^6.3.0",
+    "@stacks/transactions": "^6.2.0"
+  },
   "devDependencies": {
+    "@stacks/network": "^6.3.0",
+    "@stacks/transactions": "^6.2.0",
     "@size-limit/preset-small-lib": "^8.2.4",
     "esm": "^3.2.25",
     "husky": "^8.0.3",
