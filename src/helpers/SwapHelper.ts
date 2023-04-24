@@ -1,5 +1,5 @@
 import { AMMSwapPool } from '../utils/ammPool';
-import { AlexVault, transfer } from '../utils/postConditions';
+import { transfer } from '../utils/postConditions';
 import {
   ClarityValue,
   FungibleConditionCode,
@@ -9,11 +9,9 @@ import {
 import {
   OpenCallFunctionDescriptor,
   ParameterObjOfDescriptor,
-  ReadonlyFunctionDescriptor,
-  ReturnTypeOfDescriptor,
 } from 'clarity-codegen';
 import { AlexContracts } from '../generated/smartContract/contracts_Alex';
-import { CONTRACT_DEPLOYER } from '../config';
+import { configs } from '../config';
 import { Currency } from '../currency';
 
 export type TxToBroadCast = {
@@ -48,7 +46,7 @@ const composeTx: <
     contractName,
     functionName: String(functionName),
     functionArgs: clarityArgs,
-    contractAddress: CONTRACT_DEPLOYER,
+    contractAddress: configs.CONTRACT_DEPLOYER,
     postConditions,
   };
 };
@@ -62,6 +60,7 @@ export function runSpot(
   router: Currency[],
   ammPools: AMMSwapPool.PoolTokens[]
 ): TxToBroadCast {
+  const AlexVault = `${configs.CONTRACT_DEPLOYER}.alex-vault`;
   const ammRoute = AMMSwapPool.getRoute(currencyX, currencyY, ammPools);
   const middleSteps = router.slice(1, -1);
   if (ammRoute.length === 0) {

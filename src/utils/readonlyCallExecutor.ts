@@ -1,6 +1,6 @@
 import { callReadOnlyFunction, ClarityValue } from '@stacks/transactions';
-import { API_HOST, CONTRACT_DEPLOYER } from '../config';
-import { StacksMainnet } from '@stacks/network';
+import { configs } from '../config';
+import { StacksMainnet, StacksTestnet } from '@stacks/network';
 import {
   ParameterObjOfDescriptor,
   ReadonlyFunctionDescriptor,
@@ -21,10 +21,14 @@ type ReadonlyCallExecutor = (
 const defaultReadonlyCallExecutor: ReadonlyCallExecutor = async (options) => {
   return callReadOnlyFunction({
     ...options,
-    senderAddress: CONTRACT_DEPLOYER,
-    network: new StacksMainnet({
-      url: API_HOST,
-    }),
+    senderAddress: configs.CONTRACT_DEPLOYER,
+    network: configs.IS_MAINNET
+      ? new StacksMainnet({
+          url: configs.API_HOST,
+        })
+      : new StacksTestnet({
+          url: configs.API_HOST,
+        }),
   });
 };
 
@@ -53,7 +57,7 @@ export async function readonlyCall<
     contractName,
     functionName: String(functionName),
     functionArgs: clarityArgs,
-    contractAddress: CONTRACT_DEPLOYER,
+    contractAddress: configs.CONTRACT_DEPLOYER,
   });
   return functionDescriptor.output.decode(result);
 }

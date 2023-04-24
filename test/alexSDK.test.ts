@@ -1,4 +1,4 @@
-import { CONTRACT_DEPLOYER } from '../src/config';
+import { configs } from '../src/config';
 import { Currency } from '../src/currency';
 import { AlexSDK } from '../src/alexSDK';
 
@@ -26,7 +26,7 @@ describe.skip('AlexSDK', () => {
     const sdk = new AlexSDK();
     const router = await sdk.getRouter(Currency.STX, Currency.DIKO);
     const result = await sdk.runSwap(
-      CONTRACT_DEPLOYER,
+      configs.CONTRACT_DEPLOYER,
       Currency.STX,
       Currency.DIKO,
       BigInt(2) * BigInt(1e8),

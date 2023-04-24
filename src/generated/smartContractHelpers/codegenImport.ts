@@ -6,7 +6,7 @@ import {
 } from '@stacks/transactions';
 import { addressResult, contractResult, transcoders } from 'clarity-codegen';
 import type { Decoder } from 'clarity-codegen/lib/runtime/types';
-import { CONTRACT_DEPLOYER } from '../../config';
+import { configs } from '../../config';
 
 export * from 'clarity-codegen';
 
@@ -18,7 +18,7 @@ export function principalCV(principal: string): PrincipalCV {
   if (principal.startsWith('SP') || principal.startsWith('ST')) {
     return standardPrincipalCV(principal);
   }
-  return contractPrincipalCV(CONTRACT_DEPLOYER, principal);
+  return contractPrincipalCV(configs.CONTRACT_DEPLOYER, principal);
 }
 
 export const principleResult: Decoder<string> = (result) => {

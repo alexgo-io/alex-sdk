@@ -5,11 +5,11 @@ import {
   FungiblePostCondition,
   STXPostCondition,
 } from '@stacks/transactions';
-import { CONTRACT_DEPLOYER } from '../config';
-import { getCurrencyNativeAddress, getCurrencyNativeScale } from './currencyUtils';
+import {
+  getCurrencyNativeAddress,
+  getCurrencyNativeScale,
+} from './currencyUtils';
 import { Currency } from '../currency';
-
-export const AlexVault = `${CONTRACT_DEPLOYER}.alex-vault`;
 
 export function transfer(
   senderAddress: string,
