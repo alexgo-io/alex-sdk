@@ -48,8 +48,8 @@
     "clarity-codegen": "^0.2.0"
   },
   "peerDependencies": {
-    "@stacks/network": "^6.3.0",
-    "@stacks/transactions": "^6.2.0"
+    "@stacks/network": "*",
+    "@stacks/transactions": "*"
   },
   "devDependencies": {
     "@stacks/network": "^6.3.0",
