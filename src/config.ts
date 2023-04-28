@@ -70,7 +70,9 @@ export const configs = {
 
 type AlexConfig = typeof configs;
 
-export type AssignConfigParams = Partial<AlexConfig> & {
+export type AssignConfigParams = Partial<
+  Omit<AlexConfig, 'NATIVE_TOKEN_MAPPING'>
+> & {
   NATIVE_TOKEN_MAPPING: Partial<AlexConfig['NATIVE_TOKEN_MAPPING']>;
 };
 
