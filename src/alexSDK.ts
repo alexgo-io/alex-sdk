@@ -9,10 +9,10 @@ import {
   findCurrencyByNativeAddress,
 } from './utils/currencyUtils';
 import { fetchLatestPrices } from './utils/currencyPrice';
-import { AlexConfig, assignConfig } from './config';
+import { assignConfig, AssignConfigParams } from './config';
 
 export class AlexSDK {
-  static configure(config: Partial<AlexConfig>) {
+  static configure(config: AssignConfigParams) {
     assignConfig(config);
   }
 

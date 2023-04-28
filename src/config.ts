@@ -68,13 +68,13 @@ export const configs = {
   NATIVE_TOKEN_MAPPING,
 };
 
-export type AlexConfig = typeof configs;
+type AlexConfig = typeof configs;
 
-export function assignConfig(
-  newConfigs: Partial<AlexConfig> & {
-    NATIVE_TOKEN_MAPPING: Partial<AlexConfig['NATIVE_TOKEN_MAPPING']>;
-  }
-) {
+export type AssignConfigParams = Partial<AlexConfig> & {
+  NATIVE_TOKEN_MAPPING: Partial<AlexConfig['NATIVE_TOKEN_MAPPING']>;
+};
+
+export function assignConfig(newConfigs: AssignConfigParams) {
   Object.assign(configs, newConfigs, {
     NATIVE_TOKEN_MAPPING: {
       ...NATIVE_TOKEN_MAPPING,
