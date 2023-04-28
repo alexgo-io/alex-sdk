@@ -52,9 +52,10 @@
     "@stacks/transactions": "*"
   },
   "devDependencies": {
-    "@stacks/network": "^6.3.0",
-    "@stacks/transactions": "^6.2.0",
     "@size-limit/preset-small-lib": "^8.2.4",
+    "@stacks/network": "^6.3.0",
+    "@stacks/stacks-blockchain-api-types": "^7.1.7",
+    "@stacks/transactions": "^6.2.0",
     "esm": "^3.2.25",
     "husky": "^8.0.3",
     "prettier": "^2.8.4",

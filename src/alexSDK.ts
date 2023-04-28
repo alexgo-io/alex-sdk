@@ -4,13 +4,20 @@ import { AMMSwapPool } from './utils/ammPool';
 import { getRoute } from './helpers/RouteHelper';
 import { getYAmountFromXAmount } from './helpers/RateHelper';
 import { runSpot, TxToBroadCast } from './helpers/SwapHelper';
-import { findCurrencyByNativeAddress } from './utils/currencyUtils';
+import {
+  fetchBalanceForAccount,
+  findCurrencyByNativeAddress,
+} from './utils/currencyUtils';
 import { fetchLatestPrices } from './utils/currencyPrice';
 import { AlexConfig, assignConfig } from './config';
 
 export class AlexSDK {
   static configure(config: Partial<AlexConfig>) {
     assignConfig(config);
+  }
+
+  getBalances(stxAddress: string): Promise<{ [currency in Currency]: bigint }> {
+    return fetchBalanceForAccount(stxAddress);
   }
 
   getFeeRate(from: Currency, to: Currency): Promise<bigint> {

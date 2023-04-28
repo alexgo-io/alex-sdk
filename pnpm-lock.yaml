@@ -3,6 +3,7 @@ lockfileVersion: 5.4
 specifiers:
   '@size-limit/preset-small-lib': ^8.2.4
   '@stacks/network': ^6.3.0
+  '@stacks/stacks-blockchain-api-types': ^7.1.7
   '@stacks/transactions': ^6.2.0
   clarity-codegen: ^0.2.0
   esm: ^3.2.25
@@ -19,6 +20,7 @@ dependencies:
 devDependencies:
   '@size-limit/preset-small-lib': 8.2.4_size-limit@8.2.4
   '@stacks/network': 6.3.0
+  '@stacks/stacks-blockchain-api-types': 7.1.7
   '@stacks/transactions': 6.5.0
   esm: 3.2.25
   husky: 8.0.3
@@ -1823,6 +1825,10 @@ packages:
   /@stacks/stacks-blockchain-api-types/5.0.3:
     resolution: {integrity: sha512-8vL+bPLTK0Sio3aJyIYITmdkwCCj01C5MqOQisC/GwthQvqf53uceAIsSsSQmVpFwvL5rqG0KGAu4rosW7QUwQ==}
     dev: false
+
+  /@stacks/stacks-blockchain-api-types/7.1.7:
+    resolution: {integrity: sha512-6up6n3+qGYOwJ12bp+trsm0/npE7+ovSig+lFw6aboWCor/e0dO+fDXhJMQIrGJHHY0gw5OKeEsCcRCDwY4SYw==}
+    dev: true
 
   /@stacks/transactions/6.5.0:
     resolution: {integrity: sha512-kwE8cZq+QdAum4/LC+lSlAXVvzkdsSHTkCbfg4+VCWPBqA+gdXEqZe6R9SNBtMb8yGQrqUY8uIGRLVCWcXJ8zQ==}
