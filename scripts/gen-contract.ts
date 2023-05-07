@@ -8,6 +8,7 @@ const contracts = [
   "swap-helper-v1-02",
   "swap-helper-v1-03",
   "amm-swap-pool",
+  "amm-swap-pool-v1-1",
   "token-amm-swap-pool",
 
   "swap-helper-bridged",

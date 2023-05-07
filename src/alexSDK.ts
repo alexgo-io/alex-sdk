@@ -21,11 +21,16 @@ export class AlexSDK {
   }
 
   getFeeRate(from: Currency, to: Currency): Promise<bigint> {
-    return getLiquidityProviderFee(from, to, AMMSwapPool.ammTokens);
+    return getLiquidityProviderFee(
+      from,
+      to,
+      AMMSwapPool.ammTokens,
+      AMMSwapPool.ammV1_1Tokens
+    );
   }
 
   getRouter(from: Currency, to: Currency): Promise<Currency[]> {
-    return getRoute(from, to, AMMSwapPool.ammTokens);
+    return getRoute(from, to, AMMSwapPool.ammTokens, AMMSwapPool.ammV1_1Tokens);
   }
 
   getAmountTo(
@@ -33,7 +38,7 @@ export class AlexSDK {
     fromAmount: bigint,
     to: Currency
   ): Promise<bigint> {
-    return getYAmountFromXAmount(from, to, fromAmount, AMMSwapPool.ammTokens);
+    return getYAmountFromXAmount(from, to, fromAmount, AMMSwapPool.ammTokens, AMMSwapPool.ammV1_1Tokens);
   }
 
   runSwap(
@@ -51,7 +56,8 @@ export class AlexSDK {
       fromAmount,
       minDy,
       router,
-      AMMSwapPool.ammTokens
+      AMMSwapPool.ammTokens,
+      AMMSwapPool.ammV1_1Tokens
     );
   }
 

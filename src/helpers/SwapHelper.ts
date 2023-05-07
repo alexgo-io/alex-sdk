@@ -58,11 +58,188 @@ export function runSpot(
   fromAmount: bigint,
   minDy: bigint,
   router: Currency[],
-  ammPools: AMMSwapPool.PoolTokens[]
+  ammPools: AMMSwapPool.PoolTokens[],
+  ammV1_1Pools: AMMSwapPool.PoolTokens[]
 ): TxToBroadCast {
+  const middleSteps = router.slice(1, -1);
+  const AlexVaultV1_1 = `${configs.CONTRACT_DEPLOYER}.alex-vault-v1-1`;
+  const ammV1_1Route = AMMSwapPool.getRoute(currencyX, currencyY, ammV1_1Pools);
+
+  if (ammV1_1Route.length === 1) {
+    return composeTx(
+      'amm-swap-pool-v1-1',
+      'swap-helper',
+      {
+        'token-x-trait': currencyX,
+        'token-y-trait': ammV1_1Route[0]!.neighbour,
+        factor: AMMSwapPool.getFactor(ammV1_1Route[0]!.pool),
+        dx: fromAmount,
+        'min-dy': minDy,
+      },
+      [
+        transfer(stxAddress, currencyX, fromAmount),
+        transfer(
+          AlexVaultV1_1,
+          currencyY,
+          minDy,
+          FungibleConditionCode.GreaterEqual
+        ),
+      ]
+    );
+  }
+  if (ammV1_1Route.length === 2) {
+    return composeTx(
+      'amm-swap-pool-v1-1',
+      'swap-helper-a',
+      {
+        'token-x-trait': currencyX,
+        'token-y-trait': ammV1_1Route[0]!.neighbour,
+        'token-z-trait': ammV1_1Route[1]!.neighbour,
+        'factor-x': AMMSwapPool.getFactor(ammV1_1Route[0]!.pool),
+        'factor-y': AMMSwapPool.getFactor(ammV1_1Route[1]!.pool),
+        dx: fromAmount,
+        'min-dz': minDy,
+      },
+      [
+        transfer(stxAddress, currencyX, fromAmount),
+        transfer(
+          AlexVaultV1_1,
+          ammV1_1Route[0]!.neighbour,
+          BigInt(0),
+          FungibleConditionCode.GreaterEqual
+        ),
+        transfer(
+          stxAddress,
+          ammV1_1Route[0]!.neighbour,
+          BigInt(0),
+          FungibleConditionCode.GreaterEqual
+        ),
+        transfer(
+          AlexVaultV1_1,
+          currencyY,
+          minDy,
+          FungibleConditionCode.GreaterEqual
+        ),
+      ]
+    );
+  }
+  if (ammV1_1Route.length === 3) {
+    return composeTx(
+      'amm-swap-pool-v1-1',
+      'swap-helper-b',
+      {
+        'token-x-trait': currencyX,
+        'token-y-trait': ammV1_1Route[0]!.neighbour,
+        'token-z-trait': ammV1_1Route[1]!.neighbour,
+        'token-w-trait': ammV1_1Route[2]!.neighbour,
+        'factor-x': AMMSwapPool.getFactor(ammV1_1Route[0]!.pool),
+        'factor-y': AMMSwapPool.getFactor(ammV1_1Route[1]!.pool),
+        'factor-z': AMMSwapPool.getFactor(ammV1_1Route[2]!.pool),
+        dx: fromAmount,
+        'min-dw': minDy,
+      },
+      [
+        transfer(stxAddress, currencyX, fromAmount),
+        transfer(
+          AlexVaultV1_1,
+          ammV1_1Route[0]!.neighbour,
+          BigInt(0),
+          FungibleConditionCode.GreaterEqual
+        ),
+        transfer(
+          stxAddress,
+          ammV1_1Route[0]!.neighbour,
+          BigInt(0),
+          FungibleConditionCode.GreaterEqual
+        ),
+        transfer(
+          AlexVaultV1_1,
+          ammV1_1Route[1]!.neighbour,
+          BigInt(0),
+          FungibleConditionCode.GreaterEqual
+        ),
+        transfer(
+          stxAddress,
+          ammV1_1Route[1]!.neighbour,
+          BigInt(0),
+          FungibleConditionCode.GreaterEqual
+        ),
+        transfer(
+          AlexVaultV1_1,
+          currencyY,
+          minDy,
+          FungibleConditionCode.GreaterEqual
+        ),
+      ]
+    );
+  }
+  if (ammV1_1Route.length === 4) {
+    return composeTx(
+      'amm-swap-pool-v1-1',
+      'swap-helper-c',
+      {
+        'token-x-trait': currencyX,
+        'token-y-trait': ammV1_1Route[0]!.neighbour,
+        'token-z-trait': ammV1_1Route[1]!.neighbour,
+        'token-w-trait': ammV1_1Route[2]!.neighbour,
+        'token-v-trait': ammV1_1Route[3]!.neighbour,
+        'factor-x': AMMSwapPool.getFactor(ammV1_1Route[0]!.pool),
+        'factor-y': AMMSwapPool.getFactor(ammV1_1Route[1]!.pool),
+        'factor-z': AMMSwapPool.getFactor(ammV1_1Route[2]!.pool),
+        'factor-w': AMMSwapPool.getFactor(ammV1_1Route[3]!.pool),
+        dx: fromAmount,
+        'min-dv': minDy,
+      },
+      [
+        transfer(stxAddress, currencyX, fromAmount),
+        transfer(
+          AlexVaultV1_1,
+          ammV1_1Route[0]!.neighbour,
+          BigInt(0),
+          FungibleConditionCode.GreaterEqual
+        ),
+        transfer(
+          stxAddress,
+          ammV1_1Route[0]!.neighbour,
+          BigInt(0),
+          FungibleConditionCode.GreaterEqual
+        ),
+        transfer(
+          AlexVaultV1_1,
+          ammV1_1Route[1]!.neighbour,
+          BigInt(0),
+          FungibleConditionCode.GreaterEqual
+        ),
+        transfer(
+          stxAddress,
+          ammV1_1Route[1]!.neighbour,
+          BigInt(0),
+          FungibleConditionCode.GreaterEqual
+        ),
+        transfer(
+          AlexVaultV1_1,
+          ammV1_1Route[2]!.neighbour,
+          BigInt(0),
+          FungibleConditionCode.GreaterEqual
+        ),
+        transfer(
+          stxAddress,
+          ammV1_1Route[2]!.neighbour,
+          BigInt(0),
+          FungibleConditionCode.GreaterEqual
+        ),
+        transfer(
+          AlexVaultV1_1,
+          currencyY,
+          minDy,
+          FungibleConditionCode.GreaterEqual
+        ),
+      ]
+    );
+  }
+
   const AlexVault = `${configs.CONTRACT_DEPLOYER}.alex-vault`;
   const ammRoute = AMMSwapPool.getRoute(currencyX, currencyY, ammPools);
-  const middleSteps = router.slice(1, -1);
   if (ammRoute.length === 0) {
     const reachableInAMM = AMMSwapPool.reachableInAMM(
       currencyX,

@@ -10,4 +10,6 @@ export enum Currency {
   MIA = 'token-wmia',
   NYCC = 'token-wnycc',
   CORGI = 'token-wcorgi',
+  ATALEXV2 = "auto-alex-v2",
+  sUSDT = "token-susdt",
 }

@@ -7,8 +7,51 @@ import { AlexSDK } from '../alexSDK';
 export async function getLiquidityProviderFee(
   tokenX: Currency,
   tokenY: Currency,
-  ammPools: AMMSwapPool.PoolTokens[]
+  ammPools: AMMSwapPool.PoolTokens[],
+  ammV1_1Pools: AMMSwapPool.PoolTokens[]
 ): Promise<bigint> {
+  const ammV1_1Route = AMMSwapPool.getRoute(tokenX, tokenY, ammV1_1Pools);
+  if (ammV1_1Route.length === 1) {
+    return await readonlyCall('amm-swap-pool-v1-1', 'fee-helper', {
+      'token-x': tokenX,
+      'token-y': tokenY,
+      factor: AMMSwapPool.getFactor(ammV1_1Route[0]!.pool),
+    }).then(unwrapResponse);
+  }
+  if (ammV1_1Route.length === 2) {
+    return await readonlyCall('amm-swap-pool-v1-1', 'fee-helper-a', {
+      'token-x': tokenX,
+      'token-y': ammV1_1Route[0]!.neighbour,
+      'token-z': ammV1_1Route[1]!.neighbour,
+      'factor-x': AMMSwapPool.getFactor(ammV1_1Route[0]!.pool),
+      'factor-y': AMMSwapPool.getFactor(ammV1_1Route[1]!.pool),
+    }).then(unwrapResponse);
+  }
+  if (ammV1_1Route.length === 3) {
+    return await readonlyCall('amm-swap-pool-v1-1', 'fee-helper-b', {
+      'token-x': tokenX,
+      'token-y': ammV1_1Route[0]!.neighbour,
+      'token-z': ammV1_1Route[1]!.neighbour,
+      'token-w': ammV1_1Route[2]!.neighbour,
+      'factor-x': AMMSwapPool.getFactor(ammV1_1Route[0]!.pool),
+      'factor-y': AMMSwapPool.getFactor(ammV1_1Route[1]!.pool),
+      'factor-z': AMMSwapPool.getFactor(ammV1_1Route[2]!.pool),
+    }).then(unwrapResponse);
+  }
+  if (ammV1_1Route.length === 4) {
+    return await readonlyCall('amm-swap-pool-v1-1', 'fee-helper-c', {
+      'token-x': tokenX,
+      'token-y': ammV1_1Route[0]!.neighbour,
+      'token-z': ammV1_1Route[1]!.neighbour,
+      'token-w': ammV1_1Route[2]!.neighbour,
+      'token-v': ammV1_1Route[3]!.neighbour,
+      'factor-x': AMMSwapPool.getFactor(ammV1_1Route[0]!.pool),
+      'factor-y': AMMSwapPool.getFactor(ammV1_1Route[1]!.pool),
+      'factor-z': AMMSwapPool.getFactor(ammV1_1Route[2]!.pool),
+      'factor-w': AMMSwapPool.getFactor(ammV1_1Route[3]!.pool),
+    }).then(unwrapResponse);
+  }
+
   const ammRoute = AMMSwapPool.getRoute(tokenX, tokenY, ammPools);
   if (ammRoute.length === 0) {
     const reachableInAmm = AMMSwapPool.reachableInAMM(tokenX, tokenY, ammPools);
