@@ -12,4 +12,6 @@ export enum Currency {
   CORGI = 'token-wcorgi',
   ATALEXV2 = "auto-alex-v2",
   sUSDT = "token-susdt",
+  VIBES = "token-wvibes",
+  BRC20_DB20 = "brc20-db20"
 }

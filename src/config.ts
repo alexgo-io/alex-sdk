@@ -69,6 +69,14 @@ const NATIVE_TOKEN_MAPPING: {
     decimals: 1e6,
     assetIdentifier: `SP3NE50GEXFG9SZGTT51P40X2CKYSZ5CC4ZTZ7A2G.welshcorgicoin-token::welshcorgicoin`,
   },
+  [Currency.VIBES]: {
+    decimals: 1e8,
+    assetIdentifier: `SP27BB1Y2DGSXZHS7G9YHKTSH6KQ6BD3QG0AN3CR9.vibes-token::vibes-token`,
+  },
+  [Currency.BRC20_DB20]: {
+    decimals: 1e8,
+    assetIdentifier: `SP3K8BC0PPEVCV7NZ6QSRWPQ2JE9E5B6N3PA0KBR9.brc20-db20::brc20-db20`,
+  },
 };
 
 export const configs = {
