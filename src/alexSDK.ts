@@ -9,7 +9,8 @@ import {
   findCurrencyByNativeAddress,
 } from './utils/currencyUtils';
 import { fetchLatestPrices } from './utils/currencyPrice';
-import { assignConfig, AssignConfigParams } from './config';
+import { assignConfig, AssignConfigParams, configs } from './config';
+import { AlexContracts } from './generated/smartContract/contracts_Alex';
 
 export class AlexSDK {
   static configure(config: AssignConfigParams) {
@@ -38,7 +39,13 @@ export class AlexSDK {
     fromAmount: bigint,
     to: Currency
   ): Promise<bigint> {
-    return getYAmountFromXAmount(from, to, fromAmount, AMMSwapPool.ammTokens, AMMSwapPool.ammV1_1Tokens);
+    return getYAmountFromXAmount(
+      from,
+      to,
+      fromAmount,
+      AMMSwapPool.ammTokens,
+      AMMSwapPool.ammV1_1Tokens
+    );
   }
 
   runSwap(
@@ -71,5 +78,17 @@ export class AlexSDK {
     }>
   > {
     return fetchLatestPrices();
+  }
+
+  isAlexSwapTransaction(
+    deployer: string,
+    contractName: string,
+    functionName: string
+  ): boolean {
+    if (deployer !== configs.CONTRACT_DEPLOYER) {
+      return false;
+    }
+    // @ts-ignore
+    return AlexContracts[contractName][functionName] != null;
   }
 }

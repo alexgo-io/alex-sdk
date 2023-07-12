@@ -76,6 +76,15 @@ Get the corresponding currency for a given address.
 function getCurrencyFrom(address: string): Currency | undefined;
 ```
 
+### isAlexSwapTransaction
+
+Check if a transaction is a swap transaction from Alex
+```javascript
+function isAlexSwapTransaction(deployer: string, contractName: string, functionName: string): boolean;
+```
+
+```javascript
+
 ## Installation
 
 You can install Alex-SDK using npm:
