@@ -8,8 +8,8 @@ responseSimpleT,
 listT
 } from "../smartContractHelpers/codegenImport"
 
-export const swapHelperBridged = defineContract({
-"swap-helper-bridged": {
+export const swapHelperBridgedV11 = defineContract({
+"swap-helper-bridged-v1-1": {
   'swap-helper-from-amm': {
     input: [
       { name: 'token-x-trait', type: principalT },

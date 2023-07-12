@@ -17,7 +17,7 @@
     "lint": "tsdx lint",
     "prepare": "tsdx build",
     "size": "size-limit",
-    "gen:contract": "node -r esm ./scripts/gen-contract.ts",
+    "gen:contract": "rm -rf src/generated/smartContract/*.ts && node -r esm ./scripts/gen-contract.ts",
     "analyze": "size-limit --why"
   },
   "husky": {

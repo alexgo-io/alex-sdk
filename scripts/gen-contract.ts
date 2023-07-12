@@ -11,7 +11,7 @@ const contracts = [
   "amm-swap-pool-v1-1",
   "token-amm-swap-pool",
 
-  "swap-helper-bridged",
+  "swap-helper-bridged-v1-1",
 ]
 
 ;(async function main() {

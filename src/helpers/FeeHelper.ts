@@ -56,7 +56,7 @@ export async function getLiquidityProviderFee(
   if (ammRoute.length === 0) {
     const reachableInAmm = AMMSwapPool.reachableInAMM(tokenX, tokenY, ammPools);
     if (reachableInAmm.type === 'fromAmm') {
-      return await readonlyCall('swap-helper-bridged', 'fee-helper-from-amm', {
+      return await readonlyCall('swap-helper-bridged-v1-1', 'fee-helper-from-amm', {
         'token-x': reachableInAmm.tokenX,
         'token-y': reachableInAmm.tokenY,
         'token-z': reachableInAmm.tokenZ,
@@ -64,7 +64,7 @@ export async function getLiquidityProviderFee(
       }).then(unwrapResponse);
     }
     if (reachableInAmm.type === 'toAmm') {
-      return await readonlyCall('swap-helper-bridged', 'fee-helper-to-amm', {
+      return await readonlyCall('swap-helper-bridged-v1-1', 'fee-helper-to-amm', {
         'token-x': reachableInAmm.tokenX,
         'token-y': reachableInAmm.tokenY,
         'token-z': reachableInAmm.tokenZ,

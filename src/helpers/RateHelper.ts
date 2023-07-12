@@ -60,7 +60,7 @@ export const getYAmountFromXAmount = async (
   if (ammRoute.length === 0) {
     const reachableInAMM = AMMSwapPool.reachableInAMM(tokenX, tokenY, ammPools);
     if (reachableInAMM.type === 'fromAmm') {
-      return await readonlyCall('swap-helper-bridged', 'get-helper-from-amm', {
+      return await readonlyCall('swap-helper-bridged-v1-1', 'get-helper-from-amm', {
         dx: fromAmount,
         'token-x': reachableInAMM.tokenX,
         'token-y': reachableInAMM.tokenY,
@@ -69,7 +69,7 @@ export const getYAmountFromXAmount = async (
       }).then(unwrapResponse);
     }
     if (reachableInAMM.type === 'toAmm') {
-      return await readonlyCall('swap-helper-bridged', 'get-helper-to-amm', {
+      return await readonlyCall('swap-helper-bridged-v1-1', 'get-helper-to-amm', {
         dx: fromAmount,
         'token-x': reachableInAMM.tokenX,
         'token-y': reachableInAMM.tokenY,

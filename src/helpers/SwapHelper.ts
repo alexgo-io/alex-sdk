@@ -248,7 +248,7 @@ export function runSpot(
     );
     if (reachableInAMM.type === 'fromAmm') {
       return composeTx(
-        'swap-helper-bridged',
+        'swap-helper-bridged-v1-1',
         'swap-helper-from-amm',
         {
           'token-x-trait': reachableInAMM.tokenX,
@@ -285,7 +285,7 @@ export function runSpot(
     }
     if (reachableInAMM.type === 'toAmm') {
       return composeTx(
-        'swap-helper-bridged',
+        'swap-helper-bridged-v1-1',
         'swap-helper-to-amm',
         {
           'token-x-trait': reachableInAMM.tokenX,

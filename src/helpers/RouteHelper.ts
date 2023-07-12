@@ -21,7 +21,7 @@ export async function getRoute(
   const reachableInAmm = AMMSwapPool.reachableInAMM(from, to, ammPools);
   if (reachableInAmm.type === 'fromAmm') {
     const result = await readonlyCall(
-      'swap-helper-bridged',
+      'swap-helper-bridged-v1-1',
       'route-helper-from-amm',
       {
         'token-x': reachableInAmm.tokenX,
@@ -34,7 +34,7 @@ export async function getRoute(
   }
   if (reachableInAmm.type === 'toAmm') {
     const result = await readonlyCall(
-      'swap-helper-bridged',
+      'swap-helper-bridged-v1-1',
       'route-helper-to-amm',
       {
         'token-x': reachableInAmm.tokenX,
