@@ -76,6 +76,14 @@ Get the corresponding currency for a given address.
 function getCurrencyFrom(address: string): Currency | undefined;
 ```
 
+### getAddressFrom
+
+Get the corresponding currency for a given address.
+
+```javascript
+function getAddressFrom(currency: Exclude<Currency, Currency.STX>): string;
+```
+
 ### isAlexSwapTransaction
 
 Check if a transaction is a swap transaction from Alex

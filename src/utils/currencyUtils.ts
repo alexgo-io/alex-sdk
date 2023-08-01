@@ -11,7 +11,7 @@ export function getCurrencyNativeScale(currency: Currency) {
 
 export function getCurrencyNativeAddress(currency: Currency) {
   if (currency === Currency.STX) {
-    throw new Error('STX is not a token');
+    throw new Error('STX does not have an address');
   }
   return configs.NATIVE_TOKEN_MAPPING[currency].assetIdentifier;
 }

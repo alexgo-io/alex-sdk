@@ -7,6 +7,7 @@ import { runSpot, TxToBroadCast } from './helpers/SwapHelper';
 import {
   fetchBalanceForAccount,
   findCurrencyByNativeAddress,
+  getCurrencyNativeAddress,
 } from './utils/currencyUtils';
 import { fetchLatestPrices } from './utils/currencyPrice';
 import { assignConfig, AssignConfigParams, configs } from './config';
@@ -70,6 +71,10 @@ export class AlexSDK {
 
   getCurrencyFrom(address: string): Currency | undefined {
     return findCurrencyByNativeAddress(address);
+  }
+
+  getAddressFrom(currency: Exclude<Currency, Currency.STX>): string {
+    return getCurrencyNativeAddress(currency);
   }
 
   getLatestPrices(): Promise<
