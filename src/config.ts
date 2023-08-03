@@ -3,6 +3,7 @@ import { Currency } from './currency';
 const CONTRACT_DEPLOYER = 'SP3K8BC0PPEVCV7NZ6QSRWPQ2JE9E5B6N3PA0KBR9';
 const API_HOST = 'https://stacks-blockchain-lb.alexlab.co';
 const IS_MAINNET = true;
+const SPONSORED_TX_EXECUTOR = 'https://sponsor-tx.alexlab.co/v1/graphql';
 
 const NATIVE_TOKEN_MAPPING: {
   [P in Exclude<Currency, Currency.STX>]: {
@@ -84,6 +85,7 @@ export const configs = {
   CONTRACT_DEPLOYER,
   API_HOST,
   NATIVE_TOKEN_MAPPING,
+  SPONSORED_TX_EXECUTOR,
 };
 
 type AlexConfig = typeof configs;

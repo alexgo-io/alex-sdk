@@ -91,6 +91,13 @@ Check if a transaction is a swap transaction from Alex
 function isAlexSwapTransaction(deployer: string, contractName: string, functionName: string): boolean;
 ```
 
+### broadcastSponsoredTx
+
+Broadcast a sponsored transaction to Alex's sponsored tx services
+```javascript
+function broadcastSponsoredTx(txRaw: string): Promise<string>;
+````
+
 ## Installation
 
 You can install Alex-SDK using npm:

@@ -12,6 +12,7 @@ import {
 import { fetchLatestPrices } from './utils/currencyPrice';
 import { assignConfig, AssignConfigParams, configs } from './config';
 import { AlexContracts } from './generated/smartContract/contracts_Alex';
+import { broadcastSponsoredTx } from './utils/sponsoredTx';
 
 export class AlexSDK {
   static configure(config: AssignConfigParams) {
@@ -95,5 +96,9 @@ export class AlexSDK {
     }
     // @ts-ignore
     return AlexContracts[contractName][functionName] != null;
+  }
+
+  broadcastSponsoredTx(txRaw: string): Promise<string> {
+    return broadcastSponsoredTx(txRaw);
   }
 }
