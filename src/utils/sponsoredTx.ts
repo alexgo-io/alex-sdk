@@ -127,3 +127,25 @@ function hexAddressToHasuraAddress(input: string): string {
 function hasuraAddressToHex(input: string): string {
   return input.replace(/\\x/, '0x').toLowerCase();
 }
+
+export async function isSponsoredSwapEnabled(): Promise<boolean> {
+  const response = await fetch(configs.SPONSORED_TX_EXECUTOR, {
+    method: 'POST',
+    mode: 'cors',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      query: `query {
+  isSwapServiceAvailable {
+    status
+  }
+}`,
+    }),
+  });
+  if (!response.ok) {
+    return false;
+  }
+  const result = await response.json();
+  return result?.data.isSwapServiceAvailable.status === 'ok';
+}

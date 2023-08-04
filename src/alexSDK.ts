@@ -12,7 +12,10 @@ import {
 import { fetchLatestPrices } from './utils/currencyPrice';
 import { assignConfig, AssignConfigParams, configs } from './config';
 import { AlexContracts } from './generated/smartContract/contracts_Alex';
-import { broadcastSponsoredTx } from './utils/sponsoredTx';
+import {
+  broadcastSponsoredTx,
+  isSponsoredSwapEnabled,
+} from './utils/sponsoredTx';
 export { SponsoredTxError, SponsoredTxErrorCode } from './utils/sponsoredTx';
 
 export class AlexSDK {
@@ -101,5 +104,9 @@ export class AlexSDK {
 
   broadcastSponsoredTx(txRaw: string): Promise<string> {
     return broadcastSponsoredTx(txRaw);
+  }
+
+  isSponsoredSwapEnabled(): Promise<boolean> {
+    return isSponsoredSwapEnabled();
   }
 }

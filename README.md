@@ -98,6 +98,13 @@ Broadcast a sponsored transaction to Alex's sponsored tx services
 function broadcastSponsoredTx(txRaw: string): Promise<string>;
 ````
 
+### isSponsoredSwapEnabled
+
+Broadcast a sponsored transaction to Alex's sponsored tx services
+```javascript
+function isSponsoredSwapEnabled(): Promise<boolean>;
+````
+
 ## Installation
 
 You can install Alex-SDK using npm:
