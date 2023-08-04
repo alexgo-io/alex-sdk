@@ -100,7 +100,7 @@ function broadcastSponsoredTx(txRaw: string): Promise<string>;
 
 ### isSponsoredSwapEnabled
 
-Broadcast a sponsored transaction to Alex's sponsored tx services
+Check if alex's swap sponsor service is activated
 ```javascript
 function isSponsoredSwapEnabled(): Promise<boolean>;
 ````
