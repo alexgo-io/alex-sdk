@@ -107,6 +107,6 @@ export class AlexSDK {
   }
 
   isSponsoredSwapEnabled(): Promise<boolean> {
-    return isSponsoredSwapEnabled();
+    return isSponsoredSwapEnabled().catch(() => false);
   }
 }
