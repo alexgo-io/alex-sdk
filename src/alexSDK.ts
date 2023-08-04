@@ -13,6 +13,7 @@ import { fetchLatestPrices } from './utils/currencyPrice';
 import { assignConfig, AssignConfigParams, configs } from './config';
 import { AlexContracts } from './generated/smartContract/contracts_Alex';
 import { broadcastSponsoredTx } from './utils/sponsoredTx';
+export { SponsoredTxError, SponsoredTxErrorCode } from './utils/sponsoredTx';
 
 export class AlexSDK {
   static configure(config: AssignConfigParams) {

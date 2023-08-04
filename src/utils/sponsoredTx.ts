@@ -1,5 +1,27 @@
 import { configs } from '../config';
 
+export enum SponsoredTxErrorCode {
+  // The submitted tx payload is invalid
+  'invalid_tx' = 'invalid_tx',
+  // The requested contract / function aren't whitelisted
+  'operation_not_supported' = 'operation_not_supported',
+  // Current user already have a pending sponsored transaction
+  'pending_operation_exists' = 'pending_operation_exists',
+  // The requested tx exceed the capacity of the pool
+  'capacity_exceed' = 'capacity_exceed',
+  // Current user have pending operation, we require the submitted nonce to be immediate nonce
+  'invalid_nonce' = 'invalid_nonce',
+  // Worker failed to broadcast the tx
+  'broadcast_error' = 'broadcast_error',
+  'unknown_error' = 'unknown_error',
+}
+
+export class SponsoredTxError extends Error {
+  constructor(readonly code: SponsoredTxErrorCode, message: string) {
+    super(message);
+  }
+}
+
 export async function broadcastSponsoredTx(tx: string): Promise<string> {
   const response = await fetch(configs.SPONSORED_TX_EXECUTOR, {
     method: 'POST',
@@ -17,11 +39,19 @@ export async function broadcastSponsoredTx(tx: string): Promise<string> {
     }),
   });
   if (!response.ok) {
-    throw new Error(response.statusText);
+    throw new SponsoredTxError(
+      SponsoredTxErrorCode.unknown_error,
+      response.statusText
+    );
   }
   const result = await response.json();
   if (result.data == null) {
-    throw new Error(result.errors?.[0]?.message ?? 'Unknown Error');
+    const message = result.errors?.[0]?.message ?? 'Unknown Error';
+    const errorCode = result.errors?.[0]?.extensions?.code;
+    const code = Object.values(SponsoredTxErrorCode).includes(errorCode)
+      ? errorCode
+      : SponsoredTxErrorCode.unknown_error;
+    throw new SponsoredTxError(code, message);
   }
   const {
     data: { execute: txId },
@@ -49,7 +79,10 @@ async function tryToFetchTxId(txId: string): Promise<string | null> {
     }),
   });
   if (!response.ok) {
-    throw new Error(response.statusText);
+    throw new SponsoredTxError(
+      SponsoredTxErrorCode.unknown_error,
+      response.statusText
+    );
   }
   const {
     data: { user_operations },
@@ -59,7 +92,10 @@ async function tryToFetchTxId(txId: string): Promise<string | null> {
   }
   const operation = user_operations[0];
   if (operation.error) {
-    throw new Error(operation.error);
+    throw new SponsoredTxError(
+      SponsoredTxErrorCode.broadcast_error,
+      operation.error
+    );
   } else if (operation.sponsor_tx_id) {
     return hasuraAddressToHex(operation.sponsor_tx_id);
   }
@@ -68,7 +104,7 @@ async function tryToFetchTxId(txId: string): Promise<string | null> {
 
 async function retry<T>(
   action: () => Promise<T | null>,
-  count = 10
+  count = 20
 ): Promise<T> {
   for (let i = 0; i < count; i++) {
     const result = await action();
@@ -78,13 +114,16 @@ async function retry<T>(
     }
     return result;
   }
-  throw new Error('Timeout waiting for response');
+  throw new SponsoredTxError(
+    SponsoredTxErrorCode.broadcast_error,
+    'Timeout waiting for broadcast'
+  );
 }
 
-export function hexAddressToHasuraAddress(input: string): string {
+function hexAddressToHasuraAddress(input: string): string {
   return '\\x' + input;
 }
 
-export function hasuraAddressToHex(input: string): string {
+function hasuraAddressToHex(input: string): string {
   return input.replace(/\\x/, '0x').toLowerCase();
 }
