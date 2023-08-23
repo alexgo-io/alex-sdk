@@ -1,6 +1,7 @@
 export type TokenInfo = {
   type: 'fungibleToken',
   id: string,
+  name: string
   displayPrecision: number,
   icon: string,
   availableInSwap: boolean,
