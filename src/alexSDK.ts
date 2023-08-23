@@ -16,6 +16,7 @@ import {
   broadcastSponsoredTx,
   isSponsoredSwapEnabled,
 } from './utils/sponsoredTx';
+import { fetchTokenList, TokenInfo } from './utils/tokenlist';
 export { SponsoredTxError, SponsoredTxErrorCode } from './utils/sponsoredTx';
 
 export class AlexSDK {
@@ -108,5 +109,9 @@ export class AlexSDK {
 
   isSponsoredSwapEnabled(): Promise<boolean> {
     return isSponsoredSwapEnabled().catch(() => false);
+  }
+
+  fetchTokenList(): Promise<TokenInfo[]> {
+    return fetchTokenList()
   }
 }
