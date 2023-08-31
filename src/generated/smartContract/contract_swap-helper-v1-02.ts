@@ -2,7 +2,7 @@
 import {
 defineContract,
 principalT,
-numberT,
+uintT,
 optionalT,
 responseSimpleT,
 listT,
@@ -15,10 +15,10 @@ export const swapHelperV102 = defineContract({
     input: [
       { name: 'token-x-trait', type: principalT },
       { name: 'token-y-trait', type: principalT },
-      { name: 'dx', type: numberT },
-      { name: 'min-dy', type: optionalT(numberT, ) }
+      { name: 'dx', type: uintT },
+      { name: 'min-dy', type: optionalT(uintT, ) }
     ],
-    output: responseSimpleT(numberT, ),
+    output: responseSimpleT(uintT, ),
     mode: 'public'
   },
   'fee-helper': {
@@ -26,25 +26,25 @@ export const swapHelperV102 = defineContract({
       { name: 'token-x', type: principalT },
       { name: 'token-y', type: principalT }
     ],
-    output: responseSimpleT(numberT, ),
+    output: responseSimpleT(uintT, ),
     mode: 'readonly'
   },
   'get-given-helper': {
     input: [
       { name: 'token-x', type: principalT },
       { name: 'token-y', type: principalT },
-      { name: 'dy', type: numberT }
+      { name: 'dy', type: uintT }
     ],
-    output: responseSimpleT(numberT, ),
+    output: responseSimpleT(uintT, ),
     mode: 'readonly'
   },
   'get-helper': {
     input: [
       { name: 'token-x', type: principalT },
       { name: 'token-y', type: principalT },
-      { name: 'dx', type: numberT }
+      { name: 'dx', type: uintT }
     ],
-    output: responseSimpleT(numberT, ),
+    output: responseSimpleT(uintT, ),
     mode: 'readonly'
   },
   'oracle-instant-helper': {
@@ -52,7 +52,7 @@ export const swapHelperV102 = defineContract({
       { name: 'token-x', type: principalT },
       { name: 'token-y', type: principalT }
     ],
-    output: responseSimpleT(numberT, ),
+    output: responseSimpleT(uintT, ),
     mode: 'readonly'
   },
   'oracle-resilient-helper': {
@@ -60,7 +60,7 @@ export const swapHelperV102 = defineContract({
       { name: 'token-x', type: principalT },
       { name: 'token-y', type: principalT }
     ],
-    output: responseSimpleT(numberT, ),
+    output: responseSimpleT(uintT, ),
     mode: 'readonly'
   },
   'route-helper': {
@@ -73,7 +73,7 @@ export const swapHelperV102 = defineContract({
   },
   'fwp-oracle-resilient-map': {
     input: tupleT({ 'token-x': principalT, 'token-y': principalT }, ),
-    output: optionalT(numberT, ),
+    output: optionalT(uintT, ),
     mode: 'mapEntry'
   }
 }

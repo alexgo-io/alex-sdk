@@ -1,4 +1,8 @@
-import { callReadOnlyFunction, ClarityValue } from '@stacks/transactions';
+import {
+  callReadOnlyFunction,
+  ReadOnlyFunctionOptions,
+  ClarityValue,
+} from '@stacks/transactions';
 import { configs } from '../config';
 import { StacksMainnet, StacksTestnet } from '@stacks/network';
 import {
@@ -7,7 +11,6 @@ import {
   ReturnTypeOfDescriptor,
 } from 'clarity-codegen';
 import { AlexContracts } from '../generated/smartContract/contracts_Alex';
-import { ReadOnlyFunctionOptions } from '@stacks/transactions/src/builders';
 
 type Contracts = typeof AlexContracts;
 

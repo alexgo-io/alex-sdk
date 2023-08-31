@@ -17,7 +17,7 @@
     "lint": "tsdx lint",
     "prepare": "tsdx build",
     "size": "size-limit",
-    "gen:contract": "rm -rf src/generated/smartContract/*.ts && node -r esm ./scripts/gen-contract.ts",
+    "gen:contract": "rm -rf src/generated/smartContract/*.ts && node ./scripts/gen-contract.ts",
     "analyze": "size-limit --why"
   },
   "husky": {
@@ -45,7 +45,7 @@
     }
   ],
   "dependencies": {
-    "clarity-codegen": "^0.2.0"
+    "clarity-codegen": "^0.2.6"
   },
   "peerDependencies": {
     "@stacks/network": "*",

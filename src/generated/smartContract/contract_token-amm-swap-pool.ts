@@ -4,9 +4,10 @@ defineContract,
 principalT,
 responseSimpleT,
 booleanT,
-numberT,
-stringT,
+uintT,
+stringAsciiT,
 optionalT,
+stringT,
 listT,
 tupleT,
 bufferT,
@@ -22,8 +23,8 @@ export const tokenAmmSwapPool = defineContract({
   },
   burn: {
     input: [
-      { name: 'token-id', type: numberT },
-      { name: 'amount', type: numberT },
+      { name: 'token-id', type: uintT },
+      { name: 'amount', type: uintT },
       { name: 'sender', type: principalT }
     ],
     output: responseSimpleT(booleanT, ),
@@ -31,8 +32,8 @@ export const tokenAmmSwapPool = defineContract({
   },
   'burn-fixed': {
     input: [
-      { name: 'token-id', type: numberT },
-      { name: 'amount', type: numberT },
+      { name: 'token-id', type: uintT },
+      { name: 'amount', type: uintT },
       { name: 'sender', type: principalT }
     ],
     output: responseSimpleT(booleanT, ),
@@ -40,8 +41,8 @@ export const tokenAmmSwapPool = defineContract({
   },
   mint: {
     input: [
-      { name: 'token-id', type: numberT },
-      { name: 'amount', type: numberT },
+      { name: 'token-id', type: uintT },
+      { name: 'amount', type: uintT },
       { name: 'recipient', type: principalT }
     ],
     output: responseSimpleT(booleanT, ),
@@ -49,8 +50,8 @@ export const tokenAmmSwapPool = defineContract({
   },
   'mint-fixed': {
     input: [
-      { name: 'token-id', type: numberT },
-      { name: 'amount', type: numberT },
+      { name: 'token-id', type: uintT },
+      { name: 'amount', type: uintT },
       { name: 'recipient', type: principalT }
     ],
     output: responseSimpleT(booleanT, ),
@@ -70,17 +71,17 @@ export const tokenAmmSwapPool = defineContract({
     mode: 'public'
   },
   'set-decimals': {
-    input: [ { name: 'new-decimals', type: numberT } ],
+    input: [ { name: 'new-decimals', type: uintT } ],
     output: responseSimpleT(booleanT, ),
     mode: 'public'
   },
   'set-name': {
-    input: [ { name: 'new-name', type: stringT } ],
+    input: [ { name: 'new-name', type: stringAsciiT } ],
     output: responseSimpleT(booleanT, ),
     mode: 'public'
   },
   'set-symbol': {
-    input: [ { name: 'new-symbol', type: stringT } ],
+    input: [ { name: 'new-symbol', type: stringAsciiT } ],
     output: responseSimpleT(booleanT, ),
     mode: 'public'
   },
@@ -96,8 +97,8 @@ export const tokenAmmSwapPool = defineContract({
   },
   transfer: {
     input: [
-      { name: 'token-id', type: numberT },
-      { name: 'amount', type: numberT },
+      { name: 'token-id', type: uintT },
+      { name: 'amount', type: uintT },
       { name: 'sender', type: principalT },
       { name: 'recipient', type: principalT }
     ],
@@ -106,8 +107,8 @@ export const tokenAmmSwapPool = defineContract({
   },
   'transfer-fixed': {
     input: [
-      { name: 'token-id', type: numberT },
-      { name: 'amount', type: numberT },
+      { name: 'token-id', type: uintT },
+      { name: 'amount', type: uintT },
       { name: 'sender', type: principalT },
       { name: 'recipient', type: principalT }
     ],
@@ -119,10 +120,10 @@ export const tokenAmmSwapPool = defineContract({
       {
         name: 'transfers',
         type: listT(tupleT({
-          amount: numberT,
+          amount: uintT,
           recipient: principalT,
           sender: principalT,
-          'token-id': numberT
+          'token-id': uintT
         }, ), )
       }
     ],
@@ -134,10 +135,10 @@ export const tokenAmmSwapPool = defineContract({
       {
         name: 'transfers',
         type: listT(tupleT({
-          amount: numberT,
+          amount: uintT,
           recipient: principalT,
           sender: principalT,
-          'token-id': numberT
+          'token-id': uintT
         }, ), )
       }
     ],
@@ -149,11 +150,11 @@ export const tokenAmmSwapPool = defineContract({
       {
         name: 'transfers',
         type: listT(tupleT({
-          amount: numberT,
+          amount: uintT,
           memo: bufferT,
           recipient: principalT,
           sender: principalT,
-          'token-id': numberT
+          'token-id': uintT
         }, ), )
       }
     ],
@@ -165,11 +166,11 @@ export const tokenAmmSwapPool = defineContract({
       {
         name: 'transfers',
         type: listT(tupleT({
-          amount: numberT,
+          amount: uintT,
           memo: bufferT,
           recipient: principalT,
           sender: principalT,
-          'token-id': numberT
+          'token-id': uintT
         }, ), )
       }
     ],
@@ -178,8 +179,8 @@ export const tokenAmmSwapPool = defineContract({
   },
   'transfer-memo': {
     input: [
-      { name: 'token-id', type: numberT },
-      { name: 'amount', type: numberT },
+      { name: 'token-id', type: uintT },
+      { name: 'amount', type: uintT },
       { name: 'sender', type: principalT },
       { name: 'recipient', type: principalT },
       { name: 'memo', type: bufferT }
@@ -189,8 +190,8 @@ export const tokenAmmSwapPool = defineContract({
   },
   'transfer-memo-fixed': {
     input: [
-      { name: 'token-id', type: numberT },
-      { name: 'amount', type: numberT },
+      { name: 'token-id', type: uintT },
+      { name: 'amount', type: uintT },
       { name: 'sender', type: principalT },
       { name: 'recipient', type: principalT },
       { name: 'memo', type: bufferT }
@@ -199,24 +200,24 @@ export const tokenAmmSwapPool = defineContract({
     mode: 'public'
   },
   'fixed-to-decimals': {
-    input: [ { name: 'amount', type: numberT } ],
-    output: numberT,
+    input: [ { name: 'amount', type: uintT } ],
+    output: uintT,
     mode: 'readonly'
   },
   'get-balance': {
     input: [
-      { name: 'token-id', type: numberT },
+      { name: 'token-id', type: uintT },
       { name: 'who', type: principalT }
     ],
-    output: responseSimpleT(numberT, ),
+    output: responseSimpleT(uintT, ),
     mode: 'readonly'
   },
   'get-balance-fixed': {
     input: [
-      { name: 'token-id', type: numberT },
+      { name: 'token-id', type: uintT },
       { name: 'who', type: principalT }
     ],
-    output: responseSimpleT(numberT, ),
+    output: responseSimpleT(uintT, ),
     mode: 'readonly'
   },
   'get-contract-owner': {
@@ -225,55 +226,55 @@ export const tokenAmmSwapPool = defineContract({
     mode: 'readonly'
   },
   'get-decimals': {
-    input: [ { name: 'token-id', type: numberT } ],
-    output: responseSimpleT(numberT, ),
+    input: [ { name: 'token-id', type: uintT } ],
+    output: responseSimpleT(uintT, ),
     mode: 'readonly'
   },
   'get-name': {
-    input: [ { name: 'token-id', type: numberT } ],
-    output: responseSimpleT(stringT, ),
+    input: [ { name: 'token-id', type: uintT } ],
+    output: responseSimpleT(stringAsciiT, ),
     mode: 'readonly'
   },
   'get-overall-balance': {
     input: [ { name: 'who', type: principalT } ],
-    output: responseSimpleT(numberT, ),
+    output: responseSimpleT(uintT, ),
     mode: 'readonly'
   },
   'get-overall-balance-fixed': {
     input: [ { name: 'who', type: principalT } ],
-    output: responseSimpleT(numberT, ),
+    output: responseSimpleT(uintT, ),
     mode: 'readonly'
   },
-  'get-overall-supply': { input: [], output: responseSimpleT(numberT, ), mode: 'readonly' },
-  'get-overall-supply-fixed': { input: [], output: responseSimpleT(numberT, ), mode: 'readonly' },
+  'get-overall-supply': { input: [], output: responseSimpleT(uintT, ), mode: 'readonly' },
+  'get-overall-supply-fixed': { input: [], output: responseSimpleT(uintT, ), mode: 'readonly' },
   'get-symbol': {
-    input: [ { name: 'token-id', type: numberT } ],
-    output: responseSimpleT(stringT, ),
+    input: [ { name: 'token-id', type: uintT } ],
+    output: responseSimpleT(stringAsciiT, ),
     mode: 'readonly'
   },
   'get-token-balance-owned-in-fixed': {
     input: [ { name: 'owner', type: principalT } ],
-    output: listT(tupleT({ balance: numberT, 'token-id': numberT }, ), ),
+    output: listT(tupleT({ balance: uintT, 'token-id': uintT }, ), ),
     mode: 'readonly'
   },
   'get-token-owned': {
     input: [ { name: 'owner', type: principalT } ],
-    output: listT(numberT, ),
+    output: listT(uintT, ),
     mode: 'readonly'
   },
   'get-token-uri': {
-    input: [ { name: 'token-id', type: numberT } ],
+    input: [ { name: 'token-id', type: uintT } ],
     output: responseSimpleT(optionalT(stringT, ), ),
     mode: 'readonly'
   },
   'get-total-supply': {
-    input: [ { name: 'token-id', type: numberT } ],
-    output: responseSimpleT(numberT, ),
+    input: [ { name: 'token-id', type: uintT } ],
+    output: responseSimpleT(uintT, ),
     mode: 'readonly'
   },
   'get-total-supply-fixed': {
-    input: [ { name: 'token-id', type: numberT } ],
-    output: responseSimpleT(numberT, ),
+    input: [ { name: 'token-id', type: uintT } ],
+    output: responseSimpleT(uintT, ),
     mode: 'readonly'
   },
   'get-transferrable': { input: [], output: responseSimpleT(booleanT, ), mode: 'readonly' },
@@ -283,20 +284,20 @@ export const tokenAmmSwapPool = defineContract({
     mode: 'mapEntry'
   },
   'token-balances': {
-    input: tupleT({ owner: principalT, 'token-id': numberT }, ),
-    output: optionalT(numberT, ),
+    input: tupleT({ owner: principalT, 'token-id': uintT }, ),
+    output: optionalT(uintT, ),
     mode: 'mapEntry'
   },
   'token-owned': {
     input: principalT,
-    output: optionalT(listT(numberT, ), ),
+    output: optionalT(listT(uintT, ), ),
     mode: 'mapEntry'
   },
-  'token-supplies': { input: numberT, output: optionalT(numberT, ), mode: 'mapEntry' },
+  'token-supplies': { input: uintT, output: optionalT(uintT, ), mode: 'mapEntry' },
   'contract-owner': { input: noneT, output: principalT, mode: 'variable' },
-  'token-decimals': { input: noneT, output: numberT, mode: 'variable' },
-  'token-name': { input: noneT, output: stringT, mode: 'variable' },
-  'token-symbol': { input: noneT, output: stringT, mode: 'variable' },
+  'token-decimals': { input: noneT, output: uintT, mode: 'variable' },
+  'token-name': { input: noneT, output: stringAsciiT, mode: 'variable' },
+  'token-symbol': { input: noneT, output: stringAsciiT, mode: 'variable' },
   'token-uri': { input: noneT, output: optionalT(stringT, ), mode: 'variable' },
   transferrable: { input: noneT, output: booleanT, mode: 'variable' }
 }
