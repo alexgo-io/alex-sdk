@@ -16,7 +16,11 @@ import {
   broadcastSponsoredTx,
   isSponsoredSwapEnabled,
 } from './utils/sponsoredTx';
-import { fetchTokenList, TokenInfo } from './utils/tokenlist';
+import {
+  fetchSwappableCurrency,
+  fetchTokenList,
+  TokenInfo,
+} from './utils/tokenlist';
 export { SponsoredTxError, SponsoredTxErrorCode } from './utils/sponsoredTx';
 
 export class AlexSDK {
@@ -112,6 +116,10 @@ export class AlexSDK {
   }
 
   fetchTokenList(): Promise<TokenInfo[]> {
-    return fetchTokenList()
+    return fetchTokenList();
+  }
+
+  fetchSwappableCurrency(): Promise<TokenInfo[]> {
+    return fetchSwappableCurrency();
   }
 }
