@@ -78,6 +78,18 @@ const NATIVE_TOKEN_MAPPING: {
     decimals: 1e8,
     assetIdentifier: `SP3K8BC0PPEVCV7NZ6QSRWPQ2JE9E5B6N3PA0KBR9.brc20-db20::brc20-db20`,
   },
+  [Currency.aBTC]: {
+    decimals: 1e8,
+    assetIdentifier: `SP3K8BC0PPEVCV7NZ6QSRWPQ2JE9E5B6N3PA0KBR9.token-abtc::bridged-btc`,
+  },
+  [Currency.sLUNR]: {
+    decimals: 1e8,
+    assetIdentifier: `SP3K8BC0PPEVCV7NZ6QSRWPQ2JE9E5B6N3PA0KBR9.token-slunr::bridged-lunr`,
+  },
+  [Currency.BRC20_CHAX]: {
+    decimals: 1e8,
+    assetIdentifier: `SP3K8BC0PPEVCV7NZ6QSRWPQ2JE9E5B6N3PA0KBR9.brc20-chax::brc20-chax`,
+  },
 };
 
 export const configs = {

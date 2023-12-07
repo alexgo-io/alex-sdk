@@ -25,6 +25,9 @@ export namespace AMMSwapPool {
     AMM_SWAP_POOL_V1_1_WSTX_WVIBES = 'token-amm-swap-pool-v1-1:token-wstx,token-wvibes,1e8',
     AMM_SWAP_POOL_V1_1_ALEX_BRC20DB20 = 'token-amm-swap-pool-v1-1:age000-governance-token,brc20-db20,1e8',
     AMM_SWAP_POOL_V1_1_SUSDT_XUSD = 'token-amm-swap-pool-v1-1:token-susdt,token-wxusd,0.05e8',
+    AMM_SWAP_POOL_V1_1_WSTX_LUNAR = 'token-amm-swap-pool-v1-1:token-wstx,token-slunr,1e8',
+    AMM_SWAP_POOL_V1_1_SUSDT_CHAX = 'token-amm-swap-pool-v1-1:token-susdt,brc20-chax,1e8',
+    AMM_SWAP_POOL_V1_1_WSTX_ABTC = 'token-amm-swap-pool-v1-1:token-wstx,token-abtc,1e8',
   }
 
   export type SwapTokens = Currency;
@@ -64,6 +67,9 @@ export namespace AMMSwapPool {
     Pool.AMM_SWAP_POOL_V1_1_WSTX_WVIBES,
     Pool.AMM_SWAP_POOL_V1_1_ALEX_BRC20DB20,
     Pool.AMM_SWAP_POOL_V1_1_SUSDT_XUSD,
+    Pool.AMM_SWAP_POOL_V1_1_WSTX_LUNAR,
+    Pool.AMM_SWAP_POOL_V1_1_SUSDT_CHAX,
+    Pool.AMM_SWAP_POOL_V1_1_WSTX_ABTC,
   ];
 
   export type PoolTokens = Pool;
@@ -125,6 +131,12 @@ export namespace AMMSwapPool {
         return [Currency.ALEX, Currency.BRC20_DB20];
       case Pool.AMM_SWAP_POOL_V1_1_SUSDT_XUSD:
         return [Currency.sUSDT, Currency.XUSD];
+      case Pool.AMM_SWAP_POOL_V1_1_WSTX_LUNAR:
+        return [Currency.STX, Currency.sLUNR];
+      case Pool.AMM_SWAP_POOL_V1_1_SUSDT_CHAX:
+        return [Currency.sUSDT, Currency.BRC20_CHAX];
+      case Pool.AMM_SWAP_POOL_V1_1_WSTX_ABTC:
+        return [Currency.STX, Currency.aBTC];
       default:
         assertNever(poolToken);
     }
@@ -150,6 +162,9 @@ export namespace AMMSwapPool {
       case Pool.AMM_SWAP_POOL_V1_1_ALEX_ATALEXV2:
       case Pool.AMM_SWAP_POOL_V1_1_WSTX_WVIBES:
       case Pool.AMM_SWAP_POOL_V1_1_ALEX_BRC20DB20:
+      case Pool.AMM_SWAP_POOL_V1_1_WSTX_LUNAR:
+      case Pool.AMM_SWAP_POOL_V1_1_SUSDT_CHAX:
+      case Pool.AMM_SWAP_POOL_V1_1_WSTX_ABTC:
         return BigInt(1e8);
       case Pool.AMM_SWAP_POOL_V1_1_SUSDT_XUSD:
         return BigInt(0.05e8);
