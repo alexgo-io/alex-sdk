@@ -90,6 +90,10 @@ const NATIVE_TOKEN_MAPPING: {
     decimals: 1e8,
     assetIdentifier: `SP3K8BC0PPEVCV7NZ6QSRWPQ2JE9E5B6N3PA0KBR9.brc20-chax::brc20-chax`,
   },
+  [Currency.LEO]: {
+    decimals: 1e6,
+    assetIdentifier: `SP1AY6K3PQV5MRT6R4S671NWW2FRVPKM0BR162CT6.leo-token::leo`,
+  },
 };
 
 export const configs = {

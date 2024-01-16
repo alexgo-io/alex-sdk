@@ -16,6 +16,7 @@ export namespace AMMSwapPool {
     AMM_SWAP_POOL_ALEX_WDIKO = 'token-amm-swap-pool:age000-governance-token,token-wdiko,1e8',
     AMM_SWAP_POOL_WSTX_WCORGI = 'token-amm-swap-pool:token-wstx,token-wcorgi,1e8',
     AMM_SWAP_POOL_WSTX_SUSDT = 'token-amm-swap-pool:token-wstx,token-susdt,1e8',
+    AMM_SWAP_POOL_WSTX_WLEO = 'token-amm-swap-pool:token-wstx,token-wleo,1e8',
 
     AMM_SWAP_POOL_V1_1_WSTX_XBTC = 'token-amm-swap-pool-v1-1:token-wstx,token-wbtc,1e8',
     AMM_SWAP_POOL_V1_1_WSTX_SUSDT = 'token-amm-swap-pool-v1-1:token-wstx,token-susdt,1e8',
@@ -56,6 +57,7 @@ export namespace AMMSwapPool {
     Pool.AMM_SWAP_POOL_ALEX_WDIKO,
     Pool.AMM_SWAP_POOL_WSTX_WCORGI,
     Pool.AMM_SWAP_POOL_WSTX_SUSDT,
+    Pool.AMM_SWAP_POOL_WSTX_WLEO,
   ];
 
   export const ammV1_1Tokens = [
@@ -115,6 +117,8 @@ export namespace AMMSwapPool {
         return [Currency.STX, Currency.CORGI];
       case Pool.AMM_SWAP_POOL_WSTX_SUSDT:
         return [Currency.STX, Currency.sUSDT];
+      case Pool.AMM_SWAP_POOL_WSTX_WLEO:
+        return [Currency.STX, Currency.LEO];
       case Pool.AMM_SWAP_POOL_V1_1_WSTX_XBTC:
         return [Currency.STX, Currency.XBTC];
       case Pool.AMM_SWAP_POOL_V1_1_WSTX_ALEX:
@@ -155,6 +159,7 @@ export namespace AMMSwapPool {
       case Pool.AMM_SWAP_POOL_ALEX_WDIKO:
       case Pool.AMM_SWAP_POOL_WSTX_WCORGI:
       case Pool.AMM_SWAP_POOL_WSTX_SUSDT:
+      case Pool.AMM_SWAP_POOL_WSTX_WLEO:
       case Pool.AMM_SWAP_POOL_V1_1_WSTX_XBTC:
       case Pool.AMM_SWAP_POOL_V1_1_WSTX_ALEX:
       case Pool.AMM_SWAP_POOL_V1_1_WSTX_SUSDT:
