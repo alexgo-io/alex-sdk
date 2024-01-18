@@ -56,33 +56,35 @@ export const getYAmountFromXAmount = async (
       dx: fromAmount,
     }).then(unwrapResponse);
   }
-  const ammRoute = AMMSwapPool.getRoute(tokenX, tokenY, ammPools);
-  if (ammRoute.length === 0) {
-    const reachableInAMM = AMMSwapPool.reachableInAMM(tokenX, tokenY, ammPools);
-    if (reachableInAMM.type === 'fromAmm') {
-      return await readonlyCall('swap-helper-bridged-v1-1', 'get-helper-from-amm', {
+  const reachableInAMMV1_1 = AMMSwapPool.reachableInAMM(
+    tokenX,
+    tokenY,
+    ammV1_1Tokens
+  );
+  if (reachableInAMMV1_1.type === 'fromAmm') {
+    return await readonlyCall(
+      'swap-helper-bridged-v1-1',
+      'get-helper-from-amm',
+      {
         dx: fromAmount,
-        'token-x': reachableInAMM.tokenX,
-        'token-y': reachableInAMM.tokenY,
-        'token-z': reachableInAMM.tokenZ,
-        'factor-x': reachableInAMM.factorX,
-      }).then(unwrapResponse);
-    }
-    if (reachableInAMM.type === 'toAmm') {
-      return await readonlyCall('swap-helper-bridged-v1-1', 'get-helper-to-amm', {
-        dx: fromAmount,
-        'token-x': reachableInAMM.tokenX,
-        'token-y': reachableInAMM.tokenY,
-        'token-z': reachableInAMM.tokenZ,
-        'factor-y': reachableInAMM.factorY,
-      }).then(unwrapResponse);
-    }
-    return await readonlyCall('swap-helper-v1-03', 'get-helper', {
-      'token-x': tokenX,
-      'token-y': tokenY,
+        'token-x': reachableInAMMV1_1.tokenX,
+        'token-y': reachableInAMMV1_1.tokenY,
+        'token-z': reachableInAMMV1_1.tokenZ,
+        'factor-x': reachableInAMMV1_1.factorX,
+      }
+    ).then(unwrapResponse);
+  }
+  if (reachableInAMMV1_1.type === 'toAmm') {
+    return await readonlyCall('swap-helper-bridged-v1-1', 'get-helper-to-amm', {
       dx: fromAmount,
+      'token-x': reachableInAMMV1_1.tokenX,
+      'token-y': reachableInAMMV1_1.tokenY,
+      'token-z': reachableInAMMV1_1.tokenZ,
+      'factor-y': reachableInAMMV1_1.factorY,
     }).then(unwrapResponse);
   }
+
+  const ammRoute = AMMSwapPool.getRoute(tokenX, tokenY, ammPools);
   if (ammRoute.length === 1) {
     return await readonlyCall('amm-swap-pool', 'get-helper', {
       'token-x': tokenX,
@@ -127,5 +129,28 @@ export const getYAmountFromXAmount = async (
       dx: fromAmount,
     }).then(unwrapResponse);
   }
-  throw new Error('Too many AMM pools in route');
+  const reachableInAMM = AMMSwapPool.reachableInAMM(tokenX, tokenY, ammPools);
+  if (reachableInAMM.type === 'fromAmm') {
+    return await readonlyCall('swap-helper-bridged', 'get-helper-from-amm', {
+      dx: fromAmount,
+      'token-x': reachableInAMM.tokenX,
+      'token-y': reachableInAMM.tokenY,
+      'token-z': reachableInAMM.tokenZ,
+      'factor-x': reachableInAMM.factorX,
+    }).then(unwrapResponse);
+  }
+  if (reachableInAMM.type === 'toAmm') {
+    return await readonlyCall('swap-helper-bridged', 'get-helper-to-amm', {
+      dx: fromAmount,
+      'token-x': reachableInAMM.tokenX,
+      'token-y': reachableInAMM.tokenY,
+      'token-z': reachableInAMM.tokenZ,
+      'factor-y': reachableInAMM.factorY,
+    }).then(unwrapResponse);
+  }
+  return await readonlyCall('swap-helper-v1-03', 'get-helper', {
+    'token-x': tokenX,
+    'token-y': tokenY,
+    dx: fromAmount,
+  }).then(unwrapResponse);
 };

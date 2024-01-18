@@ -52,30 +52,33 @@ export async function getLiquidityProviderFee(
     }).then(unwrapResponse);
   }
 
-  const ammRoute = AMMSwapPool.getRoute(tokenX, tokenY, ammPools);
-  if (ammRoute.length === 0) {
-    const reachableInAmm = AMMSwapPool.reachableInAMM(tokenX, tokenY, ammPools);
-    if (reachableInAmm.type === 'fromAmm') {
-      return await readonlyCall('swap-helper-bridged-v1-1', 'fee-helper-from-amm', {
-        'token-x': reachableInAmm.tokenX,
-        'token-y': reachableInAmm.tokenY,
-        'token-z': reachableInAmm.tokenZ,
-        'factor-x': reachableInAmm.factorX,
-      }).then(unwrapResponse);
-    }
-    if (reachableInAmm.type === 'toAmm') {
-      return await readonlyCall('swap-helper-bridged-v1-1', 'fee-helper-to-amm', {
-        'token-x': reachableInAmm.tokenX,
-        'token-y': reachableInAmm.tokenY,
-        'token-z': reachableInAmm.tokenZ,
-        'factor-y': reachableInAmm.factorY,
-      }).then(unwrapResponse);
-    }
-    return await readonlyCall('swap-helper-v1-03', 'fee-helper', {
-      'token-x': tokenX,
-      'token-y': tokenY,
+  const reachableInAmm1_1 = AMMSwapPool.reachableInAMM(
+    tokenX,
+    tokenY,
+    ammV1_1Pools
+  );
+  if (reachableInAmm1_1.type === 'fromAmm') {
+    return await readonlyCall(
+      'swap-helper-bridged-v1-1',
+      'fee-helper-from-amm',
+      {
+        'token-x': reachableInAmm1_1.tokenX,
+        'token-y': reachableInAmm1_1.tokenY,
+        'token-z': reachableInAmm1_1.tokenZ,
+        'factor-x': reachableInAmm1_1.factorX,
+      }
+    ).then(unwrapResponse);
+  }
+  if (reachableInAmm1_1.type === 'toAmm') {
+    return await readonlyCall('swap-helper-bridged-v1-1', 'fee-helper-to-amm', {
+      'token-x': reachableInAmm1_1.tokenX,
+      'token-y': reachableInAmm1_1.tokenY,
+      'token-z': reachableInAmm1_1.tokenZ,
+      'factor-y': reachableInAmm1_1.factorY,
     }).then(unwrapResponse);
   }
+
+  const ammRoute = AMMSwapPool.getRoute(tokenX, tokenY, ammPools);
   if (ammRoute.length === 1) {
     return await readonlyCall('amm-swap-pool', 'fee-helper', {
       'token-x': tokenX,
@@ -116,5 +119,27 @@ export async function getLiquidityProviderFee(
       'factor-w': AMMSwapPool.getFactor(ammRoute[3]!.pool),
     }).then(unwrapResponse);
   }
-  throw new Error('Too many AMM pools in route');
+
+  const reachableInAmm = AMMSwapPool.reachableInAMM(tokenX, tokenY, ammPools);
+  if (reachableInAmm.type === 'fromAmm') {
+    return await readonlyCall('swap-helper-bridged', 'fee-helper-from-amm', {
+      'token-x': reachableInAmm.tokenX,
+      'token-y': reachableInAmm.tokenY,
+      'token-z': reachableInAmm.tokenZ,
+      'factor-x': reachableInAmm.factorX,
+    }).then(unwrapResponse);
+  }
+  if (reachableInAmm.type === 'toAmm') {
+    return await readonlyCall('swap-helper-bridged', 'fee-helper-to-amm', {
+      'token-x': reachableInAmm.tokenX,
+      'token-y': reachableInAmm.tokenY,
+      'token-z': reachableInAmm.tokenZ,
+      'factor-y': reachableInAmm.factorY,
+    }).then(unwrapResponse);
+  }
+
+  return await readonlyCall('swap-helper-v1-03', 'fee-helper', {
+    'token-x': tokenX,
+    'token-y': tokenY,
+  }).then(unwrapResponse);
 }
