@@ -17,4 +17,9 @@ export enum Currency {
   aBTC = 'token-abtc',
   sLUNR = 'token-slunr',
   BRC20_CHAX = 'brc20-chax',
+  LEO = "token-wleo",
+  MEGA = "token-wmega-v2",
+  GUS = "token-wgus",
+  BRC20_ORDG = "brc20-ordg",
+  BRC20_ORMM = "brc20-ormm",
 }

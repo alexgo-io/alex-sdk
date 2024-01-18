@@ -90,6 +90,26 @@ const NATIVE_TOKEN_MAPPING: {
     decimals: 1e8,
     assetIdentifier: `SP3K8BC0PPEVCV7NZ6QSRWPQ2JE9E5B6N3PA0KBR9.brc20-chax::brc20-chax`,
   },
+  [Currency.LEO]: {
+    decimals: 1e6,
+    assetIdentifier: 'SP1AY6K3PQV5MRT6R4S671NWW2FRVPKM0BR162CT6.leo-token::leo',
+  },
+  [Currency.MEGA]: {
+    decimals: 1e2,
+    assetIdentifier: 'SP3D6PV2ACBPEKYJTCMH7HEN02KP87QSP8KTEH335.mega::mega',
+  },
+  [Currency.GUS]: {
+    decimals: 1e6,
+    assetIdentifier: 'SP1JFFSYTSH7VBM54K29ZFS9H4SVB67EA8VT2MYJ9.gus-token::gus',
+  },
+  [Currency.BRC20_ORMM]: {
+    decimals: 1e8,
+    assetIdentifier: `SP3K8BC0PPEVCV7NZ6QSRWPQ2JE9E5B6N3PA0KBR9.brc20-ormm::brc20-ormm`,
+  },
+  [Currency.BRC20_ORDG]: {
+    decimals: 1e8,
+    assetIdentifier: `SP3K8BC0PPEVCV7NZ6QSRWPQ2JE9E5B6N3PA0KBR9.brc20-ordg::brc20-ordg`,
+  },
 };
 
 export const configs = {

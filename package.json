@@ -45,7 +45,7 @@
     }
   ],
   "dependencies": {
-    "clarity-codegen": "^0.2.6"
+    "clarity-codegen": "^0.3.5"
   },
   "peerDependencies": {
     "@stacks/network": "*",
