@@ -8,6 +8,9 @@ export function bridgeHelperResolver(
   ammPools: AMMSwapPool.PoolTokens[]
 ) {
   const bridgingToken = [Currency.STX, Currency.ALEX];
+  if (bridgingToken.includes(from) || bridgingToken.includes(to)) {
+    return { type: "none" as const }
+  }
   const fromPool = ammPools.find((a) => {
     if (!AMMSwapPool.breakDown(a).includes(from)) return false;
     const [x, y] = AMMSwapPool.breakDown(a);
