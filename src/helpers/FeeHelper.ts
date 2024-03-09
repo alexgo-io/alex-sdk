@@ -52,32 +52,6 @@ export async function getLiquidityProviderFee(
     }).then(unwrapResponse);
   }
 
-  const reachableInAmm1_1 = AMMSwapPool.reachableInAMM(
-    tokenX,
-    tokenY,
-    ammV1_1Pools
-  );
-  if (reachableInAmm1_1.type === 'fromAmm') {
-    return await readonlyCall(
-      'swap-helper-bridged-v1-1',
-      'fee-helper-from-amm',
-      {
-        'token-x': reachableInAmm1_1.tokenX,
-        'token-y': reachableInAmm1_1.tokenY,
-        'token-z': reachableInAmm1_1.tokenZ,
-        'factor-x': reachableInAmm1_1.factorX,
-      }
-    ).then(unwrapResponse);
-  }
-  if (reachableInAmm1_1.type === 'toAmm') {
-    return await readonlyCall('swap-helper-bridged-v1-1', 'fee-helper-to-amm', {
-      'token-x': reachableInAmm1_1.tokenX,
-      'token-y': reachableInAmm1_1.tokenY,
-      'token-z': reachableInAmm1_1.tokenZ,
-      'factor-y': reachableInAmm1_1.factorY,
-    }).then(unwrapResponse);
-  }
-
   const ammRoute = AMMSwapPool.getRoute(tokenX, tokenY, ammPools);
   if (ammRoute.length === 1) {
     return await readonlyCall('amm-swap-pool', 'fee-helper', {
@@ -117,6 +91,32 @@ export async function getLiquidityProviderFee(
       'factor-y': AMMSwapPool.getFactor(ammRoute[1]!.pool),
       'factor-z': AMMSwapPool.getFactor(ammRoute[2]!.pool),
       'factor-w': AMMSwapPool.getFactor(ammRoute[3]!.pool),
+    }).then(unwrapResponse);
+  }
+
+  const reachableInAmm1_1 = AMMSwapPool.reachableInAMM(
+    tokenX,
+    tokenY,
+    ammV1_1Pools
+  );
+  if (reachableInAmm1_1.type === 'fromAmm') {
+    return await readonlyCall(
+      'swap-helper-bridged-v1-1',
+      'fee-helper-from-amm',
+      {
+        'token-x': reachableInAmm1_1.tokenX,
+        'token-y': reachableInAmm1_1.tokenY,
+        'token-z': reachableInAmm1_1.tokenZ,
+        'factor-x': reachableInAmm1_1.factorX,
+      }
+    ).then(unwrapResponse);
+  }
+  if (reachableInAmm1_1.type === 'toAmm') {
+    return await readonlyCall('swap-helper-bridged-v1-1', 'fee-helper-to-amm', {
+      'token-x': reachableInAmm1_1.tokenX,
+      'token-y': reachableInAmm1_1.tokenY,
+      'token-z': reachableInAmm1_1.tokenZ,
+      'factor-y': reachableInAmm1_1.factorY,
     }).then(unwrapResponse);
   }
 

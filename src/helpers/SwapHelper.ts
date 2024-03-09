@@ -239,86 +239,6 @@ export function runSpot(
     );
   }
 
-  const reachableInAMMV1_1 = AMMSwapPool.reachableInAMM(
-    currencyX,
-    currencyY,
-    ammPools
-  );
-  if (reachableInAMMV1_1.type === 'fromAmm') {
-    return composeTx(
-      'swap-helper-bridged-v1-1',
-      'swap-helper-from-amm',
-      {
-        'token-x-trait': reachableInAMMV1_1.tokenX,
-        'token-y-trait': reachableInAMMV1_1.tokenY,
-        'token-z-trait': reachableInAMMV1_1.tokenZ,
-        dx: fromAmount,
-        'min-dz': minDy,
-        'factor-x': reachableInAMMV1_1.factorX,
-      },
-      [
-        transfer(stxAddress, currencyX, fromAmount),
-        ...middleSteps.flatMap((middle, index) => [
-          transfer(
-            index === 0 ? AlexVaultV1_1 : AlexVault,
-            middle,
-            BigInt(0),
-            FungibleConditionCode.GreaterEqual
-          ),
-          transfer(
-            stxAddress,
-            middle,
-            BigInt(0),
-            FungibleConditionCode.GreaterEqual
-          ),
-        ]),
-        transfer(
-          AlexVault,
-          currencyY,
-          minDy,
-          FungibleConditionCode.GreaterEqual
-        ),
-      ]
-    );
-  }
-  if (reachableInAMMV1_1.type === 'toAmm') {
-    return composeTx(
-      'swap-helper-bridged-v1-1',
-      'swap-helper-to-amm',
-      {
-        'token-x-trait': reachableInAMMV1_1.tokenX,
-        'token-y-trait': reachableInAMMV1_1.tokenY,
-        'token-z-trait': reachableInAMMV1_1.tokenZ,
-        dx: fromAmount,
-        'min-dz': minDy,
-        'factor-y': reachableInAMMV1_1.factorY,
-      },
-      [
-        transfer(stxAddress, currencyX, fromAmount),
-        ...middleSteps.flatMap((middle) => [
-          transfer(
-            AlexVault,
-            middle,
-            BigInt(0),
-            FungibleConditionCode.GreaterEqual
-          ),
-          transfer(
-            stxAddress,
-            middle,
-            BigInt(0),
-            FungibleConditionCode.GreaterEqual
-          ),
-        ]),
-        transfer(
-          AlexVaultV1_1,
-          currencyY,
-          minDy,
-          FungibleConditionCode.GreaterEqual
-        ),
-      ]
-    );
-  }
-
   const ammRoute = AMMSwapPool.getRoute(currencyX, currencyY, ammPools);
   if (ammRoute.length === 1) {
     return composeTx(
@@ -485,6 +405,86 @@ export function runSpot(
         ),
         transfer(
           AlexVault,
+          currencyY,
+          minDy,
+          FungibleConditionCode.GreaterEqual
+        ),
+      ]
+    );
+  }
+
+  const reachableInAMMV1_1 = AMMSwapPool.reachableInAMM(
+    currencyX,
+    currencyY,
+    ammPools
+  );
+  if (reachableInAMMV1_1.type === 'fromAmm') {
+    return composeTx(
+      'swap-helper-bridged-v1-1',
+      'swap-helper-from-amm',
+      {
+        'token-x-trait': reachableInAMMV1_1.tokenX,
+        'token-y-trait': reachableInAMMV1_1.tokenY,
+        'token-z-trait': reachableInAMMV1_1.tokenZ,
+        dx: fromAmount,
+        'min-dz': minDy,
+        'factor-x': reachableInAMMV1_1.factorX,
+      },
+      [
+        transfer(stxAddress, currencyX, fromAmount),
+        ...middleSteps.flatMap((middle, index) => [
+          transfer(
+            index === 0 ? AlexVaultV1_1 : AlexVault,
+            middle,
+            BigInt(0),
+            FungibleConditionCode.GreaterEqual
+          ),
+          transfer(
+            stxAddress,
+            middle,
+            BigInt(0),
+            FungibleConditionCode.GreaterEqual
+          ),
+        ]),
+        transfer(
+          AlexVault,
+          currencyY,
+          minDy,
+          FungibleConditionCode.GreaterEqual
+        ),
+      ]
+    );
+  }
+  if (reachableInAMMV1_1.type === 'toAmm') {
+    return composeTx(
+      'swap-helper-bridged-v1-1',
+      'swap-helper-to-amm',
+      {
+        'token-x-trait': reachableInAMMV1_1.tokenX,
+        'token-y-trait': reachableInAMMV1_1.tokenY,
+        'token-z-trait': reachableInAMMV1_1.tokenZ,
+        dx: fromAmount,
+        'min-dz': minDy,
+        'factor-y': reachableInAMMV1_1.factorY,
+      },
+      [
+        transfer(stxAddress, currencyX, fromAmount),
+        ...middleSteps.flatMap((middle) => [
+          transfer(
+            AlexVault,
+            middle,
+            BigInt(0),
+            FungibleConditionCode.GreaterEqual
+          ),
+          transfer(
+            stxAddress,
+            middle,
+            BigInt(0),
+            FungibleConditionCode.GreaterEqual
+          ),
+        ]),
+        transfer(
+          AlexVaultV1_1,
           currencyY,
           minDy,
           FungibleConditionCode.GreaterEqual

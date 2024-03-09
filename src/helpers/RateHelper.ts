@@ -56,34 +56,6 @@ export const getYAmountFromXAmount = async (
       dx: fromAmount,
     }).then(unwrapResponse);
   }
-  const reachableInAMMV1_1 = AMMSwapPool.reachableInAMM(
-    tokenX,
-    tokenY,
-    ammV1_1Tokens
-  );
-  if (reachableInAMMV1_1.type === 'fromAmm') {
-    return await readonlyCall(
-      'swap-helper-bridged-v1-1',
-      'get-helper-from-amm',
-      {
-        dx: fromAmount,
-        'token-x': reachableInAMMV1_1.tokenX,
-        'token-y': reachableInAMMV1_1.tokenY,
-        'token-z': reachableInAMMV1_1.tokenZ,
-        'factor-x': reachableInAMMV1_1.factorX,
-      }
-    ).then(unwrapResponse);
-  }
-  if (reachableInAMMV1_1.type === 'toAmm') {
-    return await readonlyCall('swap-helper-bridged-v1-1', 'get-helper-to-amm', {
-      dx: fromAmount,
-      'token-x': reachableInAMMV1_1.tokenX,
-      'token-y': reachableInAMMV1_1.tokenY,
-      'token-z': reachableInAMMV1_1.tokenZ,
-      'factor-y': reachableInAMMV1_1.factorY,
-    }).then(unwrapResponse);
-  }
-
   const ammRoute = AMMSwapPool.getRoute(tokenX, tokenY, ammPools);
   if (ammRoute.length === 1) {
     return await readonlyCall('amm-swap-pool', 'get-helper', {
@@ -127,6 +99,33 @@ export const getYAmountFromXAmount = async (
       'factor-z': AMMSwapPool.getFactor(ammRoute[2]!.pool),
       'factor-w': AMMSwapPool.getFactor(ammRoute[3]!.pool),
       dx: fromAmount,
+    }).then(unwrapResponse);
+  }
+  const reachableInAMMV1_1 = AMMSwapPool.reachableInAMM(
+    tokenX,
+    tokenY,
+    ammV1_1Tokens
+  );
+  if (reachableInAMMV1_1.type === 'fromAmm') {
+    return await readonlyCall(
+      'swap-helper-bridged-v1-1',
+      'get-helper-from-amm',
+      {
+        dx: fromAmount,
+        'token-x': reachableInAMMV1_1.tokenX,
+        'token-y': reachableInAMMV1_1.tokenY,
+        'token-z': reachableInAMMV1_1.tokenZ,
+        'factor-x': reachableInAMMV1_1.factorX,
+      }
+    ).then(unwrapResponse);
+  }
+  if (reachableInAMMV1_1.type === 'toAmm') {
+    return await readonlyCall('swap-helper-bridged-v1-1', 'get-helper-to-amm', {
+      dx: fromAmount,
+      'token-x': reachableInAMMV1_1.tokenX,
+      'token-y': reachableInAMMV1_1.tokenY,
+      'token-z': reachableInAMMV1_1.tokenZ,
+      'factor-y': reachableInAMMV1_1.factorY,
     }).then(unwrapResponse);
   }
   const reachableInAMM = AMMSwapPool.reachableInAMM(tokenX, tokenY, ammPools);
