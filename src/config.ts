@@ -78,6 +78,30 @@ const NATIVE_TOKEN_MAPPING: {
     decimals: 1e8,
     assetIdentifier: `SP3K8BC0PPEVCV7NZ6QSRWPQ2JE9E5B6N3PA0KBR9.brc20-db20::brc20-db20`,
   },
+  [Currency.BRC20_ORMM]: {
+    decimals: 1e8,
+    assetIdentifier: `SP3K8BC0PPEVCV7NZ6QSRWPQ2JE9E5B6N3PA0KBR9.brc20-ormm::brc20-ormm`,
+  },
+  [Currency.BRC20_CHAX]: {
+    decimals: 1e8,
+    assetIdentifier: `SP3K8BC0PPEVCV7NZ6QSRWPQ2JE9E5B6N3PA0KBR9.brc20-chax::brc20-chax`,
+  },
+  [Currency.BRC20_ORDG]: {
+    decimals: 1e8,
+    assetIdentifier: `SP3K8BC0PPEVCV7NZ6QSRWPQ2JE9E5B6N3PA0KBR9.brc20-ordg::brc20-ordg`,
+  },
+  [Currency.BRC20_REOS]: {
+    decimals: 1e8,
+    assetIdentifier: `SP3K8BC0PPEVCV7NZ6QSRWPQ2JE9E5B6N3PA0KBR9.brc20-reos::brc20-reos`,
+  },
+  [Currency.BRC20_ORNJ]: {
+    decimals: 1e8,
+    assetIdentifier: `SP3K8BC0PPEVCV7NZ6QSRWPQ2JE9E5B6N3PA0KBR9.brc20-ornj::brc20-ornj`,
+  },
+  [Currency.STX20_STXS]: {
+    decimals: 1e8,
+    assetIdentifier: `SP3K8BC0PPEVCV7NZ6QSRWPQ2JE9E5B6N3PA0KBR9.stx20-stxs::stx20-stxs`,
+  },
   [Currency.aBTC]: {
     decimals: 1e8,
     assetIdentifier: `SP3K8BC0PPEVCV7NZ6QSRWPQ2JE9E5B6N3PA0KBR9.token-abtc::bridged-btc`,
@@ -109,6 +133,73 @@ const NATIVE_TOKEN_MAPPING: {
   [Currency.BRC20_ORDG]: {
     decimals: 1e8,
     assetIdentifier: `SP3K8BC0PPEVCV7NZ6QSRWPQ2JE9E5B6N3PA0KBR9.brc20-ordg::brc20-ordg`,
+  },
+  [Currency.LONG]: {
+    assetIdentifier:
+      'SP265WBWD4NH7TVPYQTVD23X3607NNK4484DTXQZ3.longcoin::longcoin',
+    decimals: 1e6,
+  },
+  [Currency.WNOTHING]: {
+    assetIdentifier:
+      'SP32AEEF6WW5Y0NMJ1S8SBSZDAY8R5J32NBZFPKKZ.wrapped-nothing-v8::wrapped-nthng',
+    decimals: 1,
+  },
+  [Currency.AEWBTC]: {
+    assetIdentifier:
+      'SP3Y2ZSH8P7D50B0VBTSX11S7XSG24M1VB9YFQA4K.token-aewbtc::aeWBTC',
+    decimals: 1e8,
+  },
+  [Currency.MAX]: {
+    assetIdentifier: 'SP7V1SE7EA3ZG3QTWSBA2AAG8SRHEYJ06EBBD1J2.max-token::max',
+    decimals: 1e6,
+  },
+  [Currency.PLAY]: {
+    assetIdentifier: 'SP1PW804599BZ46B4A0FYH86ED26XPJA7SFYNK1XS.play::play',
+    decimals: 1e6,
+  },
+  [Currency.AEUSDC]: {
+    assetIdentifier:
+      'SP3Y2ZSH8P7D50B0VBTSX11S7XSG24M1VB9YFQA4K.token-aeusdc::aeUSDC',
+    decimals: 1e6,
+  },
+  [Currency.PEPE]: {
+    assetIdentifier:
+      'SP1Z92MPDQEWZXW36VX71Q25HKF5K2EPCJ304F275.tokensoft-token-v4k68639zxz::tokensoft-token',
+    decimals: 1e3,
+  },
+  [Currency.MICK]: {
+    assetIdentifier:
+      'SP2Y8T3TR3FKH3Y2FPZVNQAEKNJXKWVS4RVQF48JE.stakemouse::stakemouse',
+    decimals: 1e6,
+  },
+  [Currency.NOPE]: {
+    assetIdentifier: 'SP32AEEF6WW5Y0NMJ1S8SBSZDAY8R5J32NBZFPKKZ.nope::NOT',
+    decimals: 1,
+  },
+  [Currency.FAST]: {
+    assetIdentifier: 'SP3951VNPC55BMS9RCF6SKRZP4K3Q2PQ2RSM1DD1V.fast::fast',
+    decimals: 1e6,
+  },
+  [Currency.FRODO]: {
+    assetIdentifier:
+      'SPPK49DG7WR1J5D50GZ4W7DYYWM5MAXSX0ZA9VEJ.FrodoSaylorKeanuPepe10Inu-token-v69::FrodoSaylorKeanuPepe10Inu',
+    decimals: 1e6,
+  },
+  [Currency.PICSUM]: {
+    assetIdentifier: `${CONTRACT_DEPLOYER}.token-picsum-404::picsum-404`,
+    decimals: 1e8,
+  },
+  [Currency.WIF]: {
+    assetIdentifier: `SP3WPNAEBYMX06RQNNYTH5PTJ1FRGX5A13ZZMZ01D.dogwifhat-token::wif`,
+    decimals: 1e6,
+  },
+  [Currency.LQSTX]: {
+    assetIdentifier: `ST1HTBVD3JG9C05J7HBJTHGR0GGW7KXW28M5JS8QE.token-lqstx::lqstx`,
+    decimals: 1e6,
+  },
+  [Currency.sSKO]: {
+    assetIdentifier: `SP3K8BC0PPEVCV7NZ6QSRWPQ2JE9E5B6N3PA0KBR9.token-ssko::token-ssko`,
+    decimals: 1e8,
   },
 };
 
