@@ -33,21 +33,18 @@ export function resolveAmmRoute(
   };
   // contract only support up to 4 segments
   for (let i = 0; i < 4; i++) {
-    Object.keys(visited)
-      .map((a) => a as AMMSwapPool.SwapTokens)
-      .forEach((a) => {
-        neighbours(a, pools).forEach((b) => {
-          if (
-            b.neighbour === tokenX ||
-            visited[a]?.some((c) => c.neighbour === b.neighbour)
-          ) {
-            return;
-          }
+    const visitedNodes = Object.keys(visited).map(
+      (a) => a as AMMSwapPool.SwapTokens
+    );
+    for (const a of visitedNodes) {
+      for (const b of neighbours(a, pools)) {
+        if (b.neighbour === tokenY) {
+          return [...(visited[a] ?? []), b];
+        }
+        if (visited[b.neighbour] == null) {
           visited[b.neighbour] = [...(visited[a] ?? []), b];
-        });
-      });
-    if (tokenY in visited) {
-      return visited[tokenY]!;
+        }
+      }
     }
   }
   return [];
