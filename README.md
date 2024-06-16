@@ -26,26 +26,21 @@ export enum Currency {
 
 The AlexSDK class includes the following functions:
 
-```typescript
+```javascript
 export declare class AlexSDK {
     getFeeRate(from: Currency, to: Currency): Promise<bigint>;
     getRouter(from: Currency, to: Currency): Promise<Currency[]>;
     getAmountTo(from: Currency, fromAmount: bigint, to: Currency): Promise<bigint>;
     runSwap(stxAddress: string, currencyX: Currency, currencyY: Currency, fromAmount: bigint, minDy: bigint, router: Currency[]): TxToBroadCast;
     getCurrencyFrom(address: string): Currency | undefined;
-    getLatestPrices(): Promise<
-      Partial<{
-        [currency in Currency]: number;
-      }>
-    >
-  }
+}
 ```
 
 ### getFee
 Rate
 Get the swap fee (liquidity provider fee) between two currencies.
 
-```typescript
+```javascript
 async function getFeeRate(from: Currency, to: Currency): Promise<bigint>;
 ```
 
@@ -53,7 +48,7 @@ async function getFeeRate(from: Currency, to: Currency): Promise<bigint>;
 
 Get the router path for swapping between two currencies.
 
-```typescript
+```javascript
 async function getRouter(from: Currency, to: Currency): Promise<Currency[]>;
 ```
 
@@ -61,7 +56,7 @@ async function getRouter(from: Currency, to: Currency): Promise<Currency[]>;
 
 Get the amount of destination currency that will be received when swapping from one currency to another.
 
-```typescript
+```javascript
 async function getAmountTo(from: Currency, fromAmount: bigint, to: Currency): Promise<bigint>;
 ```
 
@@ -69,7 +64,7 @@ async function getAmountTo(from: Currency, fromAmount: bigint, to: Currency): Pr
 
 Perform a swap between two currencies using the specified route and amount.
 
-```typescript
+```javascript
 function runSwap(stxAddress: string, currencyX: Currency, currencyY: Currency, fromAmount: bigint, minDy: bigint, router: Currency[]): TxToBroadCast;
 ```
 
@@ -77,50 +72,9 @@ function runSwap(stxAddress: string, currencyX: Currency, currencyY: Currency, f
 
 Get the corresponding currency for a given address.
 
-```typescript
+```javascript
 function getCurrencyFrom(address: string): Currency | undefined;
 ```
-
-### getAddressFrom
-
-Get the corresponding currency for a given address.
-
-```typescript
-function getAddressFrom(currency: Exclude<Currency, Currency.STX>): string;
-```
-
-### isAlexSwapTransaction
-
-### getLatestPrices
-
-Get a list of token prices from Alex's price endpoint
-```typescript
-getLatestPrices(): Promise<
-  Partial<{
-    [currency in Currency]: number;
-  }>
->
-```
-It will do it's best to find the price, and where it can't, it will return undefined.
-
-Check if a transaction is a swap transaction from Alex
-```typescript
-function isAlexSwapTransaction(deployer: string, contractName: string, functionName: string): boolean;
-```
-
-### broadcastSponsoredTx
-
-Broadcast a sponsored transaction to Alex's sponsored tx services
-```typescript
-function broadcastSponsoredTx(txRaw: string): Promise<string>;
-````
-
-### isSponsoredSwapEnabled
-
-Check if alex's swap sponsor service is activated
-```typescript
-function isSponsoredSwapEnabled(): Promise<boolean>;
-````
 
 ## Installation
 
@@ -134,7 +88,7 @@ npm install alex-sdk
 
 To use the AlexSDK, you can import it into your project and instantiate a new object:
 
-```typescript
+```javascript
 import { AlexSDK, Currency } from 'alex-sdk';
 
 const alex = new AlexSDK();

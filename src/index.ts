@@ -1,3 +1,2 @@
-export * from './currency';
+export {Currency, STXCurrency} from './currency';
 export * from './alexSDK';
-export { TokenInfo } from './utils/tokenlist';

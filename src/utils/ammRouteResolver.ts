@@ -1,41 +1,36 @@
 import { isNotNull } from './utils';
-import { AMMSwapPool } from './ammPool';
+import { Currency } from '../currency';
+import { PoolData } from '../types';
 
 export type AMMSwapRoute = {
-  neighbour: AMMSwapPool.SwapTokens;
-  pool: AMMSwapPool.PoolTokens;
+  neighbour: Currency;
+  pool: PoolData;
 };
 
-function neighbours(
-  token: AMMSwapPool.SwapTokens,
-  pools: AMMSwapPool.PoolTokens[]
-): AMMSwapRoute[] {
+function neighbours(token: Currency, pools: PoolData[]): AMMSwapRoute[] {
   return pools
     .map((pool) => {
-      const [x, y] = AMMSwapPool.breakDown(pool);
-      if (x === token) return { neighbour: y, pool };
-      if (y === token) return { neighbour: x, pool };
+      if (pool.token_x === token) return { neighbour: pool.token_y, pool };
+      if (pool.token_y === token) return { neighbour: pool.token_x, pool };
       return null;
     })
     .filter(isNotNull);
 }
 
 export function resolveAmmRoute(
-  tokenX: AMMSwapPool.SwapTokens,
-  tokenY: AMMSwapPool.SwapTokens,
-  pools: AMMSwapPool.PoolTokens[]
+  tokenX: Currency,
+  tokenY: Currency,
+  pools: PoolData[]
 ): AMMSwapRoute[] {
   if (pools.length === 0) {
     return [];
   }
-  const visited: { [key in AMMSwapPool.SwapTokens]?: AMMSwapRoute[] } = {
+  const visited: { [key: string]: AMMSwapRoute[] } = {
     [tokenX]: [],
   };
   // contract only support up to 4 segments
   for (let i = 0; i < 4; i++) {
-    const visitedNodes = Object.keys(visited).map(
-      (a) => a as AMMSwapPool.SwapTokens
-    );
+    const visitedNodes = Object.keys(visited).map((a) => a as Currency);
     for (const a of visitedNodes) {
       for (const b of neighbours(a, pools)) {
         if (b.neighbour === tokenY) {

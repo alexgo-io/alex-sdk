@@ -1,47 +1,7 @@
-export enum Currency {
-  STX = 'token-wstx',
+export type Currency = `${string}.${string}` & { readonly brand: unique symbol };
 
-  ALEX = 'age000-governance-token',
-  USDA = 'token-wusda',
-  BANANA = 'token-wban',
-  XBTC = 'token-wbtc',
-  DIKO = 'token-wdiko',
-  SLIME = 'token-wslm',
-  XUSD = 'token-wxusd',
-  MIA = 'token-wmia',
-  NYCC = 'token-wnycc',
-  CORGI = 'token-wcorgi',
-  ATALEXV2 = 'auto-alex-v2',
-  sUSDT = 'token-susdt',
-  VIBES = 'token-wvibes',
-  aBTC = 'token-abtc',
-  sLUNR = 'token-slunr',
-  LEO = "token-wleo",
-  MEGA = "token-wmega-v2",
-  GUS = "token-wgus",
-  LONG = "token-wlong",
-  WNOTHING = "token-wnthng",
-  LQSTX = "token-wlqstx",
-  AEWBTC = "token-waewbtc",
-  MAX = "token-wmax",
-  PLAY = "token-wplay",
-  AEUSDC = "token-waeusdc",
-  PEPE = "token-wpepe",
-  MICK = "token-wmick",
-  NOPE = "token-wnope",
-  FAST = "token-wfast",
-  FRODO = "token-wfrodo",
-  PICSUM = "token-wpicsum",
-  WIF = "token-wwif",
-
-  BRC20_DB20 = "brc20-db20",
-  BRC20_ORMM = "brc20-ormm",
-  BRC20_CHAX = "brc20-chax",
-  BRC20_ORDG = "brc20-ordg",
-  BRC20_REOS = "brc20-reos",
-  BRC20_ORNJ = "brc20-ornj",
-
-  STX20_STXS = "stx20-stxs",
-
-  sSKO = "token-ssko",
+export function createCurrency(value: string): Currency {
+  return value as Currency;
 }
+
+export const STXCurrency = createCurrency('SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.token-wstx-v2')

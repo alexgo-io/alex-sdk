@@ -1,10 +1,10 @@
 import {
   callReadOnlyFunction,
-  ReadOnlyFunctionOptions,
   ClarityValue,
+  ReadOnlyFunctionOptions,
 } from '@stacks/transactions';
 import { configs } from '../config';
-import { StacksMainnet, StacksTestnet } from '@stacks/network';
+import { StacksMainnet } from '@stacks/network';
 import {
   ParameterObjOfDescriptor,
   ReadonlyFunctionDescriptor,
@@ -25,13 +25,9 @@ const defaultReadonlyCallExecutor: ReadonlyCallExecutor = async (options) => {
   return callReadOnlyFunction({
     ...options,
     senderAddress: configs.CONTRACT_DEPLOYER,
-    network: configs.IS_MAINNET
-      ? new StacksMainnet({
-          url: configs.API_HOST,
-        })
-      : new StacksTestnet({
-          url: configs.API_HOST,
-        }),
+    network: new StacksMainnet({
+      url: configs.READONLY_CALL_API_HOST,
+    }),
   });
 };
 

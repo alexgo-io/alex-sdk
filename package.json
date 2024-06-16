@@ -1,5 +1,5 @@
 {
-  "version": "0.1.28",
+  "version": "2.1.0-beta.5",
   "license": "MIT",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
@@ -11,18 +11,18 @@
     "node": ">=10"
   },
   "scripts": {
-    "start": "tsdx watch",
-    "build": "tsdx build",
-    "test": "tsdx test",
-    "lint": "tsdx lint",
-    "prepare": "tsdx build",
+    "start": "dts watch",
+    "build": "dts build",
+    "prepare": "pnpm run build",
+    "test": "dts test",
+    "lint": "dts lint",
     "size": "size-limit",
-    "gen:contract": "rm -rf src/generated/smartContract/*.ts && node ./scripts/gen-contract.ts",
+    "gen:contract": "rm -rf src/generated/smartContract/* && tsx ./scripts/gen-contract.ts",
     "analyze": "size-limit --why"
   },
   "husky": {
     "hooks": {
-      "pre-commit": "tsdx lint"
+      "pre-commit": "dts lint"
     }
   },
   "prettier": {
@@ -45,24 +45,26 @@
     }
   ],
   "dependencies": {
-    "clarity-codegen": "^0.3.5"
+    "clarity-codegen": "^0.5.2"
   },
   "peerDependencies": {
-    "@stacks/network": "*",
-    "@stacks/transactions": "*"
+    "@stacks/network": "^6.3.0",
+    "@stacks/transactions": "^6.2.0"
   },
   "devDependencies": {
     "@size-limit/preset-small-lib": "^8.2.4",
     "@stacks/network": "^6.3.0",
-    "@stacks/stacks-blockchain-api-types": "^7.1.7",
+    "@stacks/stacks-blockchain-api-types": "^7.11.0",
     "@stacks/transactions": "^6.2.0",
-    "@types/node": "^20.1.0",
+    "@types/jest": "^29.5.12",
+    "@types/node": "^20.14.2",
     "esm": "^3.2.25",
     "husky": "^8.0.3",
     "prettier": "^2.8.4",
     "size-limit": "^8.2.4",
-    "tsdx": "^0.14.1",
-    "tslib": "^2.5.0",
-    "typescript": "^4.9.5"
+    "dts-cli": "^2.0.5",
+    "tslib": "^2.6.3",
+    "tsx": "^4.15.5",
+    "typescript": "^5.4.5"
   }
 }

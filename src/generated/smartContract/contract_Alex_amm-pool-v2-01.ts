@@ -1,21 +1,22 @@
 
 import {
 defineContract,
-principalT,
+traitT,
 uintT,
 optionalT,
 responseSimpleT,
 tupleT,
+principalT,
 booleanT,
 noneT
 } from "../smartContractHelpers/codegenImport"
 
-export const ammSwapPoolV11 = defineContract({
-"amm-swap-pool-v1-1": {
+export const ammPoolV201 = defineContract({
+"amm-pool-v2-01": {
   'add-to-position': {
     input: [
-      { name: 'token-x-trait', type: principalT },
-      { name: 'token-y-trait', type: principalT },
+      { name: 'token-x-trait', type: traitT },
+      { name: 'token-y-trait', type: traitT },
       { name: 'factor', type: uintT },
       { name: 'dx', type: uintT },
       { name: 'max-dy', type: optionalT(uintT, ) }
@@ -25,14 +26,14 @@ export const ammSwapPoolV11 = defineContract({
   },
   'create-pool': {
     input: [
-      { name: 'token-x-trait', type: principalT },
-      { name: 'token-y-trait', type: principalT },
+      { name: 'token-x-trait', type: traitT },
+      { name: 'token-y-trait', type: traitT },
       { name: 'factor', type: uintT },
       { name: 'pool-owner', type: principalT },
       { name: 'dx', type: uintT },
       { name: 'dy', type: uintT }
     ],
-    output: responseSimpleT(booleanT, ),
+    output: responseSimpleT(tupleT({ dx: uintT, dy: uintT, supply: uintT }, ), ),
     mode: 'public'
   },
   pause: {
@@ -42,17 +43,12 @@ export const ammSwapPoolV11 = defineContract({
   },
   'reduce-position': {
     input: [
-      { name: 'token-x-trait', type: principalT },
-      { name: 'token-y-trait', type: principalT },
+      { name: 'token-x-trait', type: traitT },
+      { name: 'token-y-trait', type: traitT },
       { name: 'factor', type: uintT },
       { name: 'percent', type: uintT }
     ],
     output: responseSimpleT(tupleT({ dx: uintT, dy: uintT }, ), ),
-    mode: 'public'
-  },
-  'set-contract-owner': {
-    input: [ { name: 'owner', type: principalT } ],
-    output: responseSimpleT(booleanT, ),
     mode: 'public'
   },
   'set-end-block': {
@@ -81,16 +77,6 @@ export const ammSwapPoolV11 = defineContract({
       { name: 'token-y', type: principalT },
       { name: 'factor', type: uintT },
       { name: 'fee-rate-y', type: uintT }
-    ],
-    output: responseSimpleT(booleanT, ),
-    mode: 'public'
-  },
-  'set-fee-rebate': {
-    input: [
-      { name: 'token-x', type: principalT },
-      { name: 'token-y', type: principalT },
-      { name: 'factor', type: uintT },
-      { name: 'fee-rebate', type: uintT }
     ],
     output: responseSimpleT(booleanT, ),
     mode: 'public'
@@ -135,16 +121,6 @@ export const ammSwapPoolV11 = defineContract({
     output: responseSimpleT(booleanT, ),
     mode: 'public'
   },
-  'set-pool-owner': {
-    input: [
-      { name: 'token-x', type: principalT },
-      { name: 'token-y', type: principalT },
-      { name: 'factor', type: uintT },
-      { name: 'pool-owner', type: principalT }
-    ],
-    output: responseSimpleT(booleanT, ),
-    mode: 'public'
-  },
   'set-start-block': {
     input: [
       { name: 'token-x', type: principalT },
@@ -152,11 +128,6 @@ export const ammSwapPoolV11 = defineContract({
       { name: 'factor', type: uintT },
       { name: 'new-start-block', type: uintT }
     ],
-    output: responseSimpleT(booleanT, ),
-    mode: 'public'
-  },
-  'set-switch-threshold': {
-    input: [ { name: 'new-threshold', type: uintT } ],
     output: responseSimpleT(booleanT, ),
     mode: 'public'
   },
@@ -182,8 +153,8 @@ export const ammSwapPoolV11 = defineContract({
   },
   'swap-helper': {
     input: [
-      { name: 'token-x-trait', type: principalT },
-      { name: 'token-y-trait', type: principalT },
+      { name: 'token-x-trait', type: traitT },
+      { name: 'token-y-trait', type: traitT },
       { name: 'factor', type: uintT },
       { name: 'dx', type: uintT },
       { name: 'min-dy', type: optionalT(uintT, ) }
@@ -193,9 +164,9 @@ export const ammSwapPoolV11 = defineContract({
   },
   'swap-helper-a': {
     input: [
-      { name: 'token-x-trait', type: principalT },
-      { name: 'token-y-trait', type: principalT },
-      { name: 'token-z-trait', type: principalT },
+      { name: 'token-x-trait', type: traitT },
+      { name: 'token-y-trait', type: traitT },
+      { name: 'token-z-trait', type: traitT },
       { name: 'factor-x', type: uintT },
       { name: 'factor-y', type: uintT },
       { name: 'dx', type: uintT },
@@ -206,10 +177,10 @@ export const ammSwapPoolV11 = defineContract({
   },
   'swap-helper-b': {
     input: [
-      { name: 'token-x-trait', type: principalT },
-      { name: 'token-y-trait', type: principalT },
-      { name: 'token-z-trait', type: principalT },
-      { name: 'token-w-trait', type: principalT },
+      { name: 'token-x-trait', type: traitT },
+      { name: 'token-y-trait', type: traitT },
+      { name: 'token-z-trait', type: traitT },
+      { name: 'token-w-trait', type: traitT },
       { name: 'factor-x', type: uintT },
       { name: 'factor-y', type: uintT },
       { name: 'factor-z', type: uintT },
@@ -221,11 +192,11 @@ export const ammSwapPoolV11 = defineContract({
   },
   'swap-helper-c': {
     input: [
-      { name: 'token-x-trait', type: principalT },
-      { name: 'token-y-trait', type: principalT },
-      { name: 'token-z-trait', type: principalT },
-      { name: 'token-w-trait', type: principalT },
-      { name: 'token-v-trait', type: principalT },
+      { name: 'token-x-trait', type: traitT },
+      { name: 'token-y-trait', type: traitT },
+      { name: 'token-z-trait', type: traitT },
+      { name: 'token-w-trait', type: traitT },
+      { name: 'token-v-trait', type: traitT },
       { name: 'factor-x', type: uintT },
       { name: 'factor-y', type: uintT },
       { name: 'factor-z', type: uintT },
@@ -238,8 +209,8 @@ export const ammSwapPoolV11 = defineContract({
   },
   'swap-x-for-y': {
     input: [
-      { name: 'token-x-trait', type: principalT },
-      { name: 'token-y-trait', type: principalT },
+      { name: 'token-x-trait', type: traitT },
+      { name: 'token-y-trait', type: traitT },
       { name: 'factor', type: uintT },
       { name: 'dx', type: uintT },
       { name: 'min-dy', type: optionalT(uintT, ) }
@@ -249,8 +220,8 @@ export const ammSwapPoolV11 = defineContract({
   },
   'swap-y-for-x': {
     input: [
-      { name: 'token-x-trait', type: principalT },
-      { name: 'token-y-trait', type: principalT },
+      { name: 'token-x-trait', type: traitT },
+      { name: 'token-y-trait', type: traitT },
       { name: 'factor', type: uintT },
       { name: 'dy', type: uintT },
       { name: 'min-dx', type: optionalT(uintT, ) }
@@ -322,11 +293,6 @@ export const ammSwapPoolV11 = defineContract({
       { name: 'factor', type: uintT }
     ],
     output: responseSimpleT(tupleT({ 'balance-x': uintT, 'balance-y': uintT }, ), ),
-    mode: 'readonly'
-  },
-  'get-contract-owner': {
-    input: [],
-    output: responseSimpleT(principalT, ),
     mode: 'readonly'
   },
   'get-end-block': {
@@ -444,6 +410,7 @@ export const ammSwapPoolV11 = defineContract({
     output: responseSimpleT(uintT, ),
     mode: 'readonly'
   },
+  'get-max-ratio-limit': { input: [], output: uintT, mode: 'readonly' },
   'get-oracle-average': {
     input: [
       { name: 'token-x', type: principalT },
@@ -676,39 +643,14 @@ export const ammSwapPoolV11 = defineContract({
     output: responseSimpleT(uintT, ),
     mode: 'readonly'
   },
+  'is-blocklisted-or-default': {
+    input: [ { name: 'sender', type: principalT } ],
+    output: booleanT,
+    mode: 'readonly'
+  },
+  'is-dao-or-extension': { input: [], output: responseSimpleT(booleanT, ), mode: 'readonly' },
   'is-paused': { input: [], output: booleanT, mode: 'readonly' },
-  'pools-data-map': {
-    input: tupleT({ factor: uintT, 'token-x': principalT, 'token-y': principalT }, ),
-    output: optionalT(tupleT({
-      'balance-x': uintT,
-      'balance-y': uintT,
-      'end-block': uintT,
-      'fee-rate-x': uintT,
-      'fee-rate-y': uintT,
-      'fee-rebate': uintT,
-      'max-in-ratio': uintT,
-      'max-out-ratio': uintT,
-      'oracle-average': uintT,
-      'oracle-enabled': booleanT,
-      'oracle-resilient': uintT,
-      'pool-id': uintT,
-      'pool-owner': principalT,
-      'start-block': uintT,
-      'threshold-x': uintT,
-      'threshold-y': uintT,
-      'total-supply': uintT
-    }, ), ),
-    mode: 'mapEntry'
-  },
-  'pools-id-map': {
-    input: uintT,
-    output: optionalT(tupleT({ factor: uintT, 'token-x': principalT, 'token-y': principalT }, ), ),
-    mode: 'mapEntry'
-  },
-  'contract-owner': { input: noneT, output: principalT, mode: 'variable' },
-  paused: { input: noneT, output: booleanT, mode: 'variable' },
-  'pool-nonce': { input: noneT, output: uintT, mode: 'variable' },
-  'switch-threshold': { input: noneT, output: uintT, mode: 'variable' }
+  paused: { input: noneT, output: booleanT, mode: 'variable' }
 }
 } as const)
 

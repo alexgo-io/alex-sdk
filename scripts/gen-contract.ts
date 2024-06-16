@@ -1,18 +1,10 @@
-const { generateContracts } = require('clarity-codegen/lib/generate');
-const path = require('path');
+import { generateContracts } from 'clarity-codegen/lib/generate';
+import * as path from 'path';
 
 const API_HOST = 'https://stacks-node-api.alexlab.co';
-const CONTRACT_DEPLOYER = 'SP3K8BC0PPEVCV7NZ6QSRWPQ2JE9E5B6N3PA0KBR9';
+const CONTRACT_DEPLOYER = 'SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM';
 
-const contracts = [
-  'swap-helper-v1-02',
-  'swap-helper-v1-03',
-  'amm-swap-pool',
-  'amm-swap-pool-v1-1',
-  'token-amm-swap-pool',
-  'swap-helper-bridged',
-  'swap-helper-bridged-v1-1',
-];
+const contracts = ['amm-pool-v2-01'];
 
 (async function main() {
   await generateContracts(
