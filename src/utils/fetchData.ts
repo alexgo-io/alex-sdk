@@ -1,11 +1,11 @@
-import { PoolData, PriceData, TokenMapping } from '../types';
-import { createCurrency, Currency, STXCurrency } from '../currency';
+import { Currency } from '../currency';
 import type { AddressBalanceResponse } from '@stacks/stacks-blockchain-api-types';
 import { configs } from '../config';
 import { fromEntries, isNotNull } from './utils';
+import { AlexSDKResponse, PriceData, TokenInfo } from '../types';
 
-export async function getMappingData(): Promise<TokenMapping[]> {
-  return fetch(`${configs.API_HOST}/v2/public/token-mappings`)
+export async function getAlexSDKData(): Promise<AlexSDKResponse> {
+  return fetch('https://alex-sdk-api.alexlab.co')
     .then((r) => {
       if (r.ok) {
         return r.json();
@@ -15,25 +15,7 @@ export async function getMappingData(): Promise<TokenMapping[]> {
     .then((r: any) => r.data);
 }
 
-export async function getPoolData(): Promise<PoolData[]> {
-  return fetch(`${configs.API_HOST}/v2/public/pools`)
-    .then((r) => {
-      if (r.ok) {
-        return r.json();
-      }
-      throw new Error('Failed to fetch token mappings');
-    })
-    .then((x: any) =>
-      x.data.map(
-        (a: any): PoolData => ({
-          factor: BigInt(Math.round(a.factor * 1e8)),
-          token_x: a.token_x,
-          token_y: a.token_y,
-        })
-      )
-    );
-}
-export async function getPrices(mappings: TokenMapping[]): Promise<PriceData[]> {
+export async function getPrices(mappings: TokenInfo[]): Promise<PriceData[]> {
   return fetch(`${configs.API_HOST}/v2/public/token-prices`)
     .then((r) => {
       if (r.ok) {
@@ -42,41 +24,44 @@ export async function getPrices(mappings: TokenMapping[]): Promise<PriceData[]> 
       throw new Error('Failed to fetch token mappings');
     })
     .then((x: any) =>
-      x.data.map(
-        (a: any): PriceData | null => {
-          const token = mappings.find(b => b.wrapped_token === a.contract_id)?.token;
+      x.data
+        .map((a: any): PriceData | null => {
+          const token = mappings.find(
+            (b) => b.underlyingToken.split('::')[0] === a.contract_id
+          )?.id;
           if (token == null) {
-            return null
+            return null;
           }
-          return ({
+          return {
             token,
             price: a.last_price_usd,
-          });
-        }
-      ).filter(isNotNull)
+          };
+        })
+        .filter(isNotNull)
     );
 }
 
 export async function fetchBalanceForAccount(
   stxAddress: string,
-  tokenMappings: TokenMapping[]
+  tokenMappings: TokenInfo[]
 ): Promise<Partial<{ [currency in Currency]: bigint }>> {
   const response: AddressBalanceResponse = await fetch(
     `${configs.STACKS_API_HOST}/extended/v1/address/${stxAddress}/balances`
   ).then((a) => a.json());
   return fromEntries(
     tokenMappings.map((a) => {
-      if (a.token === STXCurrency) {
-        return [a.token, BigInt(response.stx.balance) * BigInt(100)];
+      if (a.id === Currency.STX) {
+        return [a.id, BigInt(response.stx.balance) * BigInt(100)];
       }
-      const fungibleToken = response.fungible_tokens[a.wrapped_token]?.balance;
+      const fungibleToken =
+        response.fungible_tokens[a.underlyingToken.split('::')[0]]?.balance;
       if (fungibleToken == null) {
-        return [a.token, BigInt(0)];
+        return [a.id, BigInt(0)];
       }
       return [
-        a.token,
+        a.id,
         (BigInt(fungibleToken) * BigInt(1e8)) /
-          BigInt(10 ** a.wrapped_token_decimals),
+          BigInt(10 ** a.underlyingTokenDecimals),
       ];
     })
   );

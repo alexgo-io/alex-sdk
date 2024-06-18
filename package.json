@@ -13,7 +13,7 @@
   "scripts": {
     "start": "dts watch",
     "build": "dts build",
-    "prepare": "pnpm run build",
+    "prepublishOnly": "pnpm run build",
     "test": "dts test",
     "lint": "dts lint",
     "size": "size-limit",

@@ -1,0 +1,429 @@
+{
+  "pools": [
+    {
+      "tokenX": "age000-governance-token",
+      "tokenY": "auto-alex-v2",
+      "factor": 100000000
+    },
+    {
+      "tokenX": "token-wstx",
+      "tokenY": "age000-governance-token",
+      "factor": 100000000
+    },
+    { "tokenX": "token-abtc", "tokenY": "token-wbtc", "factor": 5000000 },
+    { "tokenX": "token-wstx", "tokenY": "token-wcorgi", "factor": 100000000 },
+    { "tokenX": "token-wstx", "tokenY": "token-wbtc", "factor": 100000000 },
+    { "tokenX": "token-wstx", "tokenY": "token-wnycc", "factor": 100000000 },
+    { "tokenX": "token-susdt", "tokenY": "token-wxusd", "factor": 5000000 },
+    { "tokenX": "token-wstx", "tokenY": "token-wxusd", "factor": 100000000 },
+    { "tokenX": "token-wstx", "tokenY": "token-wmia", "factor": 100000000 },
+    { "tokenX": "token-abtc", "tokenY": "brc20-ordg", "factor": 100000000 },
+    {
+      "tokenX": "age000-governance-token",
+      "tokenY": "token-wdiko",
+      "factor": 100000000
+    },
+    { "tokenX": "token-abtc", "tokenY": "brc20-ornj", "factor": 100000000 },
+    { "tokenX": "token-susdt", "tokenY": "brc20-chax", "factor": 100000000 },
+    { "tokenX": "token-abtc", "tokenY": "brc20-ormm", "factor": 100000000 },
+    { "tokenX": "token-abtc", "tokenY": "token-ssko", "factor": 100000000 },
+    { "tokenX": "token-abtc", "tokenY": "brc20-tx20", "factor": 100000000 },
+    { "tokenX": "token-abtc", "tokenY": "brc20-db20", "factor": 100000000 },
+    { "tokenX": "token-wstx", "tokenY": "token-susdt", "factor": 100000000 },
+    {
+      "tokenX": "age000-governance-token",
+      "tokenY": "token-wusda",
+      "factor": 100000000
+    },
+    {
+      "tokenX": "age000-governance-token",
+      "tokenY": "token-wgus",
+      "factor": 100000000
+    },
+    {
+      "tokenX": "age000-governance-token",
+      "tokenY": "token-wpepe",
+      "factor": 100000000
+    },
+    {
+      "tokenX": "age000-governance-token",
+      "tokenY": "token-wlong",
+      "factor": 100000000
+    },
+    {
+      "tokenX": "age000-governance-token",
+      "tokenY": "token-wnope",
+      "factor": 100000000
+    },
+    {
+      "tokenX": "age000-governance-token",
+      "tokenY": "token-wmax",
+      "factor": 100000000
+    },
+    {
+      "tokenX": "age000-governance-token",
+      "tokenY": "token-wmega-v2",
+      "factor": 100000000
+    },
+    { "tokenX": "token-wxusd", "tokenY": "token-wusda", "factor": 5000000 },
+    {
+      "tokenX": "age000-governance-token",
+      "tokenY": "token-wban",
+      "factor": 100000000
+    },
+    {
+      "tokenX": "age000-governance-token",
+      "tokenY": "token-wslm",
+      "factor": 100000000
+    },
+    {
+      "tokenX": "age000-governance-token",
+      "tokenY": "token-wplay",
+      "factor": 100000000
+    },
+    {
+      "tokenX": "age000-governance-token",
+      "tokenY": "token-whashiko",
+      "factor": 100000000
+    },
+    {
+      "tokenX": "age000-governance-token",
+      "tokenY": "token-wmick",
+      "factor": 100000000
+    },
+    { "tokenX": "token-abtc", "tokenY": "brc20-trio", "factor": 100000000 },
+    { "tokenX": "token-wstx", "tokenY": "token-wlqstx", "factor": 5000000 },
+    {
+      "tokenX": "age000-governance-token",
+      "tokenY": "token-wwif",
+      "factor": 100000000
+    },
+    {
+      "tokenX": "age000-governance-token",
+      "tokenY": "token-wvibes",
+      "factor": 100000000
+    },
+    {
+      "tokenX": "age000-governance-token",
+      "tokenY": "token-wleo",
+      "factor": 100000000
+    }
+  ],
+  "tokens": [
+    {
+      "id": "token-wstx",
+      "name": "STX",
+      "icon": "https://images.ctfassets.net/frwmwlognk87/4gSg3vYkO4Vg5XXGJJc70W/9aa79522b1118fa14506375fe9fdcfaf/STX.svg",
+      "wrapTokenDecimals": 8,
+      "wrapToken": "SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.token-wstx-v2::wstx",
+      "underlyingToken": "SP3K8BC0PPEVCV7NZ6QSRWPQ2JE9E5B6N3PA0KBR9.token-wstx::wstx",
+      "underlyingTokenDecimals": 6
+    },
+    {
+      "id": "token-wbtc",
+      "name": "xBTC",
+      "icon": "https://images.ctfassets.net/frwmwlognk87/1DVlt1M6hFOhHZG3XOjxF6/c428b9ee69d3ce9dc32844606ea9831b/XBTC.svg",
+      "wrapTokenDecimals": 8,
+      "wrapToken": "SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.token-wxbtc::wxbtc",
+      "underlyingToken": "SP3DX3H4FEYZJZ586MFBS25ZW3HZDMEW92260R2PR.Wrapped-Bitcoin::wrapped-bitcoin",
+      "underlyingTokenDecimals": 8
+    },
+    {
+      "id": "age000-governance-token",
+      "name": "ALEX",
+      "icon": "https://images.ctfassets.net/frwmwlognk87/66AVnxb2drR9ofypuV3y2r/1f223e16a7236dfa0ea4b8e0259c35c8/alex.svg",
+      "wrapTokenDecimals": 8,
+      "wrapToken": "SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.token-alex::alex",
+      "underlyingToken": "SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.token-alex::alex",
+      "underlyingTokenDecimals": 8
+    },
+    {
+      "id": "token-wxusd",
+      "name": "xUSD",
+      "icon": "https://images.ctfassets.net/frwmwlognk87/7a2ViAHl6EiTiVep0o7GCy/34d12e049b000ba0ca67760e3e9b169f/type_xUSD.svg",
+      "wrapTokenDecimals": 8,
+      "wrapToken": "SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.token-wxusd::wxusd",
+      "underlyingToken": "SP2TZK01NKDC89J6TA56SA47SDF7RTHYEQ79AAB9A.Wrapped-USD::wrapped-usd",
+      "underlyingTokenDecimals": 8
+    },
+    {
+      "id": "token-wmia",
+      "name": "MIA",
+      "icon": "https://images.ctfassets.net/frwmwlognk87/1aM0cFGHahiadjukDbYcYx/d3b64df0cadc28454fbfecbfeac7d8a2/mia.svg",
+      "wrapTokenDecimals": 8,
+      "wrapToken": "SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.token-wmia::wmia",
+      "underlyingToken": "SP1H1733V5MZ3SZ9XRW9FKYGEZT0JDGEB8Y634C7R.miamicoin-token-v2::miamicoin",
+      "underlyingTokenDecimals": 6
+    },
+    {
+      "id": "token-wnycc",
+      "name": "NYC",
+      "icon": "https://images.ctfassets.net/frwmwlognk87/4UTCc0UvDe5wqtaWxF9fsl/94ca6ae134d9368664aa91a8b4026ee0/nyc-reexport.svg",
+      "wrapTokenDecimals": 8,
+      "wrapToken": "SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.token-wnyc::wnyc",
+      "underlyingToken": "SPSCWDV3RKV5ZRN1FQD84YE1NQFEDJ9R1F4DYQ11.newyorkcitycoin-token-v2::newyorkcitycoin",
+      "underlyingTokenDecimals": 6
+    },
+    {
+      "id": "token-wcorgi",
+      "name": "WELSH",
+      "icon": "https://images.ctfassets.net/frwmwlognk87/0CWd4L2Gx6eqqbfOh98Tr/b3a2949801cf21399bcf84dafeea801f/welsh_tokenlogo.png",
+      "wrapTokenDecimals": 8,
+      "wrapToken": "SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.token-wcorgi::wcorgi",
+      "underlyingToken": "SP3NE50GEXFG9SZGTT51P40X2CKYSZ5CC4ZTZ7A2G.welshcorgicoin-token::welshcorgicoin",
+      "underlyingTokenDecimals": 6
+    },
+    {
+      "id": "token-susdt",
+      "name": "sUSDT",
+      "icon": "https://images.ctfassets.net/frwmwlognk87/2eP1ea7DID9FetHiEOTaO7/8b594dcf7d81bfaba42ad6e6a0194275/token.svg",
+      "wrapTokenDecimals": 8,
+      "wrapToken": "SP2XD7417HGPRTREMKF748VNEQPDRR0RMANB7X1NK.token-susdt::bridged-usdt",
+      "underlyingToken": "SP2XD7417HGPRTREMKF748VNEQPDRR0RMANB7X1NK.token-susdt::bridged-usdt",
+      "underlyingTokenDecimals": 8
+    },
+    {
+      "id": "token-wdiko",
+      "name": "DIKO",
+      "icon": "https://images.ctfassets.net/frwmwlognk87/2PdRx3UFRwpDcUvHM9hOA/693d6354e7752a166d3304f8b856e605/diko.svg",
+      "wrapTokenDecimals": 8,
+      "wrapToken": "SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.token-wdiko::wdiko",
+      "underlyingToken": "SP2C2YFP12AJZB4MABJBAJ55XECVS7E4PMMZ89YZR.arkadiko-token::diko",
+      "underlyingTokenDecimals": 6
+    },
+    {
+      "id": "token-wusda",
+      "name": "USDA",
+      "icon": "https://images.ctfassets.net/frwmwlognk87/CD2wPHj7KYZKW1oO8RoX1/0df1f7f69bd5e1daa9760ce598ed8343/USDA.svg",
+      "wrapTokenDecimals": 8,
+      "wrapToken": "SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.token-wusda::wusda",
+      "underlyingToken": "SP2C2YFP12AJZB4MABJBAJ55XECVS7E4PMMZ89YZR.usda-token::usda",
+      "underlyingTokenDecimals": 6
+    },
+    {
+      "id": "auto-alex-v2",
+      "name": "atALEXv2",
+      "icon": "https://images.ctfassets.net/frwmwlognk87/3D9PGDItwj9ceb2t1ocpHu/60a99f2dbc07df118f280a75aaf6d843/type_atALEXv2.png",
+      "wrapTokenDecimals": 8,
+      "wrapToken": "SP3K8BC0PPEVCV7NZ6QSRWPQ2JE9E5B6N3PA0KBR9.auto-alex-v2::auto-alex-v2",
+      "underlyingToken": "SP3K8BC0PPEVCV7NZ6QSRWPQ2JE9E5B6N3PA0KBR9.auto-alex-v2::auto-alex-v2",
+      "underlyingTokenDecimals": 8
+    },
+    {
+      "id": "brc20-chax",
+      "name": "CHAX",
+      "icon": "https://images.ctfassets.net/frwmwlognk87/G9masn8HHScnhhlFp5HaP/ca601a578cb6417960688f53f83cd470/logo.svg",
+      "wrapTokenDecimals": 8,
+      "wrapToken": "SP3K8BC0PPEVCV7NZ6QSRWPQ2JE9E5B6N3PA0KBR9.brc20-chax::brc20-chax",
+      "underlyingToken": "SP3K8BC0PPEVCV7NZ6QSRWPQ2JE9E5B6N3PA0KBR9.brc20-chax::brc20-chax",
+      "underlyingTokenDecimals": 8
+    },
+    {
+      "id": "brc20-ordg",
+      "name": "ORDG",
+      "icon": "https://images.ctfassets.net/frwmwlognk87/4IHVeMevpesMr1i38sycfz/53c669810394151c67733e24f2fa5651/ORDG_icon_large.png",
+      "wrapTokenDecimals": 8,
+      "wrapToken": "SP3K8BC0PPEVCV7NZ6QSRWPQ2JE9E5B6N3PA0KBR9.brc20-ordg::brc20-ordg",
+      "underlyingToken": "SP3K8BC0PPEVCV7NZ6QSRWPQ2JE9E5B6N3PA0KBR9.brc20-ordg::brc20-ordg",
+      "underlyingTokenDecimals": 8
+    },
+    {
+      "id": "brc20-ormm",
+      "name": "ORMM",
+      "icon": "https://images.ctfassets.net/frwmwlognk87/2RqydiGw6WIAUaDnq2oSbt/82157b3831ef2ddf1e9c4bf060c49947/ORMM-2.png",
+      "wrapTokenDecimals": 8,
+      "wrapToken": "SP3K8BC0PPEVCV7NZ6QSRWPQ2JE9E5B6N3PA0KBR9.brc20-ormm::brc20-ormm",
+      "underlyingToken": "SP3K8BC0PPEVCV7NZ6QSRWPQ2JE9E5B6N3PA0KBR9.brc20-ormm::brc20-ormm",
+      "underlyingTokenDecimals": 8
+    },
+    {
+      "id": "brc20-ornj",
+      "name": "ORNJ",
+      "icon": "https://images.ctfassets.net/frwmwlognk87/3UZiZVSZpcFSYqw7csCkPb/9359ee6d914db78aff7cf06cbf5a35e1/Orange_Pill_Avatar_3D_Round.png",
+      "wrapTokenDecimals": 8,
+      "wrapToken": "SP3K8BC0PPEVCV7NZ6QSRWPQ2JE9E5B6N3PA0KBR9.brc20-ornj::brc20-ornj",
+      "underlyingToken": "SP3K8BC0PPEVCV7NZ6QSRWPQ2JE9E5B6N3PA0KBR9.brc20-ornj::brc20-ornj",
+      "underlyingTokenDecimals": 8
+    },
+    {
+      "id": "brc20-db20",
+      "name": "$B20",
+      "icon": "https://images.ctfassets.net/frwmwlognk87/6ieKOUbDlX4Be6v0Qnbjwy/f1af270b312827ad378e3e80baea393b/B20_Token_round.svg",
+      "wrapTokenDecimals": 8,
+      "wrapToken": "SP3K8BC0PPEVCV7NZ6QSRWPQ2JE9E5B6N3PA0KBR9.brc20-db20::brc20-db20",
+      "underlyingToken": "SP3K8BC0PPEVCV7NZ6QSRWPQ2JE9E5B6N3PA0KBR9.brc20-db20::brc20-db20",
+      "underlyingTokenDecimals": 8
+    },
+    {
+      "id": "token-ssko",
+      "name": "SKO",
+      "icon": "https://images.ctfassets.net/frwmwlognk87/75I14zAh81cFnJmlqBNoeX/68dcb6e031732344bad8b5cba9b7e36d/SKO-Sugar_token.png",
+      "wrapTokenDecimals": 8,
+      "wrapToken": "SP2XD7417HGPRTREMKF748VNEQPDRR0RMANB7X1NK.token-ssko::bridged-sko",
+      "underlyingToken": "SP2XD7417HGPRTREMKF748VNEQPDRR0RMANB7X1NK.token-ssko::bridged-sko",
+      "underlyingTokenDecimals": 8
+    },
+    {
+      "id": "brc20-tx20",
+      "name": "TX20",
+      "icon": "https://images.ctfassets.net/frwmwlognk87/4tnn7N5Hoagib5CKHJ2ax9/3ae01b1d68d4b8e98f899550c161e7c5/Trex20_Token_Ticker.png",
+      "wrapTokenDecimals": 8,
+      "wrapToken": "SP3K8BC0PPEVCV7NZ6QSRWPQ2JE9E5B6N3PA0KBR9.brc20-tx20::brc20-tx20",
+      "underlyingToken": "SP3K8BC0PPEVCV7NZ6QSRWPQ2JE9E5B6N3PA0KBR9.brc20-tx20::brc20-tx20",
+      "underlyingTokenDecimals": 8
+    },
+    {
+      "id": "token-wgus",
+      "name": "GUS",
+      "icon": "https://images.ctfassets.net/frwmwlognk87/4BsawO40u92SqXTE4f8y3S/1c96241d3b5590e8e419cb4e931db3d6/GUS_Logo_1.svg",
+      "wrapTokenDecimals": 8,
+      "wrapToken": "SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.token-wgus::wgus",
+      "underlyingToken": "SP1JFFSYTSH7VBM54K29ZFS9H4SVB67EA8VT2MYJ9.gus-token::gus",
+      "underlyingTokenDecimals": 6
+    },
+    {
+      "id": "token-wpepe",
+      "name": "PEPE",
+      "icon": "https://images.ctfassets.net/frwmwlognk87/7JrWwzni1RfxnEKBHcMJYF/ebb762191b18e074850d59487cb8ad0a/photo_2024-03-19_00-02-32_1.png",
+      "wrapTokenDecimals": 8,
+      "wrapToken": "SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.token-wpepe::wpepe",
+      "underlyingToken": "SP1Z92MPDQEWZXW36VX71Q25HKF5K2EPCJ304F275.tokensoft-token-v4k68639zxz::tokensoft-token",
+      "underlyingTokenDecimals": 3
+    },
+    {
+      "id": "token-wlong",
+      "name": "LONG",
+      "icon": "https://images.ctfassets.net/frwmwlognk87/4gKhLHw09nsWjmPlufTjmT/d5432569911d82c3052755b77e0f64dc/LONGcoin-image-2.png",
+      "wrapTokenDecimals": 8,
+      "wrapToken": "SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.token-wlong::wlong",
+      "underlyingToken": "SP265WBWD4NH7TVPYQTVD23X3607NNK4484DTXQZ3.longcoin::longcoin",
+      "underlyingTokenDecimals": 6
+    },
+    {
+      "id": "token-wnope",
+      "name": "NOT",
+      "icon": "https://images.ctfassets.net/frwmwlognk87/43mQaoU8JsfWr5HPWQZN5b/7f56c9d5837e03c3d4535ba073ba1c64/image_1819.png",
+      "wrapTokenDecimals": 8,
+      "wrapToken": "SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.token-wnot::wnot",
+      "underlyingToken": "SP32AEEF6WW5Y0NMJ1S8SBSZDAY8R5J32NBZFPKKZ.nope::NOT",
+      "underlyingTokenDecimals": 0
+    },
+    {
+      "id": "token-wmax",
+      "name": "MAX",
+      "icon": "https://images.ctfassets.net/frwmwlognk87/HWVqVVCcoRu1g2WfgeqHQ/09f55ceb495af673b4b15132289d25c9/MAX_logo.svg",
+      "wrapTokenDecimals": 8,
+      "wrapToken": "SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.token-wmax::wmax",
+      "underlyingToken": "SP7V1SE7EA3ZG3QTWSBA2AAG8SRHEYJ06EBBD1J2.max-token::max",
+      "underlyingTokenDecimals": 6
+    },
+    {
+      "id": "token-wmega-v2",
+      "name": "MEGA",
+      "icon": "https://images.ctfassets.net/frwmwlognk87/2WN3R26iNr3ECw81NzQ30s/edb2a99f50a0752f8e0213da299c90e8/Round.png",
+      "wrapTokenDecimals": 8,
+      "wrapToken": "SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.token-wmega::wmega",
+      "underlyingToken": "SP3D6PV2ACBPEKYJTCMH7HEN02KP87QSP8KTEH335.mega::mega",
+      "underlyingTokenDecimals": 2
+    },
+    {
+      "id": "token-abtc",
+      "name": "aBTC",
+      "icon": "https://images.ctfassets.net/frwmwlognk87/GYpzIAYIiFLOGQtfAUbGE/37ba1274539f0ee150bc70141e37cc10/aBTC.svg",
+      "wrapTokenDecimals": 8,
+      "wrapToken": "SP2XD7417HGPRTREMKF748VNEQPDRR0RMANB7X1NK.token-abtc::bridged-btc",
+      "underlyingToken": "SP2XD7417HGPRTREMKF748VNEQPDRR0RMANB7X1NK.token-abtc::bridged-btc",
+      "underlyingTokenDecimals": 8
+    },
+    {
+      "id": "token-wban",
+      "name": "BANANA",
+      "icon": "https://images.ctfassets.net/frwmwlognk87/1hmx3vgBUjCuf5TdC27sWu/fd10565fa2549c406cdefb84495f912e/BANANA.svg",
+      "wrapTokenDecimals": 8,
+      "wrapToken": "SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.token-wban::wban",
+      "underlyingToken": "SP2KAF9RF86PVX3NEE27DFV1CQX0T4WGR41X3S45C.btc-monkeys-bananas::BANANA",
+      "underlyingTokenDecimals": 6
+    },
+    {
+      "id": "token-wslm",
+      "name": "SLIME",
+      "icon": "https://images.ctfassets.net/frwmwlognk87/2V50JwTfywuU2liZlWYdqg/4b9bd5306dad78ab5b044f000d863794/Untitled.png",
+      "wrapTokenDecimals": 8,
+      "wrapToken": "SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.token-wslm::wslm",
+      "underlyingToken": "SP125J1ADVYWGWB9NQRCVGKYAG73R17ZNMV17XEJ7.slime-token::SLIME",
+      "underlyingTokenDecimals": 6
+    },
+    {
+      "id": "token-wplay",
+      "name": "PLAY",
+      "icon": "https://images.ctfassets.net/frwmwlognk87/4ihcL3Vkd1jnvQoYc7hBea/1c021b828ab72f7a31a80d16ebdfd4a6/play_logo.png",
+      "wrapTokenDecimals": 8,
+      "wrapToken": "SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.token-wplay::wplay",
+      "underlyingToken": "SP1PW804599BZ46B4A0FYH86ED26XPJA7SFYNK1XS.play::play",
+      "underlyingTokenDecimals": 6
+    },
+    {
+      "id": "token-whashiko",
+      "name": "HASHIKO",
+      "icon": "https://images.ctfassets.net/frwmwlognk87/1yyegtAtYFdTE17bDEdWR6/119b598c4515a6850b5265de460ebd7d/photo_2024-06-11_18.33.13.jpeg",
+      "wrapTokenDecimals": 8,
+      "wrapToken": "SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.token-whashiko::token-whashiko",
+      "underlyingToken": "SP28NB976TJHHGF4218KT194NPWP9N1X3WY516Z1P.Hashiko::hashiko",
+      "underlyingTokenDecimals": 0
+    },
+    {
+      "id": "token-wmick",
+      "name": "MICK",
+      "icon": "https://images.ctfassets.net/frwmwlognk87/7ta4KUC6H7LP81Tiv0unki/e09daa06a81e52a1bf336745651ea6d6/coin.png",
+      "wrapTokenDecimals": 8,
+      "wrapToken": "SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.token-wmick::wmick",
+      "underlyingToken": "SP2Y8T3TR3FKH3Y2FPZVNQAEKNJXKWVS4RVQF48JE.stakemouse::stakemouse",
+      "underlyingTokenDecimals": 6
+    },
+    {
+      "id": "brc20-trio",
+      "name": "TRIO",
+      "icon": "https://images.ctfassets.net/frwmwlognk87/4RypjV9kQxyOoRAflnWfT/4fcca8ff22753ad380ceef66f6edeadc/Trio-Token-Logo.png",
+      "wrapTokenDecimals": 8,
+      "wrapToken": "SP3K8BC0PPEVCV7NZ6QSRWPQ2JE9E5B6N3PA0KBR9.brc20-trio::brc20-trio",
+      "underlyingToken": "SP3K8BC0PPEVCV7NZ6QSRWPQ2JE9E5B6N3PA0KBR9.brc20-trio::brc20-trio",
+      "underlyingTokenDecimals": 8
+    },
+    {
+      "id": "token-wlqstx",
+      "name": "LiSTX",
+      "icon": "https://images.ctfassets.net/frwmwlognk87/4iZlQpJZpSJCAEhMqEhOCo/940dcaef06dbb64bd878bb75179d5cd2/token.svg",
+      "wrapTokenDecimals": 8,
+      "wrapToken": "SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.token-wlqstx-v3::wlqstx",
+      "underlyingToken": "SM26NBC8SFHNW4P1Y4DFH27974P56WN86C92HPEHH.token-lqstx::lqstx",
+      "underlyingTokenDecimals": 6
+    },
+    {
+      "id": "token-wwif",
+      "name": "WIF",
+      "icon": "https://images.ctfassets.net/frwmwlognk87/3lxvEmZJz6Lc0uJk9qEuHp/8d4afd30713cbb5811da14d765ffeddc/WIFBTC.svg",
+      "wrapTokenDecimals": 8,
+      "wrapToken": "SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.token-wwif::wwif",
+      "underlyingToken": "SP3WPNAEBYMX06RQNNYTH5PTJ1FRGX5A13ZZMZ01D.dogwifhat-token::wif",
+      "underlyingTokenDecimals": 6
+    },
+    {
+      "id": "token-wvibes",
+      "name": "VIBES",
+      "icon": "https://images.ctfassets.net/frwmwlognk87/1DpuZEVOzSh2eIV84Qo1dk/46787c8c4a92b7f29c73149b18213bcc/image.png",
+      "wrapTokenDecimals": 8,
+      "wrapToken": "SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.token-wvibes::wvibes",
+      "underlyingToken": "SP27BB1Y2DGSXZHS7G9YHKTSH6KQ6BD3QG0AN3CR9.vibes-token::vibes-token",
+      "underlyingTokenDecimals": 8
+    },
+    {
+      "id": "token-wleo",
+      "name": "LEO",
+      "icon": "https://images.ctfassets.net/frwmwlognk87/7FbJB0n9quSMYi8Pa3aOzi/09e5bb3d955bd45e9be9b5154a2967c3/ltc-v1.png",
+      "wrapTokenDecimals": 8,
+      "wrapToken": "SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.token-wleo::wleo",
+      "underlyingToken": "SP1AY6K3PQV5MRT6R4S671NWW2FRVPKM0BR162CT6.leo-token::leo",
+      "underlyingTokenDecimals": 6
+    }
+  ]
+}

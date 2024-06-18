@@ -11,7 +11,7 @@ import {
 import { AlexContracts } from '../generated/smartContract/contracts_Alex';
 import { configs } from '../config';
 import { Currency } from '../currency';
-import { PoolData, TokenMapping } from '../types';
+import { PoolData, TokenInfo } from '../types';
 import { resolveAmmRoute } from '../utils/ammRouteResolver';
 import { transferFactory } from '../utils/postConditions';
 
@@ -59,7 +59,7 @@ export function runSpot(
   fromAmount: bigint,
   minDy: bigint,
   ammPools: PoolData[],
-  mappings: TokenMapping[]
+  mappings: TokenInfo[]
 ): TxToBroadCast {
   const AlexVault = `${configs.CONTRACT_DEPLOYER}.amm-vault-v2-01`;
   const ammRoute = resolveAmmRoute(currencyX, currencyY, ammPools);

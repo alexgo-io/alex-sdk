@@ -1,11 +1,10 @@
-import { createCurrency, Currency } from './currency';
+import { Currency } from './currency';
 import { runSpot, TxToBroadCast } from './helpers/SwapHelper';
 import { getLiquidityProviderFee } from './helpers/FeeHelper';
-import { PoolData, PriceData, TokenMapping } from './types';
+import { AlexSDKResponse, PoolData, PriceData, TokenInfo } from './types';
 import {
   fetchBalanceForAccount,
-  getMappingData,
-  getPoolData,
+  getAlexSDKData,
   getPrices,
 } from './utils/fetchData';
 import { getRoute } from './helpers/RouteHelper';
@@ -13,30 +12,29 @@ import { getYAmountFromXAmount } from './helpers/RateHelper';
 import { fromEntries } from './utils/utils';
 
 export class AlexSDK {
-  tokenMappings?: Promise<TokenMapping[]>;
-  pools?: Promise<PoolData[]>;
+  alexSDKData?: Promise<AlexSDKResponse>;
 
-  private async getTokenMappings(): Promise<TokenMapping[]> {
-    if (this.tokenMappings == null) {
-      this.tokenMappings = getMappingData();
+  private async getAlexSDKData(): Promise<AlexSDKResponse> {
+    if (this.alexSDKData == null) {
+      this.alexSDKData = getAlexSDKData();
     }
-    return this.tokenMappings;
+    return this.alexSDKData;
+  }
+
+  private async getTokenInfos(): Promise<TokenInfo[]> {
+    return (await this.getAlexSDKData()).tokens;
   }
 
   private async getPools(): Promise<PoolData[]> {
-    if (this.pools == null) {
-      this.pools = getPoolData();
-    }
-    return this.pools;
+    return (await this.getAlexSDKData()).pools;
+  }
+
+  fetchSwappableCurrency(): Promise<TokenInfo[]> {
+    return this.getTokenInfos();
   }
 
   private async getPrices(): Promise<PriceData[]> {
-    return getPrices(await this.getTokenMappings());
-  }
-
-  async getListAllCurrency(): Promise<Currency[]> {
-    const mappings = await this.getTokenMappings();
-    return mappings.map((x) => x.token).map(createCurrency);
+    return getPrices(await this.getTokenInfos());
   }
 
   async getFeeRate(from: Currency, to: Currency): Promise<bigint> {
@@ -69,7 +67,7 @@ export class AlexSDK {
       fromAmount,
       minDy,
       await this.getPools(),
-      await this.getTokenMappings()
+      await this.getTokenInfos()
     );
   }
 
@@ -85,6 +83,6 @@ export class AlexSDK {
   async getBalances(
     stxAddress: string
   ): Promise<Partial<{ [currency in Currency]: bigint }>> {
-    return fetchBalanceForAccount(stxAddress, await this.getTokenMappings());
+    return fetchBalanceForAccount(stxAddress, await this.getTokenInfos());
   }
 }

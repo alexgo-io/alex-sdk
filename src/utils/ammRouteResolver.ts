@@ -10,8 +10,8 @@ export type AMMSwapRoute = {
 function neighbours(token: Currency, pools: PoolData[]): AMMSwapRoute[] {
   return pools
     .map((pool) => {
-      if (pool.token_x === token) return { neighbour: pool.token_y, pool };
-      if (pool.token_y === token) return { neighbour: pool.token_x, pool };
+      if (pool.tokenX === token) return { neighbour: pool.tokenY, pool };
+      if (pool.tokenY === token) return { neighbour: pool.tokenX, pool };
       return null;
     })
     .filter(isNotNull);

@@ -1,8 +1,7 @@
 import { unwrapResponse } from 'clarity-codegen';
 import { readonlyCall } from '../utils/readonlyCallExecutor';
 import { Currency } from '../currency';
-import { AlexSDK } from '../alexSDK';
-import { PoolData, TokenMapping } from '../types';
+import { PoolData } from '../types';
 import { resolveAmmRoute } from '../utils/ammRouteResolver';
 
 export async function getLiquidityProviderFee(

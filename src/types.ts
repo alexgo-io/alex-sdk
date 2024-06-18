@@ -1,21 +1,27 @@
 import { Currency } from './currency';
 
-export type TokenMapping = {
-  token: Currency;
-  token_decimals: 8;
-  token_asset: string;
-  wrapped_token: string;
-  wrapped_token_decimals: number;
-  wrapped_token_asset: string;
+export type TokenInfo = {
+  id: Currency;
+  name: string;
+  icon: string;
+  wrapToken: string;
+  wrapTokenDecimals: number;
+  underlyingToken: string;
+  underlyingTokenDecimals: number;
 };
 
 export type PoolData = {
-  token_x: Currency;
-  token_y: Currency;
+  tokenX: Currency;
+  tokenY: Currency;
   factor: bigint;
 };
 
 export type PriceData = {
   token: Currency;
-  price: number
-}
+  price: number;
+};
+
+export type AlexSDKResponse = {
+  tokens: TokenInfo[];
+  pools: PoolData[];
+};

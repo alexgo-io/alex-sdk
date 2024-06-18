@@ -1,2 +1,2 @@
-export {Currency, STXCurrency} from './currency';
+export { Currency } from './currency';
 export * from './alexSDK';
