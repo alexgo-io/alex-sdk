@@ -3,6 +3,14 @@ import type { AddressBalanceResponse } from '@stacks/stacks-blockchain-api-types
 import { configs } from '../config';
 import { fromEntries, isNotNull } from './utils';
 import { AlexSDKResponse, PriceData, TokenInfo } from '../types';
+import { callReadOnlyFunction } from '@stacks/transactions';
+import { StacksMainnet } from '@stacks/network';
+import {
+  principalCV,
+  responseSimpleT,
+  uintT,
+  unwrapResponse,
+} from 'clarity-codegen';
 
 export async function getAlexSDKData(): Promise<AlexSDKResponse> {
   return fetch('https://alex-sdk-api.alexlab.co').then((r) => {
@@ -47,20 +55,46 @@ export async function fetchBalanceForAccount(
     `${configs.STACKS_API_HOST}/extended/v1/address/${stxAddress}/balances`
   ).then((a) => a.json());
   return fromEntries(
-    tokenMappings.map((a) => {
-      if (a.id === Currency.STX) {
-        return [a.id, BigInt(response.stx.balance) * BigInt(100)];
-      }
-      const fungibleToken =
-        response.fungible_tokens[a.underlyingToken.split('::')[0]]?.balance;
-      if (fungibleToken == null) {
-        return [a.id, BigInt(0)];
-      }
-      return [
-        a.id,
-        (BigInt(fungibleToken) * BigInt(1e8)) /
-          BigInt(10 ** a.underlyingTokenDecimals),
-      ];
-    })
+    await Promise.all(
+      tokenMappings.map(async (a) => {
+        if (a.isRebaseToken) {
+          // call readonly functions to get the correct balance
+          const [contractAddr, contractName] = a.underlyingToken
+            .split('::')[0]
+            .split('.');
+          const response = await callReadOnlyFunction({
+            senderAddress: stxAddress,
+            contractAddress: contractAddr,
+            contractName: contractName,
+            functionName: 'get-balance',
+            functionArgs: [principalCV(stxAddress)],
+            network: new StacksMainnet({
+              url: configs.READONLY_CALL_API_HOST,
+            }),
+          });
+          const amount = unwrapResponse(
+            responseSimpleT(uintT).decode(response)
+          );
+          return [
+            a.id,
+            (BigInt(amount) * BigInt(1e8)) /
+              BigInt(10 ** a.underlyingTokenDecimals),
+          ];
+        }
+        if (a.id === Currency.STX) {
+          return [a.id, BigInt(response.stx.balance) * BigInt(100)];
+        }
+        const fungibleToken =
+          response.fungible_tokens[a.underlyingToken.split('::')[0]]?.balance;
+        if (fungibleToken == null) {
+          return [a.id, BigInt(0)];
+        }
+        return [
+          a.id,
+          (BigInt(fungibleToken) * BigInt(1e8)) /
+            BigInt(10 ** a.underlyingTokenDecimals),
+        ];
+      })
+    )
   );
 }

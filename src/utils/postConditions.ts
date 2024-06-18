@@ -21,9 +21,15 @@ export const transferFactory =
       throw new Error('Token mapping not found');
     }
     const scale = BigInt(10 ** mapping.underlyingTokenDecimals);
-    const nativeAmount = (amount * BigInt(scale)) / BigInt(1e8);
+    let nativeAmount = (amount * BigInt(scale)) / BigInt(1e8);
     if (currency === Currency.STX) {
       return createSTXPostCondition(senderAddress, compare, nativeAmount);
+    }
+    if (mapping.isRebaseToken) {
+      // Currently the rebase token's ft-amount is different from actual amount
+      // We have to fallback to a weak PostCondition for them
+      compare = FungibleConditionCode.GreaterEqual;
+      nativeAmount = BigInt(0);
     }
     return createFungiblePostCondition(
       senderAddress,

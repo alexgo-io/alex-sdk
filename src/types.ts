@@ -8,6 +8,7 @@ export type TokenInfo = {
   wrapTokenDecimals: number;
   underlyingToken: string;
   underlyingTokenDecimals: number;
+  isRebaseToken: boolean;
 };
 
 export type PoolData = {
