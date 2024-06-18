@@ -1,13 +1,14 @@
 import { unwrapResponse } from 'clarity-codegen';
 import { readonlyCall } from '../utils/readonlyCallExecutor';
 import { Currency } from '../currency';
-import { PoolData } from '../types';
+import { PoolData, TokenInfo } from '../types';
 import { resolveAmmRoute } from '../utils/ammRouteResolver';
 
 export async function getLiquidityProviderFee(
   tokenX: Currency,
   tokenY: Currency,
-  pools: PoolData[]
+  pools: PoolData[],
+  getContractId: (currency: Currency) => string
 ): Promise<bigint> {
   const ammRoute = resolveAmmRoute(tokenX, tokenY, pools);
   if (ammRoute.length === 0) {
@@ -15,26 +16,26 @@ export async function getLiquidityProviderFee(
   }
   if (ammRoute.length === 1) {
     return await readonlyCall('amm-pool-v2-01', 'fee-helper', {
-      'token-x': tokenX,
-      'token-y': tokenY,
+      'token-x': getContractId(tokenX),
+      'token-y': getContractId(tokenY),
       factor: ammRoute[0]!.pool.factor,
     }).then(unwrapResponse);
   }
   if (ammRoute.length === 2) {
     return await readonlyCall('amm-pool-v2-01', 'fee-helper-a', {
-      'token-x': tokenX,
-      'token-y': ammRoute[0]!.neighbour,
-      'token-z': ammRoute[1]!.neighbour,
+      'token-x': getContractId(tokenX),
+      'token-y': getContractId(ammRoute[0]!.neighbour),
+      'token-z': getContractId(ammRoute[1]!.neighbour),
       'factor-x': ammRoute[0]!.pool.factor,
       'factor-y': ammRoute[1]!.pool.factor,
     }).then(unwrapResponse);
   }
   if (ammRoute.length === 3) {
     return await readonlyCall('amm-pool-v2-01', 'fee-helper-b', {
-      'token-x': tokenX,
-      'token-y': ammRoute[0]!.neighbour,
-      'token-z': ammRoute[1]!.neighbour,
-      'token-w': ammRoute[2]!.neighbour,
+      'token-x': getContractId(tokenX),
+      'token-y': getContractId(ammRoute[0]!.neighbour),
+      'token-z': getContractId(ammRoute[1]!.neighbour),
+      'token-w': getContractId(ammRoute[2]!.neighbour),
       'factor-x': ammRoute[0]!.pool.factor,
       'factor-y': ammRoute[1]!.pool.factor,
       'factor-z': ammRoute[2]!.pool.factor,
@@ -42,11 +43,11 @@ export async function getLiquidityProviderFee(
   }
   if (ammRoute.length === 4) {
     return await readonlyCall('amm-pool-v2-01', 'fee-helper-c', {
-      'token-x': tokenX,
-      'token-y': ammRoute[0]!.neighbour,
-      'token-z': ammRoute[1]!.neighbour,
-      'token-w': ammRoute[2]!.neighbour,
-      'token-v': ammRoute[3]!.neighbour,
+      'token-x': getContractId(tokenX),
+      'token-y': getContractId(ammRoute[0]!.neighbour),
+      'token-z': getContractId(ammRoute[1]!.neighbour),
+      'token-w': getContractId(ammRoute[2]!.neighbour),
+      'token-v': getContractId(ammRoute[3]!.neighbour),
       'factor-x': ammRoute[0]!.pool.factor,
       'factor-y': ammRoute[1]!.pool.factor,
       'factor-z': ammRoute[2]!.pool.factor,

@@ -5,14 +5,12 @@ import { fromEntries, isNotNull } from './utils';
 import { AlexSDKResponse, PriceData, TokenInfo } from '../types';
 
 export async function getAlexSDKData(): Promise<AlexSDKResponse> {
-  return fetch('https://alex-sdk-api.alexlab.co')
-    .then((r) => {
-      if (r.ok) {
-        return r.json();
-      }
-      throw new Error('Failed to fetch token mappings');
-    })
-    .then((r: any) => r.data);
+  return fetch('https://alex-sdk-api.alexlab.co').then((r) => {
+    if (r.ok) {
+      return r.json();
+    }
+    throw new Error('Failed to fetch token mappings');
+  });
 }
 
 export async function getPrices(mappings: TokenInfo[]): Promise<PriceData[]> {

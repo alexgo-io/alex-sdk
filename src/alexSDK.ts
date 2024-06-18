@@ -25,6 +25,15 @@ export class AlexSDK {
     return (await this.getAlexSDKData()).tokens;
   }
 
+  private async getTokenMappings(): Promise<{ [P in Currency]: TokenInfo }> {
+    return fromEntries((await this.getTokenInfos()).map((x) => [x.id, x]));
+  }
+
+  private async getContractId(): Promise<(currency: Currency) => string> {
+    const mappings = await this.getTokenMappings();
+    return (currency) => mappings[currency].wrapToken.split('::')[0];
+  }
+
   private async getPools(): Promise<PoolData[]> {
     return (await this.getAlexSDKData()).pools;
   }
@@ -38,7 +47,12 @@ export class AlexSDK {
   }
 
   async getFeeRate(from: Currency, to: Currency): Promise<bigint> {
-    return getLiquidityProviderFee(from, to, await this.getPools());
+    return getLiquidityProviderFee(
+      from,
+      to,
+      await this.getPools(),
+      await this.getContractId()
+    );
   }
 
   async getRouter(from: Currency, to: Currency): Promise<Currency[]> {
@@ -50,7 +64,13 @@ export class AlexSDK {
     fromAmount: bigint,
     to: Currency
   ): Promise<bigint> {
-    return getYAmountFromXAmount(from, to, fromAmount, await this.getPools());
+    return getYAmountFromXAmount(
+      from,
+      to,
+      fromAmount,
+      await this.getPools(),
+      await this.getContractId()
+    );
   }
 
   async runSwap(

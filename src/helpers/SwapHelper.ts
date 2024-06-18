@@ -61,6 +61,10 @@ export function runSpot(
   ammPools: PoolData[],
   mappings: TokenInfo[]
 ): TxToBroadCast {
+  const getContractId = (currency: Currency) =>
+    mappings
+      .find((x) => x.id === currency)!
+      .wrapToken.split('::')[0] as `${string}.${string}`;
   const AlexVault = `${configs.CONTRACT_DEPLOYER}.amm-vault-v2-01`;
   const ammRoute = resolveAmmRoute(currencyX, currencyY, ammPools);
   if (ammRoute.length === 0) {
@@ -72,8 +76,8 @@ export function runSpot(
       'amm-pool-v2-01',
       'swap-helper',
       {
-        'token-x-trait': currencyX,
-        'token-y-trait': ammRoute[0]!.neighbour,
+        'token-x-trait': getContractId(currencyX),
+        'token-y-trait': getContractId(ammRoute[0]!.neighbour),
         factor: ammRoute[0]!.pool.factor,
         dx: fromAmount,
         'min-dy': minDy,
@@ -94,9 +98,9 @@ export function runSpot(
       'amm-pool-v2-01',
       'swap-helper-a',
       {
-        'token-x-trait': currencyX,
-        'token-y-trait': ammRoute[0]!.neighbour,
-        'token-z-trait': ammRoute[1]!.neighbour,
+        'token-x-trait': getContractId(currencyX),
+        'token-y-trait': getContractId(ammRoute[0]!.neighbour),
+        'token-z-trait': getContractId(ammRoute[1]!.neighbour),
         'factor-x': ammRoute[0]!.pool.factor,
         'factor-y': ammRoute[1]!.pool.factor,
         dx: fromAmount,
@@ -130,10 +134,10 @@ export function runSpot(
       'amm-pool-v2-01',
       'swap-helper-b',
       {
-        'token-x-trait': currencyX,
-        'token-y-trait': ammRoute[0]!.neighbour,
-        'token-z-trait': ammRoute[1]!.neighbour,
-        'token-w-trait': ammRoute[2]!.neighbour,
+        'token-x-trait': getContractId(currencyX),
+        'token-y-trait': getContractId(ammRoute[0]!.neighbour),
+        'token-z-trait': getContractId(ammRoute[1]!.neighbour),
+        'token-w-trait': getContractId(ammRoute[2]!.neighbour),
         'factor-x': ammRoute[0]!.pool.factor,
         'factor-y': ammRoute[1]!.pool.factor,
         'factor-z': ammRoute[2]!.pool.factor,
@@ -180,11 +184,11 @@ export function runSpot(
       'amm-pool-v2-01',
       'swap-helper-c',
       {
-        'token-x-trait': currencyX,
-        'token-y-trait': ammRoute[0]!.neighbour,
-        'token-z-trait': ammRoute[1]!.neighbour,
-        'token-w-trait': ammRoute[2]!.neighbour,
-        'token-v-trait': ammRoute[3]!.neighbour,
+        'token-x-trait': getContractId(currencyX),
+        'token-y-trait': getContractId(ammRoute[0]!.neighbour),
+        'token-z-trait': getContractId(ammRoute[1]!.neighbour),
+        'token-w-trait': getContractId(ammRoute[2]!.neighbour),
+        'token-v-trait': getContractId(ammRoute[3]!.neighbour),
         'factor-x': ammRoute[0]!.pool.factor,
         'factor-y': ammRoute[1]!.pool.factor,
         'factor-z': ammRoute[2]!.pool.factor,

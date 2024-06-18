@@ -8,7 +8,8 @@ export const getYAmountFromXAmount = async (
   tokenX: Currency,
   tokenY: Currency,
   fromAmount: bigint,
-  ammPools: PoolData[]
+  ammPools: PoolData[],
+  getContractId: (currency: Currency) => string
 ): Promise<bigint> => {
   const ammRoute = resolveAmmRoute(tokenX, tokenY, ammPools);
   if (ammRoute.length === 0) {
@@ -16,17 +17,17 @@ export const getYAmountFromXAmount = async (
   }
   if (ammRoute.length === 1) {
     return await readonlyCall('amm-pool-v2-01', 'get-helper', {
-      'token-x': tokenX,
-      'token-y': ammRoute[0]!.neighbour,
+      'token-x': getContractId(tokenX),
+      'token-y': getContractId(ammRoute[0]!.neighbour),
       dx: fromAmount,
       factor: ammRoute[0]!.pool.factor,
     }).then(unwrapResponse);
   }
   if (ammRoute.length === 2) {
     return await readonlyCall('amm-pool-v2-01', 'get-helper-a', {
-      'token-x': tokenX,
-      'token-y': ammRoute[0]!.neighbour,
-      'token-z': ammRoute[1]!.neighbour,
+      'token-x': getContractId(tokenX),
+      'token-y': getContractId(ammRoute[0]!.neighbour),
+      'token-z': getContractId(ammRoute[1]!.neighbour),
       'factor-x': ammRoute[0]!.pool.factor,
       'factor-y': ammRoute[1]!.pool.factor,
       dx: fromAmount,
@@ -34,10 +35,10 @@ export const getYAmountFromXAmount = async (
   }
   if (ammRoute.length === 3) {
     return await readonlyCall('amm-pool-v2-01', 'get-helper-b', {
-      'token-x': tokenX,
-      'token-y': ammRoute[0]!.neighbour,
-      'token-z': ammRoute[1]!.neighbour,
-      'token-w': ammRoute[2]!.neighbour,
+      'token-x': getContractId(tokenX),
+      'token-y': getContractId(ammRoute[0]!.neighbour),
+      'token-z': getContractId(ammRoute[1]!.neighbour),
+      'token-w': getContractId(ammRoute[2]!.neighbour),
       'factor-x': ammRoute[0]!.pool.factor,
       'factor-y': ammRoute[1]!.pool.factor,
       'factor-z': ammRoute[2]!.pool.factor,
@@ -46,11 +47,11 @@ export const getYAmountFromXAmount = async (
   }
   if (ammRoute.length === 4) {
     return await readonlyCall('amm-pool-v2-01', 'get-helper-c', {
-      'token-x': tokenX,
-      'token-y': ammRoute[0]!.neighbour,
-      'token-z': ammRoute[1]!.neighbour,
-      'token-w': ammRoute[2]!.neighbour,
-      'token-v': ammRoute[3]!.neighbour,
+      'token-x': getContractId(tokenX),
+      'token-y': getContractId(ammRoute[0]!.neighbour),
+      'token-z': getContractId(ammRoute[1]!.neighbour),
+      'token-w': getContractId(ammRoute[2]!.neighbour),
+      'token-v': getContractId(ammRoute[3]!.neighbour),
       'factor-x': ammRoute[0]!.pool.factor,
       'factor-y': ammRoute[1]!.pool.factor,
       'factor-z': ammRoute[2]!.pool.factor,
