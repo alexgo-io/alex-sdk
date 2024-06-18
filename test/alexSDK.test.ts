@@ -1,7 +1,7 @@
 import { configs } from '../src/config';
 import { AlexSDK, Currency } from '../src';
 
-const tokenAlex = 'token-alex' as Currency;
+const tokenAlex = 'age000-governance-token' as Currency;
 const tokenDiko = 'token-wdiko' as Currency;
 
 describe('AlexSDK', () => {

@@ -1,5 +1,5 @@
 {
-  "version": "2.1.1-beta.1",
+  "version": "2.1.2",
   "license": "MIT",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
@@ -13,7 +13,7 @@
   "scripts": {
     "start": "dts watch",
     "build": "dts build",
-    "prepublishOnly": "pnpm run build",
+    "prepare": "pnpm run build",
     "test": "dts test",
     "lint": "dts lint",
     "size": "size-limit",

@@ -85,7 +85,7 @@ export async function fetchBalanceForAccount(
           return [a.id, BigInt(response.stx.balance) * BigInt(100)];
         }
         const fungibleToken =
-          response.fungible_tokens[a.underlyingToken.split('::')[0]]?.balance;
+          response.fungible_tokens[a.underlyingToken]?.balance;
         if (fungibleToken == null) {
           return [a.id, BigInt(0)];
         }
