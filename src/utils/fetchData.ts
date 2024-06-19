@@ -32,6 +32,12 @@ export async function getPrices(mappings: TokenInfo[]): Promise<PriceData[]> {
     .then((x: any) =>
       x.data
         .map((a: any): PriceData | null => {
+          if (a.contract_id === 'STX') {
+            return {
+              token: Currency.STX,
+              price: a.last_price_usd,
+            };
+          }
           const token = mappings.find(
             (b) => b.underlyingToken.split('::')[0] === a.contract_id
           )?.id;

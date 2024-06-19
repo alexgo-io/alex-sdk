@@ -1,4 +1,4 @@
-export type Currency = `${string}.${string}` & {
+export type Currency = string & {
   readonly brand: unique symbol;
 };
 
