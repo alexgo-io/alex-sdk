@@ -36,8 +36,7 @@ export declare class AlexSDK {
 }
 ```
 
-### getFee
-Rate
+### getFeeRate
 Get the swap fee (liquidity provider fee) between two currencies.
 
 ```javascript

@@ -5,7 +5,7 @@ const tokenAlex = 'age000-governance-token' as Currency;
 const tokenDiko = 'token-wdiko' as Currency;
 
 describe('AlexSDK', () => {
-  it('Get fee', async () => {
+  it('Get Fee Rate', async () => {
     const sdk = new AlexSDK();
     const result = await sdk.getFeeRate(tokenAlex, Currency.STX);
     console.log(result);
