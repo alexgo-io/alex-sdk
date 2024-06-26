@@ -12,7 +12,7 @@ describe('AlexSDK', () => {
   });
   it('Get Route', async () => {
     const sdk = new AlexSDK();
-    const result = await sdk.getRouter(Currency.STX, tokenDiko);
+    const result = await sdk.getRoute(Currency.STX, tokenDiko);
     console.log(result);
   });
   it('Get Rate', async () => {
@@ -26,7 +26,7 @@ describe('AlexSDK', () => {
   });
   it('Get Tx', async () => {
     const sdk = new AlexSDK();
-    const router = await sdk.getRouter(Currency.STX, tokenDiko);
+    const router = await sdk.getRoute(Currency.STX, tokenDiko);
     const result = await sdk.runSwap(
       configs.CONTRACT_DEPLOYER,
       Currency.STX,

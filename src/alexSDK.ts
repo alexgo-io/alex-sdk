@@ -7,7 +7,7 @@ import {
   getAlexSDKData,
   getPrices,
 } from './utils/fetchData';
-import { getRoute } from './helpers/RouteHelper';
+import { getSwapRoute } from './helpers/RouteHelper';
 import { getYAmountFromXAmount } from './helpers/RateHelper';
 import { fromEntries } from './utils/utils';
 
@@ -55,8 +55,8 @@ export class AlexSDK {
     );
   }
 
-  async getRouter(from: Currency, to: Currency): Promise<Currency[]> {
-    return getRoute(from, to, await this.getPools());
+  async getRoute(from: Currency, to: Currency): Promise<Currency[]> {
+    return getSwapRoute(from, to, await this.getPools());
   }
 
   async getAmountTo(

@@ -2,7 +2,7 @@ import { Currency } from '../currency';
 import { PoolData } from '../types';
 import { resolveAmmRoute } from '../utils/ammRouteResolver';
 
-export async function getRoute(
+export async function getSwapRoute(
   from: Currency,
   to: Currency,
   pools: PoolData[]
