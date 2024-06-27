@@ -31,8 +31,11 @@ export declare class AlexSDK {
     getFeeRate(from: Currency, to: Currency): Promise<bigint>;
     getRouter(from: Currency, to: Currency): Promise<Currency[]>;
     getAmountTo(from: Currency, fromAmount: bigint, to: Currency): Promise<bigint>;
-    runSwap(stxAddress: string, currencyX: Currency, currencyY: Currency, fromAmount: bigint, minDy: bigint, router: Currency[]): TxToBroadCast;
-    getCurrencyFrom(address: string): Currency | undefined;
+    runSwap(stxAddress: string, currencyX: Currency, currencyY: Currency, 
+              fromAmount: bigint, minDy: bigint, router: Currency[]): TxToBroadCast;
+    getLatestPrices(): Promise<Partial<{ [currency in Currency]: number }>>;
+    getBalances(stxAddress: string): Promise<Partial<{ [currency in Currency]: bigint }>>;
+    fetchSwappableCurrency(): Promise<TokenInfo[]>;
 }
 ```
 
@@ -65,15 +68,32 @@ async function getAmountTo(from: Currency, fromAmount: bigint, to: Currency): Pr
 Perform a swap between two currencies using the specified route and amount.
 
 ```javascript
-function runSwap(stxAddress: string, currencyX: Currency, currencyY: Currency, fromAmount: bigint, minDy: bigint, router: Currency[]): TxToBroadCast;
+function runSwap(stxAddress: string, currencyX: Currency, currencyY: Currency, 
+                  fromAmount: bigint, minDy: bigint, router: Currency[]): TxToBroadCast;
 ```
 
-### getCurrencyFrom
+**getLatestPrices**
 
-Get the corresponding currency for a given address.
+This function fetches the current price data for all supported tokens. It returns an object where the keys are the currency identifiers (as defined in the `Currency` enum) and the values are the corresponding prices in USD.
 
 ```javascript
-function getCurrencyFrom(address: string): Currency | undefined;
+async function getLatestPrices(): Promise<Partial<{ [currency in Currency]: number }>>;
+```
+
+**getBalances**
+
+This function fetches the current balances of all supported tokens for a specified STX address. It returns an object where the keys are the currency identifiers (as defined in the `Currency` enum) and the values are the corresponding balances as `bigint` values.
+
+```javascript
+async function getBalances(stxAddress: string): Promise<Partial<{ [currency in Currency]: bigint }>>;
+```
+
+**fetchSwappableCurrency**
+
+This function returns an array of `TokenInfo` objects, each containing detailed information about a supported swappable currency. The information is fetched from the Alex SDK API.
+
+```javascript
+function fetchSwappableCurrency(): Promise<TokenInfo[]>;
 ```
 
 ## Installation
@@ -122,6 +142,19 @@ const alex = new AlexSDK();
 
   // Then broadcast the transaction yourself
   await openContractCall(tx);
+
+    // Get the latest prices for all supported currencies
+  const latestPrices = await alex.getLatestPrices();
+  console.log('Latest prices:', latestPrices);
+
+  // Get balances for a specific STX address
+  const stxAddress = 'SM2MARAVW6BEJCD13YV2RHGYHQWT7TDDNMNRB1MVT';
+  const balances = await alex.getBalances(stxAddress);
+  console.log('Balances:', balances);
+
+  // Fetch information about all swappable currencies
+  const swappableCurrencies = await alex.fetchSwappableCurrency();
+  console.log('Swappable currencies:', swappableCurrencies);    
 })();
 ```
 
