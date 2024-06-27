@@ -31,8 +31,9 @@ export declare class AlexSDK {
     getFeeRate(from: Currency, to: Currency): Promise<bigint>;
     getRouter(from: Currency, to: Currency): Promise<Currency[]>;
     getAmountTo(from: Currency, fromAmount: bigint, to: Currency): Promise<bigint>;
-    runSwap(stxAddress: string, currencyX: Currency, currencyY: Currency, 
-              fromAmount: bigint, minDy: bigint, router: Currency[]): TxToBroadCast;
+    runSwap(stxAddress: string, currencyX: Currency, 
+            currencyY: Currency, fromAmount: bigint, 
+            minDy: bigint, router: Currency[]): Promise<TxToBroadCast>;
     getLatestPrices(): Promise<Partial<{ [currency in Currency]: number }>>;
     getBalances(stxAddress: string): Promise<Partial<{ [currency in Currency]: bigint }>>;
     fetchSwappableCurrency(): Promise<TokenInfo[]>;
@@ -46,13 +47,8 @@ Get the swap fee (liquidity provider fee) between two currencies.
 ```javascript
 async function getFeeRate(from: Currency, to: Currency): Promise<bigint>;
 ```
-Exceptions:
-```javascript
-- "Failed to fetch token mappings"
-- "No AMM pools in route"
-- "Too many AMM pools in route"
-- "Error calling read-only function"
-```
+
+Possible exceptions: `Failed to fetch token mappings`, `No AMM pools in route`, `Too many AMM pools in route`, `Error calling read-only function`.
 
 ### getRouter
 
@@ -61,11 +57,8 @@ Get the router path for swapping between two currencies.
 ```javascript
 async function getRouter(from: Currency, to: Currency): Promise<Currency[]>;
 ```
-Exceptions:
-```javascript
-- "Failed to fetch token mappings"
-- "Can't find route"
-```
+
+Possible exceptions: `Failed to fetch token mappings`, `Can't find route`.
 
 ### getAmountTo
 
@@ -74,13 +67,9 @@ Get the amount of destination currency that will be received when swapping from 
 ```javascript
 async function getAmountTo(from: Currency, fromAmount: bigint, to: Currency): Promise<bigint>;
 ```
-Exceptions:
-```javascript
-- "Failed to fetch token mappings"
-- "No AMM pool found for the given route"
-- "Too many AMM pools in route"
-- "Error calling read-only function"
-```
+
+Possible exceptions: `Failed to fetch token mappings`, `No AMM pool found for the given route`, `Too many AMM pools in route`, `Error calling read-only function`.
+
 
 ### runSwap
 
@@ -88,51 +77,41 @@ Perform a swap between two currencies using the specified route and amount.
 
 ```javascript
 function runSwap(stxAddress: string, currencyX: Currency, currencyY: Currency, 
-                  fromAmount: bigint, minDy: bigint, router: Currency[]): TxToBroadCast;
-```
-Exceptions:
-```javascript
-- "Failed to fetch token mappings"
-- "Can't find AMM route"
-- "Token mapping not found"
-- "Too many AMM pools in route"
+                  fromAmount: bigint, minDy: bigint, router: Currency[]): Promise<TxToBroadCast>;
 ```
 
-**getLatestPrices**
+Possible exceptions: `Failed to fetch token mappings`, `Can't find AMM route`, `Token mapping not found`, `Too many AMM pools in route`.
+
+### getLatestPrices
 
 This function fetches the current price data for all supported tokens. It returns an object where the keys are the currency identifiers (as defined in the `Currency` enum) and the values are the corresponding prices in USD.
 
 ```javascript
 async function getLatestPrices(): Promise<Partial<{ [currency in Currency]: number }>>;
 ```
-Exceptions:
-```javascript
-- "Failed to fetch token mappings"
-```
+Possible exceptions: `Failed to fetch token mappings`.
 
-**getBalances**
+### getBalances
 
 This function fetches the current balances of all supported tokens for a specified STX address. It returns an object where the keys are the currency identifiers (as defined in the `Currency` enum) and the values are the corresponding balances as `bigint` values.
 
 ```javascript
 async function getBalances(stxAddress: string): Promise<Partial<{ [currency in Currency]: bigint }>>;
 ```
-Exceptions:
-```javascript
-- "Failed to fetch token mappings"
-```
 
-**fetchSwappableCurrency**
+Possible exceptions: `Failed to fetch token mappings`.
 
-This function returns an array of `TokenInfo` objects, each containing detailed information about a supported swappable currency. The information is fetched from the Alex SDK API.
+
+### fetchSwappableCurrency
+
+This function returns an array of `TokenInfo` objects, each containing detailed information about a supported swappable currency.
 
 ```javascript
 function fetchSwappableCurrency(): Promise<TokenInfo[]>;
 ```
-Exceptions:
-```javascript
-- "Failed to fetch token mappings"
-```
+
+Possible exceptions: `Failed to fetch token mappings`.
+
 
 ## Installation
 
@@ -196,8 +175,8 @@ const alex = new AlexSDK();
 })();
 ```
 
-There is a fully working example in the [alex-sdk-example](https://github.com/alexgo-io/alex-sdk-example)
+There is a fully working example in the [alex-sdk-example](https://github.com/alexgo-io/alex-sdk-example).
 
 ## Contributing
 
-Contributions to the project are welcome. Please fork the repository, make your changes, and submit a pull request. Ensure your changes follow the code style and conventions used
+Contributions to the project are welcome. Please fork the repository, make your changes, and submit a pull request. Ensure your changes follow the code style and conventions used.
