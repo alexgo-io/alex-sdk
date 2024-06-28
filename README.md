@@ -8,18 +8,23 @@ The AlexSDK class includes the following functions:
 
 ```typescript
 export declare class AlexSDK {
+  // Get the list of currencies that can be swapped, the returned object would include the currency name, icon, and contract addresses.
   fetchSwappableCurrency(): Promise<TokenInfo>;
 
+  // Get the swap fee (liquidity provider fee) between two currencies.
   getFeeRate(from: Currency, to: Currency): Promise<bigint>;
 
+  // Get the router path for swapping between two currencies.
   getRouter(from: Currency, to: Currency): Promise<Currency[]>;
 
+  // Get the amount of destination currency that will be received when swapping from one currency to another.
   getAmountTo(
     from: Currency,
     fromAmount: bigint,
     to: Currency
   ): Promise<bigint>;
 
+  // Perform a swap between two currencies using the specified route and amount.
   runSwap(
     stxAddress: string,
     currencyX: Currency,
@@ -29,66 +34,23 @@ export declare class AlexSDK {
     router: Currency[]
   ): TxToBroadCast;
 
-  getCurrencyFrom(address: string): Currency | undefined;
+  // Get currencies' latest price
+  getLatestPrices(): Promise<
+    Partial<{
+      [currency in Currency]: number;
+    }>
+  >;
+
+  // Get the corresponding token balanace for a given address.
+  getBalances(stxAddress: string): Promise<
+    Partial<{
+      [currency in Currency]: bigint;
+    }>
+  >;
 }
 ```
 
-### fetchSwappableCurrency
-
-Get the list of currencies that can be swapped, the returned object would include the currency name, icon, and contract addresses.
-
-### getFee
-
-Rate
-Get the swap fee (liquidity provider fee) between two currencies.
-
-```typescript
-async function getFeeRate(from: Currency, to: Currency): Promise<bigint>;
-```
-
-### getRouter
-
-Get the router path for swapping between two currencies.
-
-```typescript
-async function getRouter(from: Currency, to: Currency): Promise<Currency[]>;
-```
-
-### getAmountTo
-
-Get the amount of destination currency that will be received when swapping from one currency to another.
-
-```typescript
-async function getAmountTo(from: Currency, fromAmount: bigint, to: Currency): Promise<bigint>;
-```
-
-### runSwap
-
-Perform a swap between two currencies using the specified route and amount.
-
-```typescript
-function runSwap(stxAddress: string, currencyX: Currency, currencyY: Currency, fromAmount: bigint, minDy: bigint, router: Currency[]): TxToBroadCast;
-```
-
-### getCurrencyFrom
-
-Get the corresponding currency for a given address.
-
-```typescript
-function getCurrencyFrom(address: string): Currency | undefined;
-```
-
-## Installation
-
-You can install Alex-SDK using npm:
-
-```bash
-npm install alex-sdk
-```
-
 ## Usage
-
-To use the AlexSDK, you can import it into your project and instantiate a new object:
 
 ```typescript
 import { AlexSDK, Currency } from 'alex-sdk';
