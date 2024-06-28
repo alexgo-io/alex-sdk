@@ -2,121 +2,86 @@
 
 Alex-SDK is a easy-to-use library that exposes the swap functionality from [alexlab.co](https://app.alexlab.co/swap) to be integrated into any app or wallet. It enables users to perform swaps with a wide variety of supported currencies.
 
-## Supported Currencies
-
-The SDK supports the following currencies:
-
-```javascript
-export enum Currency {
-  ALEX = 'age000-governance-token',
-  USDA = 'token-wusda',
-  STX = 'token-wstx',
-  BANANA = 'token-wban',
-  XBTC = 'token-wbtc',
-  DIKO = 'token-wdiko',
-  SLIME = 'token-wslm',
-  XUSD = 'token-wxusd',
-  MIA = 'token-wmia',
-  NYCC = 'token-wnycc',
-  CORGI = 'token-wcorgi',
-}
-```
-
 ## Functions
 
 The AlexSDK class includes the following functions:
 
-```javascript
+```typescript
 export declare class AlexSDK {
-    getFeeRate(from: Currency, to: Currency): Promise<bigint>;
-    getRoute(from: Currency, to: Currency): Promise<Currency[]>;
-    getAmountTo(from: Currency, fromAmount: bigint, to: Currency): Promise<bigint>;
-    runSwap(stxAddress: string, currencyX: Currency, currencyY: Currency, fromAmount: bigint, minDy: bigint, router: Currency[]): TxToBroadCast;
-    getCurrencyFrom(address: string): Currency | undefined;
+  // Get the list of currencies that can be swapped, the returned object would include the currency name, icon, and contract addresses.
+  fetchSwappableCurrency(): Promise<TokenInfo>;
+
+  // Get the swap fee (liquidity provider fee) between two currencies.
+  getFeeRate(from: Currency, to: Currency): Promise<bigint>;
+
+  // Get the route path for swapping between two currencies.
+  getRoute(from: Currency, to: Currency): Promise<Currency[]>;
+
+  // Get the amount of destination currency that will be received when swapping from one currency to another.
+  getAmountTo(
+    from: Currency,
+    fromAmount: bigint,
+    to: Currency
+  ): Promise<bigint>;
+
+  // Perform a swap between two currencies using the specified route and amount.
+  runSwap(
+    stxAddress: string,
+    currencyX: Currency,
+    currencyY: Currency,
+    fromAmount: bigint,
+    minDy: bigint,
+    router: Currency[]
+  ): TxToBroadCast;
+
+  // Get currencies' latest price
+  getLatestPrices(): Promise<
+    Partial<{
+      [currency in Currency]: number;
+    }>
+  >;
+
+  // Get the corresponding token balanace for a given address.
+  getBalances(stxAddress: string): Promise<
+    Partial<{
+      [currency in Currency]: bigint;
+    }>
+  >;
 }
-```
-
-### getFeeRate
-Get the swap fee (liquidity provider fee) between two currencies.
-
-```javascript
-async function getFeeRate(from: Currency, to: Currency): Promise<bigint>;
-```
-
-### getRoute
-
-Get the route path for swapping between two currencies.
-
-```javascript
-async function getRoute(from: Currency, to: Currency): Promise<Currency[]>;
-```
-
-### getAmountTo
-
-Get the amount of destination currency that will be received when swapping from one currency to another.
-
-```javascript
-async function getAmountTo(from: Currency, fromAmount: bigint, to: Currency): Promise<bigint>;
-```
-
-### runSwap
-
-Perform a swap between two currencies using the specified route and amount.
-
-```javascript
-function runSwap(stxAddress: string, currencyX: Currency, currencyY: Currency, fromAmount: bigint, minDy: bigint, router: Currency[]): TxToBroadCast;
-```
-
-### getCurrencyFrom
-
-Get the corresponding currency for a given address.
-
-```javascript
-function getCurrencyFrom(address: string): Currency | undefined;
-```
-
-## Installation
-
-You can install Alex-SDK using npm:
-
-```bash
-npm install alex-sdk
 ```
 
 ## Usage
 
-To use the AlexSDK, you can import it into your project and instantiate a new object:
-
-```javascript
+```typescript
 import { AlexSDK, Currency } from 'alex-sdk';
 
 const alex = new AlexSDK();
 
 (async () => {
-  // Get swap fee between ALEX and USDA
-  const feeRate = await alex.getFeeRate(Currency.ALEX, Currency.USDA);
+  // Get swap fee between STX and ALEX
+  const feeRate = await alex.getFeeRate(Currency.STX, Currency.ALEX);
   console.log('Swap fee:', feeRate);
 
-  // Get the router path for swapping ALEX to USDA
-  const router = await alex.getRoute(Currency.ALEX, Currency.USDA);
-  console.log('Router path:', router);
+  // Get the route path for swapping STX to ALEX
+  const route = await alex.getRoute(Currency.STX, Currency.ALEX);
+  console.log('Route path:', route);
 
   // Get the amount of USDA that will be received when swapping 100 ALEX
   const amountTo = await alex.getAmountTo(
-    Currency.ALEX,
-    BigInt(100),
-    Currency.USDA
+    Currency.STX,
+    BigInt(100 * 1e8), // all decimals are multiplied by 1e8
+    Currency.ALEX
   );
-  console.log('Amount to receive:', amountTo);
+  console.log('Amount to receive:', Number(amountTo) / 1e8);
 
   // To get the transaction to broadcast
   const tx = await alex.runSwap(
     stxAddress,
+    Currency.STX,
     Currency.ALEX,
-    Currency.USDA,
     BigInt(Number(amount) * 1e8),
     BigInt(0),
-    router
+    route
   );
 
   // Then broadcast the transaction yourself
