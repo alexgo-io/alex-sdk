@@ -6,7 +6,7 @@ Alex-SDK is a easy-to-use library that exposes the swap functionality from [alex
 
 The SDK supports the following currencies:
 
-```javascript
+```typescript
 export enum Currency {
   ALEX = 'age000-governance-token',
   USDA = 'token-wusda',
@@ -26,7 +26,7 @@ export enum Currency {
 
 The AlexSDK class includes the following functions:
 
-```javascript
+```typescript
 export declare class AlexSDK {
     getFeeRate(from: Currency, to: Currency): Promise<bigint>;
     getRouter(from: Currency, to: Currency): Promise<Currency[]>;
@@ -44,7 +44,7 @@ export declare class AlexSDK {
 Rate
 Get the swap fee (liquidity provider fee) between two currencies.
 
-```javascript
+```typescript
 async function getFeeRate(from: Currency, to: Currency): Promise<bigint>;
 ```
 
@@ -54,7 +54,7 @@ Possible exceptions: `Failed to fetch token mappings`, `No AMM pools in route`, 
 
 Get the router path for swapping between two currencies.
 
-```javascript
+```typescript
 async function getRouter(from: Currency, to: Currency): Promise<Currency[]>;
 ```
 
@@ -64,7 +64,7 @@ Possible exceptions: `Failed to fetch token mappings`, `Can't find route`.
 
 Get the amount of destination currency that will be received when swapping from one currency to another.
 
-```javascript
+```typescript
 async function getAmountTo(from: Currency, fromAmount: bigint, to: Currency): Promise<bigint>;
 ```
 
@@ -75,7 +75,7 @@ Possible exceptions: `Failed to fetch token mappings`, `No AMM pool found for th
 
 Perform a swap between two currencies using the specified route and amount.
 
-```javascript
+```typescript
 function runSwap(stxAddress: string, currencyX: Currency, currencyY: Currency, 
                   fromAmount: bigint, minDy: bigint, router: Currency[]): Promise<TxToBroadCast>;
 ```
@@ -86,7 +86,7 @@ Possible exceptions: `Failed to fetch token mappings`, `Can't find AMM route`, `
 
 This function fetches the current price data for all supported tokens. It returns an object where the keys are the currency identifiers (as defined in the `Currency` enum) and the values are the corresponding prices in USD.
 
-```javascript
+```typescript
 async function getLatestPrices(): Promise<Partial<{ [currency in Currency]: number }>>;
 ```
 Possible exceptions: `Failed to fetch token mappings`.
@@ -95,7 +95,7 @@ Possible exceptions: `Failed to fetch token mappings`.
 
 This function fetches the current balances of all supported tokens for a specified STX address. It returns an object where the keys are the currency identifiers (as defined in the `Currency` enum) and the values are the corresponding balances as `bigint` values.
 
-```javascript
+```typescript
 async function getBalances(stxAddress: string): Promise<Partial<{ [currency in Currency]: bigint }>>;
 ```
 
@@ -106,7 +106,7 @@ Possible exceptions: `Failed to fetch token mappings`.
 
 This function returns an array of `TokenInfo` objects, each containing detailed information about a supported swappable currency.
 
-```javascript
+```typescript
 function fetchSwappableCurrency(): Promise<TokenInfo[]>;
 ```
 
@@ -125,33 +125,33 @@ npm install alex-sdk
 
 To use the AlexSDK, you can import it into your project and instantiate a new object:
 
-```javascript
+```typescript
 import { AlexSDK, Currency } from 'alex-sdk';
 
 const alex = new AlexSDK();
 
 (async () => {
-  // Get swap fee between ALEX and USDA
-  const feeRate = await alex.getFeeRate(Currency.ALEX, Currency.USDA);
+  // Get swap fee between STX and ALEX
+  const feeRate = await alex.getFeeRate(Currency.STX, Currency.ALEX);
   console.log('Swap fee:', feeRate);
 
-  // Get the router path for swapping ALEX to USDA
-  const router = await alex.getRouter(Currency.ALEX, Currency.USDA);
+  // Get the router path for swapping STX to ALEX
+  const router = await alex.getRouter(Currency.STX, Currency.ALEX);
   console.log('Router path:', router);
 
   // Get the amount of USDA that will be received when swapping 100 ALEX
   const amountTo = await alex.getAmountTo(
-    Currency.ALEX,
-    BigInt(100),
-    Currency.USDA
+    Currency.STX,
+    BigInt(100 * 1e8), // all decimals are multiplied by 1e8
+    Currency.ALEX
   );
-  console.log('Amount to receive:', amountTo);
+  console.log('Amount to receive:', Number(amountTo) / 1e8);
 
   // To get the transaction to broadcast
   const tx = await alex.runSwap(
     stxAddress,
+    Currency.STX,
     Currency.ALEX,
-    Currency.USDA,
     BigInt(Number(amount) * 1e8),
     BigInt(0),
     router
@@ -160,7 +160,7 @@ const alex = new AlexSDK();
   // Then broadcast the transaction yourself
   await openContractCall(tx);
 
-    // Get the latest prices for all supported currencies
+  // Get the latest prices for all supported currencies
   const latestPrices = await alex.getLatestPrices();
   console.log('Latest prices:', latestPrices);
 

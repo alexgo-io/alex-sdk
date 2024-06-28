@@ -4,6 +4,7 @@ export type Currency = string & {
 
 export namespace Currency {
   export const STX = createCurrency('token-wstx');
+  export const ALEX = createCurrency('age000-governance-token');
 }
 
 function createCurrency(value: string): Currency {
