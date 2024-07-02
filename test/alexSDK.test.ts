@@ -3,6 +3,8 @@ import { AlexSDK, Currency } from '../src';
 
 const tokenAlex = 'age000-governance-token' as Currency;
 const tokenDiko = 'token-wdiko' as Currency;
+const wrongTokenAlex = '' as Currency;
+
 const sdk = new AlexSDK();
 
 describe('AlexSDK', () => {
@@ -12,6 +14,11 @@ describe('AlexSDK', () => {
     expect(result >= BigInt(0)).toBeTruthy();
     // console.log(result);
   });
+
+  it('Attempt to Get Fee Rate with wrong tokens', async () => {
+    await expect(sdk.getFeeRate(wrongTokenAlex, wrongTokenAlex)).rejects.toThrow('No AMM pools in route');
+  });
+
   it('Get Route', async () => {
     const result = await sdk.getRouter(Currency.STX, tokenDiko);
     expect(Array.isArray(result)).toBeTruthy();
@@ -24,6 +31,11 @@ describe('AlexSDK', () => {
     });
     // console.log(result);
   });
+
+  it('Attempt to Get Route with wrong tokens', async () => {
+    await expect(sdk.getRouter(wrongTokenAlex, wrongTokenAlex)).rejects.toThrow('Can\'t find route');
+  });
+
   it('Get Rate', async () => {
     const result = await sdk.getAmountTo(
       Currency.STX,
@@ -34,6 +46,43 @@ describe('AlexSDK', () => {
     expect(result > BigInt(0)).toBeTruthy(); 
     // console.log(result);
   });
+
+  it('Attempt to Get Rate with a wrong From token', async () => {
+    await expect(
+      sdk.getAmountTo(
+       wrongTokenAlex,
+      BigInt(2) * BigInt(1e8),
+      tokenDiko)
+    ).rejects.toThrow('No AMM pool found for the given route');
+  });
+
+  it('Attempt to Get Rate with negative From amount', async () => {
+    await expect(
+      sdk.getAmountTo(
+        Currency.STX,
+        BigInt(-111),
+        tokenDiko)
+    ).rejects.toThrow('Cannot construct unsigned clarity integer from negative value');
+  });
+
+  it('Attempt to Get Rate with an overflowing From amount (parseReadOnlyResponse)', async () => {
+    await expect(
+      sdk.getAmountTo(
+        Currency.STX,
+        BigInt(999999223372036854775807),
+        tokenDiko)
+    ).rejects.toThrow('ArithmeticOverflow');
+  });
+
+  it('Attempt to Get Rate with an overflowing From amount (decoders)', async () => {
+    await expect(
+      sdk.getAmountTo(
+        Currency.STX,
+        BigInt(99999223372036854775807),
+        tokenDiko)
+    ).rejects.toThrow('ClarityError: 2011');
+  });
+
   it('Get Tx', async () => {
     const router = await sdk.getRouter(Currency.STX, tokenDiko);
     const result = await sdk.runSwap(
@@ -56,6 +105,18 @@ describe('AlexSDK', () => {
     expect(Array.isArray(result.functionArgs)).toBeTruthy();
     expect(Array.isArray(result.postConditions)).toBeTruthy();
     // console.log(result);
+  });
+
+  it('Attempt to Get Tx with an invalid stx address (checksum mismatch)', async () => {
+    await expect(
+      sdk.runSwap(
+        'SP25DP4A9EXT42KC40QDMYQPMQCT1P0R5234GWEGS',
+        Currency.STX,
+        tokenDiko,
+        BigInt(100),
+        BigInt(0)
+      )
+    ).rejects.toThrow('Invalid c32check string: checksum mismatch');
   });
 });
 
