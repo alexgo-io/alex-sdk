@@ -1,4 +1,4 @@
-import { AlexSDK, Currency, TokenInfo } from '../src';
+import { AlexSDK, Currency } from '../src';
 import * as FeeHelper from '../src/helpers/FeeHelper';
 
 const sdk = new AlexSDK();
@@ -13,7 +13,7 @@ describe('AlexSDK - extended tests', () => {
   it('Verify response value of getFeeRate function', async () => {
     expect(jest.isMockFunction(FeeHelper.getLiquidityProviderFee)).toBeTruthy();
     const result = await sdk.getFeeRate(tokenAlex, Currency.STX);
-    expect(result).toBe(BigInt(777));
+    expect(result).toStrictEqual(BigInt(777));
   });
 });
 
