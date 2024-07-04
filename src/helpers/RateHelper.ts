@@ -2,16 +2,17 @@ import { unwrapResponse } from 'clarity-codegen';
 import { readonlyCall } from '../utils/readonlyCallExecutor';
 import { Currency } from '../currency';
 import { PoolData } from '../types';
-import { resolveAmmRoute } from '../utils/ammRouteResolver';
+import { AMMRouteSegment, resolveAmmRoute } from '../utils/ammRouteResolver';
 
 export const getYAmountFromXAmount = async (
   tokenX: Currency,
   tokenY: Currency,
   fromAmount: bigint,
   ammPools: PoolData[],
-  getContractId: (currency: Currency) => string
+  getContractId: (currency: Currency) => string,
+  customRoute?: AMMRouteSegment[]
 ): Promise<bigint> => {
-  const ammRoute = resolveAmmRoute(tokenX, tokenY, ammPools);
+  const ammRoute = customRoute ?? resolveAmmRoute(tokenX, tokenY, ammPools);
   if (ammRoute.length === 0) {
     throw new Error('No AMM pool found for the given route');
   }

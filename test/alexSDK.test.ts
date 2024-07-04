@@ -5,15 +5,16 @@ const tokenAlex = 'age000-governance-token' as Currency;
 const tokenDiko = 'token-wdiko' as Currency;
 
 describe('AlexSDK', () => {
-  it('Get fee', async () => {
+  it('Get fee rate', async () => {
     const sdk = new AlexSDK();
     const result = await sdk.getFeeRate(tokenAlex, Currency.STX);
     console.log(result);
   });
-  it('Get Route', async () => {
+  it('Get route', async () => {
     const sdk = new AlexSDK();
-    const result = await sdk.getRouter(Currency.STX, tokenDiko);
-    console.log(result);
+    const route = await sdk.getRoute(Currency.STX, tokenDiko);
+    const display = await sdk.getWayPoints(route);
+    console.log(display);
   });
   it('Get Rate', async () => {
     const sdk = new AlexSDK();
