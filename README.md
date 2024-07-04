@@ -2,55 +2,128 @@
 
 Alex-SDK is a easy-to-use library that exposes the swap functionality from [alexlab.co](https://app.alexlab.co/swap) to be integrated into any app or wallet. It enables users to perform swaps with a wide variety of supported currencies.
 
+## Supported Currencies
+
+The SDK supports the following currencies:
+
+```typescript
+export enum Currency {
+  ALEX = 'age000-governance-token',
+  USDA = 'token-wusda',
+  STX = 'token-wstx',
+  BANANA = 'token-wban',
+  XBTC = 'token-wbtc',
+  DIKO = 'token-wdiko',
+  SLIME = 'token-wslm',
+  XUSD = 'token-wxusd',
+  MIA = 'token-wmia',
+  NYCC = 'token-wnycc',
+  CORGI = 'token-wcorgi',
+}
+```
+
 ## Functions
 
 The AlexSDK class includes the following functions:
 
 ```typescript
 export declare class AlexSDK {
-  // Get the list of currencies that can be swapped, the returned object would include the currency name, icon, and contract addresses.
-  fetchSwappableCurrency(): Promise<TokenInfo>;
-
-  // Get the swap fee (liquidity provider fee) between two currencies.
-  getFeeRate(from: Currency, to: Currency): Promise<bigint>;
-
-  // Get the router path for swapping between two currencies.
-  getRouter(from: Currency, to: Currency): Promise<Currency[]>;
-
-  // Get the amount of destination currency that will be received when swapping from one currency to another.
-  getAmountTo(
-    from: Currency,
-    fromAmount: bigint,
-    to: Currency
-  ): Promise<bigint>;
-
-  // Perform a swap between two currencies using the specified route and amount.
-  runSwap(
-    stxAddress: string,
-    currencyX: Currency,
-    currencyY: Currency,
-    fromAmount: bigint,
-    minDy: bigint,
-    router: Currency[]
-  ): TxToBroadCast;
-
-  // Get currencies' latest price
-  getLatestPrices(): Promise<
-    Partial<{
-      [currency in Currency]: number;
-    }>
-  >;
-
-  // Get the corresponding token balanace for a given address.
-  getBalances(stxAddress: string): Promise<
-    Partial<{
-      [currency in Currency]: bigint;
-    }>
-  >;
+    getFeeRate(from: Currency, to: Currency): Promise<bigint>;
+    getRouter(from: Currency, to: Currency): Promise<Currency[]>;
+    getAmountTo(from: Currency, fromAmount: bigint, to: Currency): Promise<bigint>;
+    runSwap(stxAddress: string, currencyX: Currency, 
+            currencyY: Currency, fromAmount: bigint, 
+            minDy: bigint, router: Currency[]): Promise<TxToBroadCast>;
+    getLatestPrices(): Promise<Partial<{ [currency in Currency]: number }>>;
+    getBalances(stxAddress: string): Promise<Partial<{ [currency in Currency]: bigint }>>;
+    fetchSwappableCurrency(): Promise<TokenInfo[]>;
 }
 ```
 
+### getFee
+Rate
+Get the swap fee (liquidity provider fee) between two currencies.
+
+```typescript
+async function getFeeRate(from: Currency, to: Currency): Promise<bigint>;
+```
+
+Possible exceptions: `Failed to fetch token mappings`, `No AMM pools in route`, `Too many AMM pools in route`, `Error calling read-only function`.
+
+### getRouter
+
+Get the router path for swapping between two currencies.
+
+```typescript
+async function getRouter(from: Currency, to: Currency): Promise<Currency[]>;
+```
+
+Possible exceptions: `Failed to fetch token mappings`, `Can't find route`.
+
+### getAmountTo
+
+Get the amount of destination currency that will be received when swapping from one currency to another.
+
+```typescript
+async function getAmountTo(from: Currency, fromAmount: bigint, to: Currency): Promise<bigint>;
+```
+
+Possible exceptions: `Failed to fetch token mappings`, `No AMM pool found for the given route`, `Too many AMM pools in route`, `Error calling read-only function`.
+
+
+### runSwap
+
+Perform a swap between two currencies using the specified route and amount.
+
+```typescript
+function runSwap(stxAddress: string, currencyX: Currency, currencyY: Currency, 
+                  fromAmount: bigint, minDy: bigint, router: Currency[]): Promise<TxToBroadCast>;
+```
+
+Possible exceptions: `Failed to fetch token mappings`, `Can't find AMM route`, `Token mapping not found`, `Too many AMM pools in route`.
+
+### getLatestPrices
+
+This function fetches the current price data for all supported tokens. It returns an object where the keys are the currency identifiers (as defined in the `Currency` enum) and the values are the corresponding prices in USD.
+
+```typescript
+async function getLatestPrices(): Promise<Partial<{ [currency in Currency]: number }>>;
+```
+Possible exceptions: `Failed to fetch token mappings`.
+
+### getBalances
+
+This function fetches the current balances of all supported tokens for a specified STX address. It returns an object where the keys are the currency identifiers (as defined in the `Currency` enum) and the values are the corresponding balances as `bigint` values.
+
+```typescript
+async function getBalances(stxAddress: string): Promise<Partial<{ [currency in Currency]: bigint }>>;
+```
+
+Possible exceptions: `Failed to fetch token mappings`.
+
+
+### fetchSwappableCurrency
+
+This function returns an array of `TokenInfo` objects, each containing detailed information about a supported swappable currency.
+
+```typescript
+function fetchSwappableCurrency(): Promise<TokenInfo[]>;
+```
+
+Possible exceptions: `Failed to fetch token mappings`.
+
+
+## Installation
+
+You can install Alex-SDK using npm:
+
+```bash
+npm install alex-sdk
+```
+
 ## Usage
+
+To use the AlexSDK, you can import it into your project and instantiate a new object:
 
 ```typescript
 import { AlexSDK, Currency } from 'alex-sdk';
@@ -86,11 +159,24 @@ const alex = new AlexSDK();
 
   // Then broadcast the transaction yourself
   await openContractCall(tx);
+
+  // Get the latest prices for all supported currencies
+  const latestPrices = await alex.getLatestPrices();
+  console.log('Latest prices:', latestPrices);
+
+  // Get balances for a specific STX address
+  const stxAddress = 'SM2MARAVW6BEJCD13YV2RHGYHQWT7TDDNMNRB1MVT';
+  const balances = await alex.getBalances(stxAddress);
+  console.log('Balances:', balances);
+
+  // Fetch information about all swappable currencies
+  const swappableCurrencies = await alex.fetchSwappableCurrency();
+  console.log('Swappable currencies:', swappableCurrencies);    
 })();
 ```
 
-There is a fully working example in the [alex-sdk-example](https://github.com/alexgo-io/alex-sdk-example)
+There is a fully working example in the [alex-sdk-example](https://github.com/alexgo-io/alex-sdk-example).
 
 ## Contributing
 
-Contributions to the project are welcome. Please fork the repository, make your changes, and submit a pull request. Ensure your changes follow the code style and conventions used
+Contributions to the project are welcome. Please fork the repository, make your changes, and submit a pull request. Ensure your changes follow the code style and conventions used.
