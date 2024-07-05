@@ -33,7 +33,7 @@ describe('AlexSDK', () => {
   // TODO: add test for this
   xit('Verify response of getWayPoints function', async () => {
     const result = await sdk.getRoute(Currency.STX, tokenDiko);
-    const display = await sdk.getWayPoints(route);
+    const display = await sdk.getWayPoints(result);
   });
 
   it('Attempt to Get Route with wrong tokens', async () => {
