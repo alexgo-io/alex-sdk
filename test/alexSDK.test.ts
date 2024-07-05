@@ -1,9 +1,14 @@
 import { configs } from '../src/config';
 import { AlexSDK, Currency, TokenInfo } from '../src';
+import { runSpot } from '../src/helpers/SwapHelper';
 
 const tokenAlex = 'age000-governance-token' as Currency;
 const tokenDiko = 'token-wdiko' as Currency;
 const wrongTokenAlex = '' as Currency;
+
+jest.mock('node-fetch', () => jest.fn());
+
+const { Response } = jest.requireActual('node-fetch');
 
 const sdk = new AlexSDK();
 
@@ -13,9 +18,17 @@ describe('AlexSDK', () => {
     expect(typeof result).toBe('bigint');
     expect(result >= BigInt(0)).toBeTruthy();
   });
-
+  
   it('Attempt to Get Fee Rate with wrong tokens', async () => {
     await expect(sdk.getFeeRate(wrongTokenAlex, wrongTokenAlex)).rejects.toThrow('No AMM pools in route');
+  });
+  
+  it('Attempt to Get Fee Rate with more than 4 pools in route', async () => {
+    //TODO
+  });
+
+  it('Attempt to Get Fee Rate with -Error calling read-only function-', async () => {
+    //TODO
   });
 
   it('Verify response of getRouter function', async () => {
@@ -80,6 +93,14 @@ describe('AlexSDK', () => {
     ).rejects.toThrow('ClarityError: 2011');
   });
 
+  it('Attempt to getAmountTo with -`Too many AMM pools in route`-', async () => {
+    //TODO
+  });
+
+  it('Attempt to getAmountTo with -`Error calling read-only function`-', async () => {
+    //TODO
+  });
+
   it('Verify response of runSwap function', async () => {
     const router = await sdk.getRouter(Currency.STX, tokenDiko);
     const result = await sdk.runSwap(
@@ -114,6 +135,26 @@ describe('AlexSDK', () => {
       )
     ).rejects.toThrow('Invalid c32check string: checksum mismatch');
   });
+
+  it('Attempt to run swap with wrong token', async () => {
+    await expect(
+      sdk.runSwap(
+        'SP25DP4A9EXT42KC40QDMYQPMQCT1P0R5234GWEGS',
+        Currency.STX,
+        wrongTokenAlex,
+        BigInt(100),
+        BigInt(0)
+      )
+    ).rejects.toThrow('Can\'t find AMM route');
+  }); 
+
+  it('Attempt to run swap with Token mapping not found', async () => {
+    // TODO
+  }); 
+
+  it('Attempt to run swap with Too many AMM pools in route', async () => {
+    //TODO
+  }); 
 
   it('Verify response of getLatestPrices function', async () => {
     const result = await sdk.getLatestPrices();
@@ -164,5 +205,48 @@ describe('AlexSDK', () => {
       expect(token.icon).toMatch(/^https?:\/\/.+/);
     });
     });
-});
 
+    // it('getBalances function', async () => {
+    //   const stxAddress = 'SM2MARAVW6BEJCD13YV2RHGYHQWT7TDDNMNRB1MVT';
+    //   (fetch as jest.MockedFunction<typeof fetch>).mockImplementation((url: RequestInfo, init?: RequestInit) => {
+    //     if (url === 'https://alex-sdk-api.alexlab.co') {
+    //       return Promise.resolve(new Response(null, { status: 500, statusText: 'Internal Server Error' }));
+    //     }
+    //     return Promise.reject(new Error('Unexpected URL'));
+    //   });
+      
+    //   sdk.getBalances(stxAddress)
+    //   });
+
+
+    // Failed to fetch token mappings 
+    it('Attempt to Get Fee with incorrect Alex SDK Data', async () => {
+      //TODO  
+    });
+
+    it('Attempt to Get Fee with incorrect Alex SDK Data', async () => {
+      //TODO  
+    });
+
+    it('Attempt to Get Router with incorrect Alex SDK Data', async () => {
+      //TODO  
+    });
+
+    it('Attempt to Get Amount with incorrect Alex SDK Data', async () => {
+      //TODO  
+    });
+
+    it('Attempt to Run Swap with incorrect Alex SDK Data', async () => {
+      //TODO  
+    });
+
+    it('Attempt to Get Latest Prices with incorrect Alex SDK Data', async () => {
+      //TODO
+  
+    });
+
+    it('Attempt to Get Balances with incorrect Alex SDK Data', async () => {
+      const stxAddress = 'SM2MARAVW6BEJCD13YV2RHGYHQWT7TDDNMNRB1MVT';
+      const balances = await sdk.getBalances(stxAddress);
+    });
+});
