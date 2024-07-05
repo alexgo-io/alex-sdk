@@ -2,15 +2,16 @@ import { unwrapResponse } from 'clarity-codegen';
 import { readonlyCall } from '../utils/readonlyCallExecutor';
 import { Currency } from '../currency';
 import { PoolData, TokenInfo } from '../types';
-import { resolveAmmRoute } from '../utils/ammRouteResolver';
+import { AMMRouteSegment, resolveAmmRoute } from '../utils/ammRouteResolver';
 
 export async function getLiquidityProviderFee(
   tokenX: Currency,
   tokenY: Currency,
   pools: PoolData[],
-  getContractId: (currency: Currency) => string
+  getContractId: (currency: Currency) => string,
+  customRoute?: AMMRouteSegment[]
 ): Promise<bigint> {
-  const ammRoute = resolveAmmRoute(tokenX, tokenY, pools);
+  const ammRoute = customRoute ?? resolveAmmRoute(tokenX, tokenY, pools);
   if (ammRoute.length === 0) {
     throw new Error('No AMM pools in route');
   }

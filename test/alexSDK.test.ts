@@ -18,8 +18,8 @@ describe('AlexSDK', () => {
     await expect(sdk.getFeeRate(wrongTokenAlex, wrongTokenAlex)).rejects.toThrow('No AMM pools in route');
   });
 
-  it('Verify response of getRouter function', async () => {
-    const result = await sdk.getRouter(Currency.STX, tokenDiko);
+  it('Verify response of getRoute function', async () => {
+    const result = await sdk.getRoute(Currency.STX, tokenDiko);
     expect(Array.isArray(result)).toBeTruthy();
     expect(result.length).toBeGreaterThan(0);
     expect(result[0]).toBe(Currency.STX);
@@ -30,8 +30,14 @@ describe('AlexSDK', () => {
     });
   });
 
+  // TODO: add test for this
+  xit('Verify response of getWayPoints function', async () => {
+    const result = await sdk.getRoute(Currency.STX, tokenDiko);
+    const display = await sdk.getWayPoints(route);
+  });
+
   it('Attempt to Get Route with wrong tokens', async () => {
-    await expect(sdk.getRouter(wrongTokenAlex, wrongTokenAlex)).rejects.toThrow('Can\'t find route');
+    await expect(sdk.getRoute(wrongTokenAlex, wrongTokenAlex)).rejects.toThrow('Can\'t find route');
   });
 
   it('Verify response of getAmountTo function', async () => {
@@ -81,7 +87,7 @@ describe('AlexSDK', () => {
   });
 
   it('Verify response of runSwap function', async () => {
-    const router = await sdk.getRouter(Currency.STX, tokenDiko);
+    const router = await sdk.getRoute(Currency.STX, tokenDiko);
     const result = await sdk.runSwap(
       configs.CONTRACT_DEPLOYER,
       Currency.STX,

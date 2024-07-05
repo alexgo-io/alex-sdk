@@ -12,7 +12,7 @@ import { AlexContracts } from '../generated/smartContract/contracts_Alex';
 import { configs } from '../config';
 import { Currency } from '../currency';
 import { PoolData, TokenInfo } from '../types';
-import { resolveAmmRoute } from '../utils/ammRouteResolver';
+import { AMMRouteSegment, resolveAmmRoute } from '../utils/ammRouteResolver';
 import { transferFactory } from '../utils/postConditions';
 
 export type TxToBroadCast = {
@@ -59,14 +59,16 @@ export function runSpot(
   fromAmount: bigint,
   minDy: bigint,
   ammPools: PoolData[],
-  mappings: TokenInfo[]
+  mappings: TokenInfo[],
+  customRoute?: AMMRouteSegment[]
 ): TxToBroadCast {
+  const ammRoute =
+    customRoute ?? resolveAmmRoute(currencyX, currencyY, ammPools);
   const getContractId = (currency: Currency) =>
     mappings
       .find((x) => x.id === currency)!
       .wrapToken.split('::')[0] as `${string}.${string}`;
   const AlexVault = `${configs.CONTRACT_DEPLOYER}.amm-vault-v2-01`;
-  const ammRoute = resolveAmmRoute(currencyX, currencyY, ammPools);
   if (ammRoute.length === 0) {
     throw new Error("Can't find AMM route");
   }
