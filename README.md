@@ -119,7 +119,7 @@ const alex = new AlexSDK();
   console.log('Swap fee:', feeRate);
 
   // Get the router path for swapping STX to ALEX
-  const router = await alex.getRouter(Currency.STX, Currency.ALEX);
+  const router = await alex.getRoute(Currency.STX, Currency.ALEX);
   console.log('Router path:', router);
 
   // Get the amount of USDA that will be received when swapping 100 ALEX
