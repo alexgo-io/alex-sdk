@@ -87,7 +87,6 @@ describe('AlexSDK', () => {
   });
 
   it('Verify response of runSwap function', async () => {
-    const router = await sdk.getRoute(Currency.STX, tokenDiko);
     const result = await sdk.runSwap(
       configs.CONTRACT_DEPLOYER,
       Currency.STX,
