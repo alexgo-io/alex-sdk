@@ -22,11 +22,12 @@ describe('AlexSDK', () => {
     const result = await sdk.getRoute(Currency.STX, tokenDiko);
     expect(Array.isArray(result)).toBeTruthy();
     expect(result.length).toBeGreaterThan(0);
-    expect(result[0]).toBe(Currency.STX);
-    expect(result[result.length - 1]).toBe(tokenDiko);
+    expect(result[0].pool.tokenX).toBe(Currency.STX);
+    expect(result[result.length - 1].pool.tokenY).toBe(tokenDiko);
     expect(result.length).toBeLessThanOrEqual(5);
-    result.forEach(currency => {
-      expect(typeof currency).toBe('string');
+    expect(typeof result[0].pool.tokenX).toBe('string');
+    result.forEach(routeSegment => {
+      expect(typeof routeSegment.pool.tokenY).toBe('string');
     });
   });
 
