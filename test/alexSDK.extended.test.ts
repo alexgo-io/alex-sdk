@@ -5,51 +5,44 @@ import * as RateHelper from '../src/helpers/RateHelper';
 import * as SwapHelper from '../src/helpers/SwapHelper';
 import * as fetchData from '../src/utils/fetchData';
 import { configs } from '../src/config';
-import { PriceData } from '../src/types';
+import {
+  dummyAlexSDKData,
+  dummyBalances,
+  dummyCurrencies,
+  dummyFee,
+  dummyPrices,
+  dummyRate,
+  dummyRoute,
+  dummyTx,
+  parsedDummyPrices,
+} from './mock-data/alexSDKMockResponses';
 
 const sdk = new AlexSDK();
 
 const tokenAlex = 'age000-governance-token' as Currency;
 const tokenWUSDA = 'token-wusda' as Currency;
 
-const dummyFee = BigInt(777);
+// Mocked helpers and utilities for testing SDK functions
 jest.mock('../src/helpers/FeeHelper', () => ({
   getLiquidityProviderFee: jest.fn(async () => dummyFee),
 }));
-const dummyRoute = ['TokenA', 'TokenB', 'TokenC'];
 jest.mock('../src/helpers/RouteHelper', () => ({
   getRoute: jest.fn(async () => dummyRoute),
 }));
-const dummyRate = BigInt(1001);
 jest.mock('../src/helpers/RateHelper', () => ({
   getYAmountFromXAmount: jest.fn(async () => dummyRate),
 }));
-const dummyTx: SwapHelper.TxToBroadCast = {
-  "contractName": "amm-pool-v2-01",
-  "functionName": "swap-helper",
-  "functionArgs": [],
-  "contractAddress": "SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM",
-  "postConditions": []
-};
 jest.mock('../src/helpers/SwapHelper', () => ({
   runSpot: jest.fn(async () => dummyTx),
 }));
-const dummyPrices: PriceData[] = [
-  {
-    "token": "TokenA" as Currency,
-    "price": 1.1,
-  },
-  {
-    "token": "TokenB" as Currency,
-    "price": 2.2,
-  }
-];
 jest.mock('../src/utils/fetchData', () => {
   const originalModule = jest.requireActual('../src/utils/fetchData');
   return {
     __esModule: true,
     ...originalModule,
     getPrices: jest.fn(async () => dummyPrices),
+    fetchBalanceForAccount: jest.fn(async () => dummyBalances),
+    getAlexSDKData: jest.fn(async () => dummyAlexSDKData)
   }
 });
 
@@ -91,11 +84,20 @@ describe('AlexSDK - extended tests', () => {
   it('Verify response value of getLatestPrices function', async () => {
     expect(jest.isMockFunction(fetchData.getPrices)).toBeTruthy();
     const result = await sdk.getLatestPrices();
-    const parsedDummyPrices = {
-      "TokenA": 1.1,
-      "TokenB": 2.2
-    };
     expect(result).toStrictEqual(parsedDummyPrices);
+  });
+
+  it('Verify response value of getBalances function', async () => {
+    expect(jest.isMockFunction(fetchData.fetchBalanceForAccount)).toBeTruthy();
+    const stxAddress = 'SM2MARAVW6BEJCD13YV2RHGYHQWT7TDDNMNRB1MVT';
+    const result = await sdk.getBalances(stxAddress);
+    expect(result).toStrictEqual(dummyBalances);
+  });
+
+  it('Verify response value of fetchSwappableCurrency function', async () => {
+    expect(jest.isMockFunction(fetchData.getAlexSDKData)).toBeTruthy();
+    const result = await sdk.fetchSwappableCurrency();
+    expect(result).toStrictEqual(dummyCurrencies);
   });
 });
 
