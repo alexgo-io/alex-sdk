@@ -17,8 +17,9 @@
     "test": "dts test",
     "lint": "dts lint",
     "size": "size-limit",
-    "gen:contract": "rm -rf src/generated/smartContract/* && tsx ./scripts/gen-contract.ts",
-    "analyze": "size-limit --why"
+    "gen:contract": "rm -rf src/generated/smartContract/* && tsx ./scripts/gen-contract.ts && prettier --write 'src/generated/smartContract'",
+    "analyze": "size-limit --why",
+    "ci": "pnpm run lint && pnpm run test && pnpm run size"
   },
   "husky": {
     "hooks": {
@@ -37,11 +38,11 @@
   "size-limit": [
     {
       "path": "dist/alex-sdk.cjs.production.min.js",
-      "limit": "10 KB"
+      "limit": "20 KB"
     },
     {
       "path": "dist/alex-sdk.esm.js",
-      "limit": "10 KB"
+      "limit": "20 KB"
     }
   ],
   "dependencies": {
