@@ -14,25 +14,32 @@ describe('AlexSDK', () => {
     expect(typeof result).toBe('bigint');
     expect(result >= BigInt(0)).toBeTruthy();
   },10000);
-  
+
   it('Attempt to Get Fee Rate with wrong tokens', async () => {
     await expect(sdk.getFeeRate(wrongTokenAlex, wrongTokenAlex)).rejects.toThrow('No AMM pools in route');
   },10000);
 
-  it('Verify response of getRouter function', async () => {
-    const result = await sdk.getRouter(Currency.STX, tokenDiko);
+  it('Verify response of getRoute function', async () => {
+    const result = await sdk.getRoute(Currency.STX, tokenDiko);
     expect(Array.isArray(result)).toBeTruthy();
     expect(result.length).toBeGreaterThan(0);
-    expect(result[0]).toBe(Currency.STX);
-    expect(result[result.length - 1]).toBe(tokenDiko);
+    expect(result[0].pool.tokenX).toBe(Currency.STX);
+    expect(result[result.length - 1].pool.tokenY).toBe(tokenDiko);
     expect(result.length).toBeLessThanOrEqual(5);
-    result.forEach(currency => {
-      expect(typeof currency).toBe('string');
+    expect(typeof result[0].pool.tokenX).toBe('string');
+    result.forEach(routeSegment => {
+      expect(typeof routeSegment.pool.tokenY).toBe('string');
     });
   },10000);
 
+  // TODO: add test for this
+  xit('Verify response of getWayPoints function', async () => {
+    const result = await sdk.getRoute(Currency.STX, tokenDiko);
+    const display = await sdk.getWayPoints(result);
+  });
+
   it('Attempt to Get Route with wrong tokens', async () => {
-    await expect(sdk.getRouter(wrongTokenAlex, wrongTokenAlex)).rejects.toThrow('Can\'t find route');
+    await expect(sdk.getRoute(wrongTokenAlex, wrongTokenAlex)).rejects.toThrow('Can\'t find route');
   },10000);
 
   it('Verify response of getAmountTo function', async () => {
@@ -41,8 +48,8 @@ describe('AlexSDK', () => {
       BigInt(2) * BigInt(1e8),
       tokenDiko
     );
-    expect(typeof result).toBe('bigint'); 
-    expect(result > BigInt(0)).toBeTruthy(); 
+    expect(typeof result).toBe('bigint');
+    expect(result > BigInt(0)).toBeTruthy();
   },10000);
 
   it('Attempt to Get Rate with a wrong From token', async () => {
@@ -82,7 +89,6 @@ describe('AlexSDK', () => {
   },10000);
 
   it('Verify response of runSwap function', async () => {
-    const router = await sdk.getRouter(Currency.STX, tokenDiko);
     const result = await sdk.runSwap(
       configs.CONTRACT_DEPLOYER,
       Currency.STX,
@@ -126,7 +132,7 @@ describe('AlexSDK', () => {
         BigInt(0)
       )
     ).rejects.toThrow('Can\'t find AMM route');
-  },10000); 
+  },10000);
 
 
   it('Attempt to runSwap with an invalid minDy value', async () => {
@@ -164,6 +170,41 @@ describe('AlexSDK', () => {
   });
   },10000);
 
+  it('Attempt to Get Tx with an invalid stx address (checksum mismatch)', async () => {
+    await expect(
+      sdk.runSwap(
+        'SP25DP4A9EXT42KC40QDMYQPMQCT1P0R5234GWEGS',
+        Currency.STX,
+        tokenDiko,
+        BigInt(100),
+        BigInt(0)
+      )
+    ).rejects.toThrow('Invalid c32check string: checksum mismatch');
+  });
+
+  it('Verify response of getLatestPrices function', async () => {
+    const result = await sdk.getLatestPrices();
+    expect(result).toBeDefined();
+    expect(typeof result).toBe('object');
+    Object.values(result).forEach((value) => {
+      expect(typeof value).toBe('number');
+      expect(isNaN(Number(value))).toBe(false);
+    });
+  });
+
+
+  it('Verify response of getBalances function', async () => {
+    const stxAddress = 'SM2MARAVW6BEJCD13YV2RHGYHQWT7TDDNMNRB1MVT';
+    const balances = await sdk.getBalances(stxAddress);
+    expect(balances).toBeDefined();
+    expect(typeof balances).toBe('object');
+    Object.keys(balances).forEach((currency) => {
+      if (Object.values(Currency).includes(currency as Currency)) {
+        expect(typeof balances[currency as Currency]).toBe('bigint');
+      }
+    });
+  });
+
   it('Attempt to get balances with invalid address', async () => {
     // TODO: Implement principal address verification in the SDK methods.
     const wrongAddress = 'ABC';
@@ -185,7 +226,7 @@ describe('AlexSDK', () => {
       expect(token).toHaveProperty('wrapToken');
       expect(token).toHaveProperty('underlyingToken');
       expect(token).toHaveProperty('underlyingTokenDecimals');
-      expect(token).toHaveProperty('isRebaseToken');      
+      expect(token).toHaveProperty('isRebaseToken');
       expect(typeof token.id).toBe('string');
       expect(typeof token.name).toBe('string');
       expect(typeof token.icon).toBe('string');
@@ -200,3 +241,4 @@ describe('AlexSDK', () => {
     });
     },10000);
 });
+

@@ -2,12 +2,14 @@ import { isNotNull } from './utils';
 import { Currency } from '../currency';
 import { PoolData } from '../types';
 
-export type AMMSwapRoute = {
+export type AMMRouteSegment = {
   neighbour: Currency;
   pool: PoolData;
 };
 
-function neighbours(token: Currency, pools: PoolData[]): AMMSwapRoute[] {
+export type AMMRoute = AMMRouteSegment[];
+
+function neighbours(token: Currency, pools: PoolData[]): AMMRouteSegment[] {
   return pools
     .map((pool) => {
       if (pool.tokenX === token) return { neighbour: pool.tokenY, pool };
@@ -21,11 +23,11 @@ export function resolveAmmRoute(
   tokenX: Currency,
   tokenY: Currency,
   pools: PoolData[]
-): AMMSwapRoute[] {
+): AMMRouteSegment[] {
   if (pools.length === 0) {
     return [];
   }
-  const visited: { [key: string]: AMMSwapRoute[] } = {
+  const visited: { [key: string]: AMMRouteSegment[] } = {
     [tokenX]: [],
   };
   // contract only support up to 4 segments
