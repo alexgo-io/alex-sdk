@@ -18,11 +18,6 @@ describe('AlexSDK', () => {
   it('Attempt to Get Fee Rate with wrong tokens', async () => {
     await expect(sdk.getFeeRate(wrongTokenAlex, wrongTokenAlex)).rejects.toThrow('No AMM pools in route');
   },10000);
-  
-
-  it('Attempt to Get Fee Rate with -Error calling read-only function-', async () => {
-    //TODO
-  },10000);
 
   it('Verify response of getRouter function', async () => {
     const result = await sdk.getRouter(Currency.STX, tokenDiko);
@@ -86,10 +81,6 @@ describe('AlexSDK', () => {
     ).rejects.toThrow('ClarityError: 2011');
   },10000);
 
-  it('Attempt to getAmountTo with -`Error calling read-only function`-', async () => {
-    //TODO
-  },10000);
-
   it('Verify response of runSwap function', async () => {
     const router = await sdk.getRouter(Currency.STX, tokenDiko);
     const result = await sdk.runSwap(
@@ -137,9 +128,6 @@ describe('AlexSDK', () => {
     ).rejects.toThrow('Can\'t find AMM route');
   },10000); 
 
-  it('Attempt to run swap with Token mapping not found', async () => {
-    // TODO
-  },10000); 
 
   it('Attempt to runSwap with an invalid minDy value', async () => {
     const wrongValue = CLARITY_MAX_UNSIGNED_INT + BigInt(1);
@@ -152,7 +140,7 @@ describe('AlexSDK', () => {
         wrongValue
       )
     ).rejects.toThrow(`Cannot construct unsigned clarity integer greater than ${CLARITY_MAX_UNSIGNED_INT}`);
-  });
+  },10000);
 
   it('Verify response of getLatestPrices function', async () => {
     const result = await sdk.getLatestPrices();
@@ -182,7 +170,7 @@ describe('AlexSDK', () => {
     await expect(
       sdk.getBalances(wrongAddress)
     ).rejects.toThrow("Cannot read properties of undefined (reading 'balance')");
-  });
+  },10000);
 
   it('Verify response of fetchSwappableCurrency function', async () => {
     const swappableCurrencies = await sdk.fetchSwappableCurrency();
