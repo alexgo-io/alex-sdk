@@ -1,5 +1,39 @@
 import { configs } from '../src/config';
-import { AlexSDK, Currency, TokenInfo } from '../src';
+import { AlexSDK, Currency } from '../src';
+import Ajv from 'ajv';
+import { createGenerator } from 'ts-json-schema-generator';
+import path from 'node:path';
+import { getAlexSDKData, getPrices } from '../src/utils/fetchData';
+
+const runtimeTypescriptMatcher = (received: any, typeName: string) => {
+  const validator = new Ajv().compile(
+    createGenerator({
+      type: typeName,
+      path: path.resolve(__dirname, '../src/types.ts'),
+      tsconfig: path.resolve(__dirname, '../tsconfig.json'),
+    }).createSchema(typeName)
+  );
+  const pass = validator(received);
+  return {
+    pass,
+    message: () =>
+      `expected ${received} does not match type ${typeName}: \n${JSON.stringify(
+        validator.errors,
+        null,
+        2
+      )}`,
+  };
+};
+
+declare global {
+  namespace jest {
+    interface Matchers<R> {
+      toMatchType(typeName: string): R;
+    }
+  }
+}
+
+expect.extend({ toMatchType: runtimeTypescriptMatcher });
 
 const tokenAlex = 'age000-governance-token' as Currency;
 const tokenDiko = 'token-wdiko' as Currency;
@@ -15,7 +49,9 @@ describe('AlexSDK', () => {
   });
 
   it('Attempt to Get Fee Rate with wrong tokens', async () => {
-    await expect(sdk.getFeeRate(wrongTokenAlex, wrongTokenAlex)).rejects.toThrow('No AMM pools in route');
+    await expect(
+      sdk.getFeeRate(wrongTokenAlex, wrongTokenAlex)
+    ).rejects.toThrow('No AMM pools in route');
   });
 
   it('Verify response of getRoute function', async () => {
@@ -26,19 +62,15 @@ describe('AlexSDK', () => {
     expect(result[result.length - 1].pool.tokenY).toBe(tokenDiko);
     expect(result.length).toBeLessThanOrEqual(5);
     expect(typeof result[0].pool.tokenX).toBe('string');
-    result.forEach(routeSegment => {
+    result.forEach((routeSegment) => {
       expect(typeof routeSegment.pool.tokenY).toBe('string');
     });
   });
 
-  // TODO: add test for this
-  xit('Verify response of getWayPoints function', async () => {
-    const result = await sdk.getRoute(Currency.STX, tokenDiko);
-    const display = await sdk.getWayPoints(result);
-  });
-
   it('Attempt to Get Route with wrong tokens', async () => {
-    await expect(sdk.getRoute(wrongTokenAlex, wrongTokenAlex)).rejects.toThrow('Can\'t find route');
+    await expect(sdk.getRoute(wrongTokenAlex, wrongTokenAlex)).rejects.toThrow(
+      "Can't find route"
+    );
   });
 
   it('Verify response of getAmountTo function', async () => {
@@ -47,43 +79,33 @@ describe('AlexSDK', () => {
       BigInt(2) * BigInt(1e8),
       tokenDiko
     );
-    expect(typeof result).toBe('bigint'); 
-    expect(result > BigInt(0)).toBeTruthy(); 
+    expect(typeof result).toBe('bigint');
+    expect(result > BigInt(0)).toBeTruthy();
   });
 
   it('Attempt to Get Rate with a wrong From token', async () => {
     await expect(
-      sdk.getAmountTo(
-        wrongTokenAlex,
-        BigInt(2) * BigInt(1e8),
-        tokenDiko)
+      sdk.getAmountTo(wrongTokenAlex, BigInt(2) * BigInt(1e8), tokenDiko)
     ).rejects.toThrow('No AMM pool found for the given route');
   });
 
   it('Attempt to Get Rate with negative From amount', async () => {
     await expect(
-      sdk.getAmountTo(
-        Currency.STX,
-        BigInt(-111),
-        tokenDiko)
-    ).rejects.toThrow('Cannot construct unsigned clarity integer from negative value');
+      sdk.getAmountTo(Currency.STX, BigInt(-111), tokenDiko)
+    ).rejects.toThrow(
+      'Cannot construct unsigned clarity integer from negative value'
+    );
   });
 
   it('Attempt to Get Rate with an overflowing From amount (parseReadOnlyResponse)', async () => {
     await expect(
-      sdk.getAmountTo(
-        Currency.STX,
-        BigInt(999999223372036854775807),
-        tokenDiko)
+      sdk.getAmountTo(Currency.STX, BigInt(999999223372036854775807), tokenDiko)
     ).rejects.toThrow('ArithmeticOverflow');
   });
 
   it('Attempt to Get Rate with an overflowing From amount (decoders)', async () => {
     await expect(
-      sdk.getAmountTo(
-        Currency.STX,
-        BigInt(99999223372036854775807),
-        tokenDiko)
+      sdk.getAmountTo(Currency.STX, BigInt(99999223372036854775807), tokenDiko)
     ).rejects.toThrow('ClarityError: 2011');
   });
 
@@ -104,7 +126,12 @@ describe('AlexSDK', () => {
     expect(result).toHaveProperty('postConditions');
     expect(result.contractAddress).toBe(configs.CONTRACT_DEPLOYER);
     expect(result.contractName).toBe('amm-pool-v2-01');
-    expect(['swap-helper', 'swap-helper-a', 'swap-helper-b', 'swap-helper-c']).toContain(result.functionName);
+    expect([
+      'swap-helper',
+      'swap-helper-a',
+      'swap-helper-b',
+      'swap-helper-c',
+    ]).toContain(result.functionName);
     expect(Array.isArray(result.functionArgs)).toBeTruthy();
     expect(Array.isArray(result.postConditions)).toBeTruthy();
   });
@@ -132,43 +159,23 @@ describe('AlexSDK', () => {
   });
 
   it('Verify response of getBalances function', async () => {
-  const stxAddress = 'SM2MARAVW6BEJCD13YV2RHGYHQWT7TDDNMNRB1MVT';
-  const balances = await sdk.getBalances(stxAddress);
-  expect(balances).toBeDefined();
-  expect(typeof balances).toBe('object');
-  Object.keys(balances).forEach((currency) => {
-    if (Object.values(Currency).includes(currency as Currency)) {
+    const stxAddress = 'SM2MARAVW6BEJCD13YV2RHGYHQWT7TDDNMNRB1MVT';
+    const balances = await sdk.getBalances(stxAddress);
+    expect(balances).toBeDefined();
+    expect(typeof balances).toBe('object');
+    Object.keys(balances).forEach((currency) => {
       expect(typeof balances[currency as Currency]).toBe('bigint');
-    }
-  });
+    });
   });
 
-  it('Verify response of fetchSwappableCurrency function', async () => {
-    const swappableCurrencies = await sdk.fetchSwappableCurrency();
-    expect(swappableCurrencies).toBeDefined();
-    expect(Array.isArray(swappableCurrencies)).toBe(true);
-    expect(swappableCurrencies.length).toBeGreaterThan(0);
-    swappableCurrencies.forEach((token: TokenInfo) => {
-      expect(token).toHaveProperty('id');
-      expect(token).toHaveProperty('name');
-      expect(token).toHaveProperty('icon');
-      expect(token).toHaveProperty('wrapTokenDecimals');
-      expect(token).toHaveProperty('wrapToken');
-      expect(token).toHaveProperty('underlyingToken');
-      expect(token).toHaveProperty('underlyingTokenDecimals');
-      expect(token).toHaveProperty('isRebaseToken');      
-      expect(typeof token.id).toBe('string');
-      expect(typeof token.name).toBe('string');
-      expect(typeof token.icon).toBe('string');
-      expect(typeof token.wrapTokenDecimals).toBe('number');
-      expect(typeof token.wrapToken).toBe('string');
-      expect(typeof token.underlyingToken).toBe('string');
-      expect(typeof token.underlyingTokenDecimals).toBe('number');
-      expect(typeof token.isRebaseToken).toBe('boolean');
-    });
-    swappableCurrencies.forEach(token => {
-      expect(token.icon).toMatch(/^https?:\/\/.+/);
-    });
-    });
+  it('getAlexSDKData response', async () => {
+    const response = await getAlexSDKData();
+    expect(response).toMatchType('AlexSDKResponse');
+  });
+
+  it('getPrices response', async () => {
+    const sdk = new AlexSDK();
+    const tokens = await sdk.fetchSwappableCurrency();
+    expect(await getPrices(tokens)).toMatchType('BackendAPIPriceResponse');
+  });
 });
-
