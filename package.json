@@ -15,6 +15,7 @@
     "build": "dts build",
     "prepare": "pnpm run build",
     "test": "dts test",
+    "test:coverage": "dts test --coverage",
     "lint": "dts lint",
     "size": "size-limit",
     "gen:contract": "rm -rf src/generated/smartContract/* && tsx ./scripts/gen-contract.ts",

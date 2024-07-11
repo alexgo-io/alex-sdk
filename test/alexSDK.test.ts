@@ -6,6 +6,7 @@ const tokenDiko = 'token-wdiko' as Currency;
 const wrongTokenAlex = '' as Currency;
 
 const sdk = new AlexSDK();
+const CLARITY_MAX_UNSIGNED_INT = BigInt("340282366920938463463374607431768211455");
 
 describe('AlexSDK', () => {
   it('Verify response of getFeeRate function', async () => {
@@ -140,6 +141,19 @@ describe('AlexSDK', () => {
     // TODO
   },10000); 
 
+  it('Attempt to runSwap with an invalid minDy value', async () => {
+    const wrongValue = CLARITY_MAX_UNSIGNED_INT + BigInt(1);
+    await expect(
+      sdk.runSwap(
+        configs.CONTRACT_DEPLOYER,
+        Currency.STX,
+        tokenDiko,
+        BigInt(0),
+        wrongValue
+      )
+    ).rejects.toThrow(`Cannot construct unsigned clarity integer greater than ${CLARITY_MAX_UNSIGNED_INT}`);
+  });
+
   it('Verify response of getLatestPrices function', async () => {
     const result = await sdk.getLatestPrices();
     expect(result).toBeDefined();
@@ -161,6 +175,14 @@ describe('AlexSDK', () => {
     }
   });
   },10000);
+
+  it('Attempt to get balances with invalid address', async () => {
+    // TODO: Implement principal address verification in the SDK methods.
+    const wrongAddress = 'ABC';
+    await expect(
+      sdk.getBalances(wrongAddress)
+    ).rejects.toThrow("Cannot read properties of undefined (reading 'balance')");
+  });
 
   it('Verify response of fetchSwappableCurrency function', async () => {
     const swappableCurrencies = await sdk.fetchSwappableCurrency();
