@@ -1,9 +1,4 @@
 import { Currency } from './currency';
-import {
-  ClarityValue,
-  FungiblePostCondition,
-  STXPostCondition,
-} from '@stacks/transactions';
 
 /**
  * TokenInfo represents the details of a token that can be used in the AlexSDK.
@@ -70,10 +65,3 @@ export type AlexSDKResponse = {
 
 export type BackendAPIPriceResponse = PriceData[];
 
-export type TxToBroadCast = {
-  contractAddress: string;
-  contractName: string;
-  functionName: string;
-  functionArgs: ClarityValue[];
-  postConditions: Array<FungiblePostCondition | STXPostCondition>;
-};

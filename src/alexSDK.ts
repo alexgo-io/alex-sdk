@@ -1,7 +1,7 @@
 import { Currency } from './currency';
-import { runSpot } from './helpers/SwapHelper';
+import { runSpot, TxToBroadCast } from './helpers/SwapHelper';
 import { getLiquidityProviderFee } from './helpers/FeeHelper';
-import { AlexSDKResponse, PoolData, PriceData, TokenInfo, TxToBroadCast } from './types';
+import { AlexSDKResponse, PoolData, PriceData, TokenInfo } from './types';
 import {
   fetchBalanceForAccount,
   getAlexSDKData,
