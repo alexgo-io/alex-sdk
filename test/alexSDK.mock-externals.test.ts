@@ -8,9 +8,9 @@ const tokenAlex = 'age000-governance-token' as Currency;
 const tokenWUSDA = 'token-wusda' as Currency;
 
 fetchMock.mock('https://alex-sdk-api.alexlab.co', 500);
-// fetchMock.mock(`${configs.API_HOST}/v2/public/token-prices`, 500);
 
-describe('AlexSDK - extended tests 2', () => {
+
+describe('AlexSDK - mock externals', () => {
 
   it('Attempt to Get Latest Prices with incorrect Alex SDK Data', async () => {
     await expect(sdk.getLatestPrices()).rejects.toThrow('Failed to fetch token mappings');

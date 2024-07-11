@@ -12,7 +12,8 @@ jest.mock('../src/utils/ammRouteResolver', () => ({
   resolveAmmRoute: jest.fn(async () => dummyRoute),
 }));
 
-describe('AlexSDK - extended tests 3', () => {
+
+describe('AlexSDK - mock exceptions', () => {
   it('Attempt to Get Fee Rate with more than 4 pools in route', async () => {
     expect(jest.isMockFunction(ammRouteResolver.resolveAmmRoute)).toBeTruthy();
     await expect(sdk.getFeeRate(tokenAlex, Currency.STX)).rejects.toThrow('Too many AMM pools in route');

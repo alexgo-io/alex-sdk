@@ -17,9 +17,10 @@ import {
   dummyTx,
   parsedDummyPrices,
   dummyTokenA,
-  dummyTokenB, dummyFactorA, dummyFactorB,
+  dummyTokenB, dummyFactorA, dummyFactorB, dummyTokenC,
 } from './mock-data/alexSDKMockResponses';
 import { cvToValue, FungibleConditionCode } from '@stacks/transactions';
+import { getAllPossibleRoute } from '../src/helpers/RouteHelper';
 
 const sdk = new AlexSDK();
 
@@ -31,7 +32,7 @@ jest.mock('../src/helpers/FeeHelper', () => ({
   getLiquidityProviderFee: jest.fn(async () => dummyFee),
 }));
 jest.mock('../src/helpers/RouteHelper', () => ({
-  getRoute: jest.fn(async () => dummyRoute),
+  getAllPossibleRoute: jest.fn(async () => [dummyAmmRoute, dummyAmmRoute]),
 }));
 jest.mock('../src/helpers/RateHelper', () => ({
   getYAmountFromXAmount: jest.fn(async () => dummyRate),
@@ -62,17 +63,23 @@ jest.mock('../src/utils/ammRouteResolver', () => ({
   resolveAmmRoute: jest.fn(() => dummyAmmRoute),
 }));
 
-describe('AlexSDK - extended tests', () => {
+describe('AlexSDK - mock helpers', () => {
   it('Verify response value of getFeeRate function', async () => {
     expect(jest.isMockFunction(FeeHelper.getLiquidityProviderFee)).toBeTruthy();
     const result = await sdk.getFeeRate(tokenAlex, Currency.STX);
     expect(result).toStrictEqual(dummyFee);
   });
 
-  it('Verify response value of getRouter function', async () => {
-    expect(jest.isMockFunction(RouteHelper.getRoute)).toBeTruthy();
-    const result = await sdk.getRouter(Currency.STX, tokenWUSDA);
-    expect(result).toStrictEqual(dummyRoute);
+  it('Verify response value of getAllPossibleRoute function', async () => {
+    expect(jest.isMockFunction(RouteHelper.getAllPossibleRoute)).toBeTruthy();
+    const result = await sdk.getRoute(Currency.STX, tokenWUSDA);
+    expect(result).toStrictEqual(dummyAmmRoute);
+  });
+
+  it('Verify response value of getRouter[deprecated] function', async () => {
+    expect(jest.isMockFunction(RouteHelper.getAllPossibleRoute)).toBeTruthy();
+    const result = await sdk.getRouter(Currency.STX, dummyTokenB);
+    expect(result).toStrictEqual([Currency.STX, dummyTokenC, dummyTokenB]);
   });
 
   it('Verify response value of getAmountTo function', async () => {

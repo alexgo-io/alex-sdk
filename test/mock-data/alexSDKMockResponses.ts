@@ -1,7 +1,7 @@
 import { AlexSDKResponse, PoolData, PriceData, TokenInfo } from '../../src/types';
 import { TxToBroadCast } from '../../src/helpers/SwapHelper';
 import { Currency } from '../../src';
-import { AMMSwapRoute } from '../../src/utils/ammRouteResolver';
+import { AMMRouteSegment } from '../../src/utils/ammRouteResolver';
 import { configs } from '../../src/config';
 
 const validDeployer = configs.CONTRACT_DEPLOYER;
@@ -16,7 +16,7 @@ export const dummyRoute = [dummyTokenA, dummyTokenB, dummyTokenC];
 
 export const dummyFactorA = BigInt(670000000);
 export const dummyFactorB = BigInt(680000000);
-export const dummyAmmRoute: AMMSwapRoute[] = [
+export const dummyAmmRoute: AMMRouteSegment[] = [
     {
       neighbour: dummyTokenC,
       pool: {
