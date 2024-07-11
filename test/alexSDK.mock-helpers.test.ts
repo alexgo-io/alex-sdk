@@ -6,21 +6,24 @@ import * as SwapHelper from '../src/helpers/SwapHelper';
 import * as fetchData from '../src/utils/fetchData';
 import * as ammRouteResolver from '../src/utils/ammRouteResolver';
 import { configs } from '../src/config';
+// @ts-ignore
 import {
-  dummyAlexSDKData, dummyAmmRoute,
+  dummyAlexSDKData,
+  dummyAmmRoute,
   dummyBalances,
   dummyCurrencies,
   dummyFee,
   dummyPrices,
   dummyRate,
-  dummyRoute,
   dummyTx,
   parsedDummyPrices,
   dummyTokenA,
-  dummyTokenB, dummyFactorA, dummyFactorB, dummyTokenC,
+  dummyTokenB,
+  dummyFactorA,
+  dummyFactorB,
+  dummyTokenC,
 } from './mock-data/alexSDKMockResponses';
 import { cvToValue, FungibleConditionCode } from '@stacks/transactions';
-import { getAllPossibleRoute } from '../src/helpers/RouteHelper';
 
 const sdk = new AlexSDK();
 
@@ -40,14 +43,13 @@ jest.mock('../src/helpers/RateHelper', () => ({
 jest.mock('../src/helpers/SwapHelper', () => {
   const originalModule = jest.requireActual('../src/helpers/SwapHelper');
   return {
-    runSpot: jest.fn(async (deployer, ...args) =>
-    {
+    runSpot: jest.fn(async (deployer, ...args) => {
       if (deployer !== configs.CONTRACT_DEPLOYER) {
         return dummyTx;
       }
       return await originalModule.runSpot(deployer, ...args);
     }),
-  }
+  };
 });
 jest.mock('../src/utils/fetchData', () => {
   const originalModule = jest.requireActual('../src/utils/fetchData');
@@ -56,8 +58,8 @@ jest.mock('../src/utils/fetchData', () => {
     ...originalModule,
     getPrices: jest.fn(async () => dummyPrices),
     fetchBalanceForAccount: jest.fn(async () => dummyBalances),
-    getAlexSDKData: jest.fn(async () => dummyAlexSDKData)
-  }
+    getAlexSDKData: jest.fn(async () => dummyAlexSDKData),
+  };
 });
 jest.mock('../src/utils/ammRouteResolver', () => ({
   resolveAmmRoute: jest.fn(() => dummyAmmRoute),
@@ -118,7 +120,9 @@ describe('AlexSDK - mock helpers', () => {
     expect(cvToValue(result.functionArgs[3])).toStrictEqual(dummyFactorA);
     expect(cvToValue(result.functionArgs[4])).toStrictEqual(dummyFactorB);
     expect(cvToValue(result.functionArgs[5])).toStrictEqual(amount);
-    expect(result.postConditions[0].conditionCode).toStrictEqual(FungibleConditionCode.GreaterEqual);
+    expect(result.postConditions[0].conditionCode).toStrictEqual(
+      FungibleConditionCode.GreaterEqual
+    );
     expect(result.postConditions[0].amount).toStrictEqual(BigInt(0));
   });
 
@@ -141,4 +145,3 @@ describe('AlexSDK - mock helpers', () => {
     expect(result).toStrictEqual(dummyCurrencies);
   });
 });
-

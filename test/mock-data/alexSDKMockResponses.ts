@@ -1,4 +1,9 @@
-import { AlexSDKResponse, PoolData, PriceData, TokenInfo } from '../../src/types';
+import {
+  AlexSDKResponse,
+  PoolData,
+  PriceData,
+  TokenInfo,
+} from '../../src/types';
 import { TxToBroadCast } from '../../src/helpers/SwapHelper';
 import { Currency } from '../../src';
 import { AMMRouteSegment } from '../../src/utils/ammRouteResolver';
@@ -17,52 +22,52 @@ export const dummyRoute = [dummyTokenA, dummyTokenB, dummyTokenC];
 export const dummyFactorA = BigInt(670000000);
 export const dummyFactorB = BigInt(680000000);
 export const dummyAmmRoute: AMMRouteSegment[] = [
-    {
-      neighbour: dummyTokenC,
-      pool: {
-        tokenX: dummyTokenA,
-        tokenY: dummyTokenC,
-        factor: dummyFactorA
-      }
+  {
+    neighbour: dummyTokenC,
+    pool: {
+      tokenX: dummyTokenA,
+      tokenY: dummyTokenC,
+      factor: dummyFactorA,
     },
-    {
-      neighbour: dummyTokenB,
-      pool: {
-        tokenX: dummyTokenC,
-        tokenY: dummyTokenB,
-        factor: dummyFactorB
-      }
-    }
+  },
+  {
+    neighbour: dummyTokenB,
+    pool: {
+      tokenX: dummyTokenC,
+      tokenY: dummyTokenB,
+      factor: dummyFactorB,
+    },
+  },
 ];
 
 export const dummyRate = BigInt(1001);
 
 export const dummyTx: TxToBroadCast = {
-  'contractName': 'amm-pool-v2-01',
-  'functionName': 'swap-helper',
-  'functionArgs': [],
-  'contractAddress': validDeployer,
-  'postConditions': [],
+  contractName: 'amm-pool-v2-01',
+  functionName: 'swap-helper',
+  functionArgs: [],
+  contractAddress: validDeployer,
+  postConditions: [],
 };
 
 export const dummyPrices: PriceData[] = [
   {
-    'token': dummyTokenA,
-    'price': 1.1,
+    token: dummyTokenA,
+    price: 1.1,
   },
   {
-    'token': dummyTokenB,
-    'price': 2.2,
+    token: dummyTokenB,
+    price: 2.2,
   },
 ];
 export const parsedDummyPrices = {
-  'TokenA': 1.1,
-  'TokenB': 2.2,
+  TokenA: 1.1,
+  TokenB: 2.2,
 };
 
 export const dummyBalances = {
-  'TokenA': BigInt(86794603901),
-  'TokenB': BigInt(86794603902),
+  TokenA: BigInt(86794603901),
+  TokenB: BigInt(86794603902),
 };
 
 export const dummyCurrencies: TokenInfo[] = [
@@ -102,16 +107,16 @@ export const dummyPools: PoolData[] = [
   {
     tokenX: dummyTokenA,
     tokenY: dummyTokenC,
-    factor: BigInt(5000000)
+    factor: BigInt(5000000),
   },
   {
     tokenX: dummyTokenC,
     tokenY: dummyTokenB,
-    factor: BigInt(5000000)
+    factor: BigInt(5000000),
   },
-]
+];
 
 export const dummyAlexSDKData: AlexSDKResponse = {
-  'tokens': dummyCurrencies,
-  'pools': dummyPools,
+  tokens: dummyCurrencies,
+  pools: dummyPools,
 };
