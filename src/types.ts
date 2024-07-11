@@ -64,4 +64,3 @@ export type AlexSDKResponse = {
 };
 
 export type BackendAPIPriceResponse = PriceData[];
-
