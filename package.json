@@ -58,11 +58,12 @@
     "@stacks/transactions": "^6.2.0",
     "@types/jest": "^29.5.12",
     "@types/node": "^20.14.2",
+    "dts-cli": "^2.0.5",
     "esm": "^3.2.25",
+    "fetch-mock": "^10.0.7",
     "husky": "^8.0.3",
     "prettier": "^2.8.4",
     "size-limit": "^8.2.4",
-    "dts-cli": "^2.0.5",
     "tslib": "^2.6.3",
     "tsx": "^4.15.5",
     "typescript": "^5.4.5"
