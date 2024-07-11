@@ -31,10 +31,10 @@ export declare class AlexSDK {
     getBalances(stxAddress: string): Promise<Partial<{ [currency in Currency]: bigint }>>;
     getFeeRate(from: Currency, to: Currency): Promise<bigint>;
     getLatestPrices(): Promise<Partial<{ [currency in Currency]: number }>>;
-    getRouter(from: Currency, to: Currency): Promise<Currency[]>;
+    getRoute(from: Currency, to: Currency): Promise<Currency[]>;
     runSwap(stxAddress: string, currencyX: Currency, 
             currencyY: Currency, fromAmount: bigint, 
-            minDy: bigint, router: Currency[]): Promise<TxToBroadCast>;
+            minDy: bigint, customRoute: Currency[]): Promise<TxToBroadCast>;
 }
 ```
 
@@ -68,8 +68,8 @@ async function getBalances(stxAddress: string): Promise<Partial<{ [currency in C
 
 Possible exceptions: `Failed to fetch token mappings`.
 
-### getFee
-Rate
+### getFeeRate
+
 Get the swap fee (liquidity provider fee) between two currencies.
 
 ```typescript
@@ -88,13 +88,12 @@ async function getLatestPrices(): Promise<Partial<{ [currency in Currency]: numb
 ```
 Possible exceptions: `Failed to fetch token mappings`.
 
-
-### getRouter
+### getRoute
 
 Get the router path for swapping between two currencies.
 
 ```typescript
-async function getRouter(from: Currency, to: Currency): Promise<Currency[]>;
+async function getRoute(from: Currency, to: Currency): Promise<Currency[]>;
 ```
 
 Possible exceptions: `Failed to fetch token mappings`, `Can't find route`.
@@ -105,7 +104,7 @@ Perform a swap between two currencies using the specified route and amount.
 
 ```typescript
 function runSwap(stxAddress: string, currencyX: Currency, currencyY: Currency, 
-                  fromAmount: bigint, minDy: bigint, router: Currency[]): Promise<TxToBroadCast>;
+                  fromAmount: bigint, minDy: bigint, customRoute: Currency[]): Promise<TxToBroadCast>;
 ```
 
 Possible exceptions: `Failed to fetch token mappings`, `Can't find AMM route`, `Token mapping not found`, `Too many AMM pools in route`.
