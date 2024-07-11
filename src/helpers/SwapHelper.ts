@@ -1,4 +1,5 @@
 import {
+  ClarityValue,
   FungibleConditionCode,
   FungiblePostCondition,
   STXPostCondition,
@@ -10,12 +11,19 @@ import {
 import { AlexContracts } from '../generated/smartContract/contracts_Alex';
 import { configs } from '../config';
 import { Currency } from '../currency';
-import { PoolData, TokenInfo, TxToBroadCast } from '../types';
+import { PoolData, TokenInfo } from '../types';
 import { AMMRouteSegment, resolveAmmRoute } from '../utils/ammRouteResolver';
 import { transferFactory } from '../utils/postConditions';
 
 type Contracts = typeof AlexContracts;
 
+export type TxToBroadCast = {
+  contractAddress: string;
+  contractName: string;
+  functionName: string;
+  functionArgs: ClarityValue[];
+  postConditions: Array<FungiblePostCondition | STXPostCondition>;
+};
 const composeTx: <
   T extends keyof Contracts,
   F extends keyof Contracts[T],
