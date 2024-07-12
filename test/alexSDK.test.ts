@@ -235,4 +235,20 @@ describe('AlexSDK', () => {
       expect(token.icon).toMatch(/^https?:\/\/.+/);
     });
   }, 10000);
+
+  it('Verify response of getWayPoints function', async () => {
+    const route = await sdk.getRoute(tokenAlex, Currency.STX);
+    const result = await sdk.getWayPoints(route);
+    expect(result[0].id).toBe(tokenAlex);
+    expect(result[1].id).toBe(Currency.STX);
+    result.forEach((token) => {
+      expect(typeof token.name).toBe('string');
+      expect(typeof token.icon).toBe('string');
+      expect(typeof token.wrapToken).toBe('string');
+      expect(typeof token.underlyingToken).toBe('string');
+      expect(typeof token.underlyingTokenDecimals).toBe('number');
+      expect(token.wrapTokenDecimals).toBe(8);
+      expect(token.isRebaseToken).toBe(false);
+    });
+  }, 10000);
 });

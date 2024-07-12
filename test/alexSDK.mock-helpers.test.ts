@@ -144,4 +144,17 @@ describe('AlexSDK - mock helpers', () => {
     const result = await sdk.fetchSwappableCurrency();
     expect(result).toStrictEqual(dummyCurrencies);
   });
+
+  it('Verify response value of getWayPoints function', async () => {
+    expect(jest.isMockFunction(fetchData.getAlexSDKData)).toBeTruthy();
+    expect(jest.isMockFunction(RouteHelper.getAllPossibleRoute)).toBeTruthy();
+    const mockedRoute = await sdk.getRoute(dummyTokenA, dummyTokenB);
+    const result = await sdk.getWayPoints(mockedRoute);
+    expect(result[0].id).toBe(dummyTokenA);
+    expect(result[1].id).toBe(dummyTokenC);
+    expect(result[2].id).toBe(dummyTokenB);
+    expect(result[0].isRebaseToken).toBe(true);
+    expect(result[1].isRebaseToken).toBe(false);
+    expect(result[2].isRebaseToken).toBe(false);
+  });
 });
