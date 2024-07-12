@@ -1,15 +1,45 @@
-import { AlexSDK, Currency } from '../src';
+import { AlexSDK, Currency, TokenInfo } from '../src';
 import fetchMock from 'fetch-mock';
 import { configs } from '../src/config';
+import { fetchBalanceForAccount, getPrices } from '../src/utils/fetchData';
+import { transferFactory } from '../src/utils/postConditions';
 
 const sdk = new AlexSDK();
 
 const tokenAlex = 'age000-governance-token' as Currency;
 const tokenWUSDA = 'token-wusda' as Currency;
 
-fetchMock.mock('https://alex-sdk-api.alexlab.co', 500);
+const tokenMappings: TokenInfo[] = [
+  {
+    id: 'token-x' as Currency,
+    name: 'Token x',
+    icon: 'icon-x',
+    wrapToken: 'wrap-token-x',
+    wrapTokenDecimals: 8,
+    underlyingToken: 'underlying-token-x',
+    underlyingTokenDecimals: 8,
+    isRebaseToken: false,
+  },
+];
+
+const setupMocksForGetPrices = () => {
+  fetchMock.restore();
+  fetchMock.get(`${configs.API_HOST}/v2/public/token-prices`, {
+      status: 500,
+      body: 'Internal Server Error'
+  });
+};
+
+const stxAddress = 'SM2MARAVW6BEJCD13YV2RHGYHQWT7TDDNMNRB1MVT'
 
 describe('AlexSDK - mock externals', () => {
+  beforeEach(() => {
+    fetchMock.get('https://alex-sdk-api.alexlab.co', 500);
+});
+afterEach(() => {
+  fetchMock.restore();
+});
+
   it('Attempt to Get Latest Prices with incorrect Alex SDK Data', async () => {
     await expect(sdk.getLatestPrices()).rejects.toThrow(
       'Failed to fetch token mappings'
@@ -63,4 +93,44 @@ describe('AlexSDK - mock externals', () => {
       'Failed to fetch token mappings'
     );
   }, 10000);
+});
+
+describe('AlexSDK - mock externals - API_HOST', () => {
+  beforeEach(() => {
+    setupMocksForGetPrices();
+});
+
+afterEach(() => {
+    fetchMock.restore();
+});
+
+it('Attempt to get token prices with incorrect data', async () => {
+    await expect(getPrices(tokenMappings)).rejects.toThrow('Failed to fetch token mappings');
+    expect(fetchMock.calls(`${configs.API_HOST}/v2/public/token-prices`).length).toBe(1);
+}, 10000);
+});
+
+describe('Transfer Factory', () => {
+  it('Throws error in Transfer Factory', () => {
+      const transfer = transferFactory(tokenMappings);
+      expect(() => transfer(stxAddress, tokenAlex, BigInt(1000))).toThrow('Token mapping not found');
+  });
+});
+
+describe.skip('AlexSDK - mock externals - STACKS_API_HOST', () => {
+  beforeEach(() => {
+    fetchMock.restore();
+    fetchMock.get(`${configs.STACKS_API_HOST}/extended/v1/address/${stxAddress}/balances`, {
+        status: 500,
+        body: 'Internal Server Error',
+    });
+});
+
+afterEach(() => {
+    fetchMock.restore();
+});
+
+it('Attempt to Get Balances with incorrect data', async () => {
+  await expect(fetchBalanceForAccount(stxAddress, tokenMappings)).rejects.toThrow('F');
+}, 10000);
 });
