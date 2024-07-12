@@ -17,6 +17,7 @@
     "test": "dts test",
     "test:coverage": "dts test --coverage",
     "lint": "dts lint",
+    "lint-fix": "dts lint --fix",
     "size": "size-limit",
     "gen:contract": "rm -rf src/generated/smartContract/* && tsx ./scripts/gen-contract.ts",
     "analyze": "size-limit --why"
