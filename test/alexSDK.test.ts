@@ -17,6 +17,13 @@ describe('AlexSDK', () => {
     expect(result >= BigInt(0)).toBeTruthy();
   }, 10000);
 
+  it('Verify response of getFeeRate function (custom route)', async () => {
+    const customRoute =  await sdk.getRoute(tokenAlex, Currency.STX);
+    const result = await sdk.getFeeRate(tokenAlex, Currency.STX, customRoute);
+    expect(typeof result).toBe('bigint');
+    expect(result >= BigInt(0)).toBeTruthy();
+  }, 10000);
+
   it('Attempt to Get Fee Rate with wrong tokens', async () => {
     await expect(
       sdk.getFeeRate(wrongTokenAlex, wrongTokenAlex)
