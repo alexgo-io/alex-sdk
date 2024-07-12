@@ -52,7 +52,7 @@ describe('AlexSDK', () => {
   }, 10000);
 
   it('Verify response of getFeeRate function (custom route)', async () => {
-    const customRoute =  await sdk.getRoute(tokenAlex, Currency.STX);
+    const customRoute = await sdk.getRoute(tokenAlex, Currency.STX);
     const result = await sdk.getFeeRate(tokenAlex, Currency.STX, customRoute);
     expect(typeof result).toBe('bigint');
     expect(result >= BigInt(0)).toBeTruthy();
@@ -235,10 +235,8 @@ describe('AlexSDK', () => {
     expect(balances).toBeDefined();
     expect(typeof balances).toBe('object');
     Object.keys(balances).forEach((currency) => {
-
-        expect(typeof balances[currency as Currency]).toBe('bigint');
-      }
-    );
+      expect(typeof balances[currency as Currency]).toBe('bigint');
+    });
   });
 
   it('Attempt to get balances with invalid address', async () => {
