@@ -62,3 +62,5 @@ export type AlexSDKResponse = {
   tokens: TokenInfo[];
   pools: PoolData[];
 };
+
+export type BackendAPIPriceResponse = PriceData[];

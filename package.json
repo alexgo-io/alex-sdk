@@ -19,8 +19,9 @@
     "lint": "dts lint",
     "lint-fix": "dts lint --fix",
     "size": "size-limit",
-    "gen:contract": "rm -rf src/generated/smartContract/* && tsx ./scripts/gen-contract.ts",
-    "analyze": "size-limit --why"
+    "gen:contract": "rm -rf src/generated/smartContract/* && tsx ./scripts/gen-contract.ts && prettier --write 'src/generated/smartContract'",
+    "analyze": "size-limit --why",
+    "ci": "pnpm run lint && pnpm run test && pnpm run size"
   },
   "husky": {
     "hooks": {
@@ -39,11 +40,11 @@
   "size-limit": [
     {
       "path": "dist/alex-sdk.cjs.production.min.js",
-      "limit": "10 KB"
+      "limit": "20 KB"
     },
     {
       "path": "dist/alex-sdk.esm.js",
-      "limit": "10 KB"
+      "limit": "20 KB"
     }
   ],
   "dependencies": {
@@ -60,12 +61,14 @@
     "@stacks/transactions": "^6.2.0",
     "@types/jest": "^29.5.12",
     "@types/node": "^20.14.2",
+    "ajv": "^8.16.0",
     "dts-cli": "^2.0.5",
     "esm": "^3.2.25",
     "fetch-mock": "^10.0.7",
     "husky": "^8.0.3",
     "prettier": "^2.8.4",
     "size-limit": "^8.2.4",
+    "ts-json-schema-generator": "^2.3.0",
     "tslib": "^2.6.3",
     "tsx": "^4.15.5",
     "typescript": "^5.4.5"

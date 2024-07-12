@@ -2,7 +2,12 @@ import { Currency } from '../currency';
 import type { AddressBalanceResponse } from '@stacks/stacks-blockchain-api-types';
 import { configs } from '../config';
 import { fromEntries, isNotNull } from './utils';
-import { AlexSDKResponse, PriceData, TokenInfo } from '../types';
+import {
+  AlexSDKResponse,
+  BackendAPIPriceResponse,
+  PriceData,
+  TokenInfo,
+} from '../types';
 import { callReadOnlyFunction } from '@stacks/transactions';
 import { StacksMainnet } from '@stacks/network';
 import {
@@ -13,7 +18,7 @@ import {
 } from 'clarity-codegen';
 
 export async function getAlexSDKData(): Promise<AlexSDKResponse> {
-  return fetch('https://alex-sdk-api.alexlab.co').then((r) => {
+  return fetch(configs.SDK_API_HOST).then((r) => {
     if (r.ok) {
       return r.json();
     }
@@ -21,8 +26,10 @@ export async function getAlexSDKData(): Promise<AlexSDKResponse> {
   });
 }
 
-export async function getPrices(mappings: TokenInfo[]): Promise<PriceData[]> {
-  return fetch(`${configs.API_HOST}/v2/public/token-prices`)
+export async function getPrices(
+  mappings: TokenInfo[]
+): Promise<BackendAPIPriceResponse> {
+  return fetch(`${configs.BACKEND_API_HOST}/v2/public/token-prices`)
     .then((r) => {
       if (r.ok) {
         return r.json();

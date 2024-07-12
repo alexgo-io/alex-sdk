@@ -15,6 +15,8 @@ import { PoolData, TokenInfo } from '../types';
 import { AMMRouteSegment, resolveAmmRoute } from '../utils/ammRouteResolver';
 import { transferFactory } from '../utils/postConditions';
 
+type Contracts = typeof AlexContracts;
+
 export type TxToBroadCast = {
   contractAddress: string;
   contractName: string;
@@ -22,9 +24,6 @@ export type TxToBroadCast = {
   functionArgs: ClarityValue[];
   postConditions: Array<FungiblePostCondition | STXPostCondition>;
 };
-
-type Contracts = typeof AlexContracts;
-
 const composeTx: <
   T extends keyof Contracts,
   F extends keyof Contracts[T],

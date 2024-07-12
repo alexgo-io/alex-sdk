@@ -1,5 +1,39 @@
 import { configs } from '../src/config';
-import { AlexSDK, Currency, TokenInfo } from '../src';
+import { AlexSDK, Currency } from '../src';
+import Ajv from 'ajv';
+import { createGenerator } from 'ts-json-schema-generator';
+import path from 'node:path';
+import { getAlexSDKData, getPrices } from '../src/utils/fetchData';
+
+const runtimeTypescriptMatcher = (received: any, typeName: string) => {
+  const validator = new Ajv().compile(
+    createGenerator({
+      type: typeName,
+      path: path.resolve(__dirname, '../src/types.ts'),
+      tsconfig: path.resolve(__dirname, '../tsconfig.json'),
+    }).createSchema(typeName)
+  );
+  const pass = validator(received);
+  return {
+    pass,
+    message: () =>
+      `expected ${received} does not match type ${typeName}: \n${JSON.stringify(
+        validator.errors,
+        null,
+        2
+      )}`,
+  };
+};
+
+declare global {
+  namespace jest {
+    interface Matchers<R> {
+      toMatchType(typeName: string): R;
+    }
+  }
+}
+
+expect.extend({ toMatchType: runtimeTypescriptMatcher });
 
 const tokenAlex = 'age000-governance-token' as Currency;
 const tokenDiko = 'token-wdiko' as Currency;
@@ -201,10 +235,10 @@ describe('AlexSDK', () => {
     expect(balances).toBeDefined();
     expect(typeof balances).toBe('object');
     Object.keys(balances).forEach((currency) => {
-      if (Object.values(Currency).includes(currency as Currency)) {
+
         expect(typeof balances[currency as Currency]).toBe('bigint');
       }
-    });
+    );
   });
 
   it('Attempt to get balances with invalid address', async () => {
@@ -215,33 +249,16 @@ describe('AlexSDK', () => {
     );
   }, 10000);
 
-  it('Verify response of fetchSwappableCurrency function', async () => {
-    const swappableCurrencies = await sdk.fetchSwappableCurrency();
-    expect(swappableCurrencies).toBeDefined();
-    expect(Array.isArray(swappableCurrencies)).toBe(true);
-    expect(swappableCurrencies.length).toBeGreaterThan(0);
-    swappableCurrencies.forEach((token: TokenInfo) => {
-      expect(token).toHaveProperty('id');
-      expect(token).toHaveProperty('name');
-      expect(token).toHaveProperty('icon');
-      expect(token).toHaveProperty('wrapTokenDecimals');
-      expect(token).toHaveProperty('wrapToken');
-      expect(token).toHaveProperty('underlyingToken');
-      expect(token).toHaveProperty('underlyingTokenDecimals');
-      expect(token).toHaveProperty('isRebaseToken');
-      expect(typeof token.id).toBe('string');
-      expect(typeof token.name).toBe('string');
-      expect(typeof token.icon).toBe('string');
-      expect(typeof token.wrapTokenDecimals).toBe('number');
-      expect(typeof token.wrapToken).toBe('string');
-      expect(typeof token.underlyingToken).toBe('string');
-      expect(typeof token.underlyingTokenDecimals).toBe('number');
-      expect(typeof token.isRebaseToken).toBe('boolean');
-    });
-    swappableCurrencies.forEach((token) => {
-      expect(token.icon).toMatch(/^https?:\/\/.+/);
-    });
-  }, 10000);
+  it('getAlexSDKData response', async () => {
+    const response = await getAlexSDKData();
+    expect(response).toMatchType('AlexSDKResponse');
+  });
+
+  it('getPrices response', async () => {
+    const sdk = new AlexSDK();
+    const tokens = await sdk.fetchSwappableCurrency();
+    expect(await getPrices(tokens)).toMatchType('BackendAPIPriceResponse');
+  });
 
   it('Verify response of getWayPoints function', async () => {
     const route = await sdk.getRoute(tokenAlex, Currency.STX);
