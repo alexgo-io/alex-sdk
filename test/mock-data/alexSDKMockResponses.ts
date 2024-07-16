@@ -17,8 +17,6 @@ export const dummyTokenA = 'TokenA' as Currency;
 export const dummyTokenB = 'TokenB' as Currency;
 export const dummyTokenC = 'TokenC' as Currency;
 
-export const dummyRoute = [dummyTokenA, dummyTokenB, dummyTokenC];
-
 export const dummyFactorA = BigInt(670000000);
 export const dummyFactorB = BigInt(680000000);
 export const dummyAmmRoute: AMMRouteSegment[] = [
