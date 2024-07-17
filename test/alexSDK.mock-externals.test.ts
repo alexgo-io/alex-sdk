@@ -310,7 +310,7 @@ describe('AlexSDK - mock externals - STACKS_API_HOST', () => {
   it('Attempt to Get Balances with incorrect data', async () => {
     await expect(
       fetchBalanceForAccount(stxAddress, tokenMappings)
-    ).rejects.toThrow('Unexpected token');
+    ).rejects.toThrow('Failed to fetch account balances');
   }, 10000);
 });
 
