@@ -62,10 +62,10 @@ const tokenSSL = 'token-ssl-all-AESDE' as Currency;
 const tokenBRC20ORMM = 'brc20-ormm' as Currency;
 const wrongTokenAlex = '' as Currency;
 
-const routeLength1 = {from: tokenAlex, to: Currency.STX};
-const routeLength2 = {from: tokenWmick, to: tokenDiko};
-const routeLength3 = {from: tokenSSL, to: tokenDiko};
-const routeLength4 = {from: tokenWmick, to: tokenBRC20ORMM};
+const routeLength1 = { from: tokenAlex, to: Currency.STX };
+const routeLength2 = { from: tokenWmick, to: tokenDiko };
+const routeLength3 = { from: tokenSSL, to: tokenDiko };
+const routeLength4 = { from: tokenWmick, to: tokenBRC20ORMM };
 const alternativeRoutes = [routeLength2, routeLength3, routeLength4];
 
 const sdk = new AlexSDK();
@@ -76,7 +76,11 @@ const CLARITY_MAX_UNSIGNED_INT = BigInt(
 describe('AlexSDK', () => {
   it('Verify response of getFeeRate function (custom route)', async () => {
     const customRoute = await sdk.getRoute(routeLength1.from, routeLength1.to);
-    const result = await sdk.getFeeRate(routeLength1.from, routeLength1.to, customRoute);
+    const result = await sdk.getFeeRate(
+      routeLength1.from,
+      routeLength1.to,
+      customRoute
+    );
     expect(typeof result).toBe('bigint');
     expect(result >= BigInt(0)).toBeTruthy();
   }, 10000);
