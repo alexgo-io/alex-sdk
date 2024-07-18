@@ -13,7 +13,6 @@ import {
   dummyBalances,
   dummyCurrencies,
   dummyFee,
-  dummyPrices,
   dummyRate,
   dummyTx,
   parsedDummyPrices,
@@ -21,7 +20,8 @@ import {
   dummyTokenB,
   dummyFactorA,
   dummyFactorB,
-  dummyTokenC, DUMMY_DEPLOYER,
+  dummyTokenC,
+  DUMMY_DEPLOYER,
 } from './mock-data/alexSDKMockResponses';
 import { cvToValue, FungibleConditionCode } from '@stacks/transactions';
 
@@ -53,10 +53,16 @@ jest.mock('../src/helpers/SwapHelper', () => {
 });
 jest.mock('../src/utils/fetchData', () => {
   const originalModule = jest.requireActual('../src/utils/fetchData');
+  const { dummyPrices, dummyCurrencies } = jest.requireActual(
+    './mock-data/alexSDKMockResponses'
+  );
   return {
     __esModule: true,
     ...originalModule,
-    getPrices: jest.fn(async () => dummyPrices),
+    getPrices: jest
+      .fn()
+      .mockReturnValueOnce(dummyPrices)
+      .mockReturnValueOnce(originalModule.getPrices(dummyCurrencies)),
     fetchBalanceForAccount: jest.fn(async () => dummyBalances),
     getAlexSDKData: jest.fn(async () => dummyAlexSDKData),
   };
@@ -70,7 +76,7 @@ jest.mock('../src/utils/ammRouteResolver', () => {
       }
       return originalModule.resolveAmmRoute(tokenX, ...args);
     }),
-  }
+  };
 });
 
 describe('AlexSDK - mock helpers', () => {
@@ -146,15 +152,19 @@ describe('AlexSDK - mock helpers', () => {
         amount,
         BigInt(0)
       )
-    ).rejects.toThrow(
-      'Can\'t find AMM route'
-    );
+    ).rejects.toThrow("Can't find AMM route");
   });
 
   it('Verify response value of getLatestPrices function', async () => {
     expect(jest.isMockFunction(fetchData.getPrices)).toBeTruthy();
     const result = await sdk.getLatestPrices();
     expect(result).toStrictEqual(parsedDummyPrices);
+  });
+
+  it('Verify response value of getLatestPrices function (null token cases)', async () => {
+    expect(jest.isMockFunction(fetchData.getPrices)).toBeTruthy();
+    const result = await sdk.getLatestPrices();
+    expect(result).toBeDefined();
   });
 
   it('Verify response value of getBalances function', async () => {

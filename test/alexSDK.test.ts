@@ -255,6 +255,12 @@ describe('AlexSDK', () => {
     });
   }, 10000);
 
+  it('Verify response of getBalances function (with fungible token balance)', async () => {
+    const stxAddress = 'SP3ANPTPEQE72PNE31WE8BEV4VCKB2C38P48TPH0Q';
+    const balances = await sdk.getBalances(stxAddress);
+    expect(balances).toBeDefined();
+  }, 10000);
+
   it('Attempt to Get Tx with an invalid stx address (checksum mismatch)', async () => {
     await expect(
       sdk.runSwap(
