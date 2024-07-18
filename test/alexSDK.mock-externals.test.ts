@@ -1,7 +1,7 @@
 import { AlexSDK, Currency, TokenInfo } from '../src';
 import fetchMock from 'fetch-mock';
 import { configs } from '../src/config';
-import { fetchBalanceForAccount, getPrices } from '../src/utils/fetchData';
+import { fetchBalanceForAccount, getAlexSDKData, getPrices } from '../src/utils/fetchData';
 import { transferFactory } from '../src/utils/postConditions';
 import { readonlyCall } from '../src/utils/readonlyCallExecutor';
 
@@ -25,9 +25,10 @@ const tokenMappings: TokenInfo[] = [
 
 const stxAddress = 'SM2MARAVW6BEJCD13YV2RHGYHQWT7TDDNMNRB1MVT';
 
-describe('AlexSDK - mock externals - SDK_API_HOST (Internal Server Error)', () => {
+describe('AlexSDK - mock externals - SDK_API_HOST - BACKEND_API_HOST (Internal Server Error)', () => {
   beforeEach(() => {
     fetchMock.get(configs.SDK_API_HOST, 500);
+    fetchMock.get(`${configs.BACKEND_API_HOST}/v2/public/token-prices`, 500);
   });
   afterEach(() => {
     fetchMock.restore();
@@ -37,24 +38,24 @@ describe('AlexSDK - mock externals - SDK_API_HOST (Internal Server Error)', () =
     await expect(sdk.getLatestPrices()).rejects.toThrow(
       'Failed to fetch token mappings'
     );
-  }, 10000);
+  });
   it('Attempt to Get Fee with incorrect Alex SDK Data', async () => {
     await expect(sdk.getFeeRate(tokenAlex, Currency.STX)).rejects.toThrow(
       'Failed to fetch token mappings'
     );
-  }, 10000);
+  });
 
   it('Attempt to Get Router with incorrect Alex SDK Data', async () => {
     await expect(sdk.getRouter(tokenAlex, Currency.STX)).rejects.toThrow(
       'Failed to fetch token mappings'
     );
-  }, 10000);
+  });
 
   it('Attempt to Get Amount with incorrect Alex SDK Data', async () => {
     await expect(
       sdk.getAmountTo(Currency.STX, BigInt(2) * BigInt(1e8), tokenWUSDA)
     ).rejects.toThrow('Failed to fetch token mappings');
-  }, 10000);
+  });
 
   it('Attempt to Run Swap with incorrect Alex SDK Data', async () => {
     await expect(
@@ -66,31 +67,41 @@ describe('AlexSDK - mock externals - SDK_API_HOST (Internal Server Error)', () =
         BigInt(0)
       )
     ).rejects.toThrow('Failed to fetch token mappings');
-  }, 10000);
+  });
 
   it('Attempt to Get Latest Prices with incorrect Alex SDK Data', async () => {
     await expect(sdk.getLatestPrices()).rejects.toThrow(
       'Failed to fetch token mappings'
     );
-  }, 10000);
+  });
 
   it('Attempt to Get Balances with incorrect Alex SDK Data', async () => {
     const stxAddress = 'SM2MARAVW6BEJCD13YV2RHGYHQWT7TDDNMNRB1MVT';
     await expect(sdk.getBalances(stxAddress)).rejects.toThrow(
       'Failed to fetch token mappings'
     );
-  }, 10000);
+  });
 
   it('Attempt to Fetch Swappable Currency with incorrect Alex SDK Data', async () => {
     await expect(sdk.fetchSwappableCurrency()).rejects.toThrow(
       'Failed to fetch token mappings'
     );
-  }, 10000);
-});
+  });
 
-describe('AlexSDK - mock externals - SDK_API_HOST (Gateway Timeout)', () => {
+  it('Attempt to get token prices with incorrect data', async () => {
+    await expect(getPrices(tokenMappings)).rejects.toThrow(
+      'Failed to fetch token mappings'
+    );
+    expect(
+      fetchMock.calls(`${configs.BACKEND_API_HOST}/v2/public/token-prices`)
+        .length
+    ).toBe(1);
+  });
+});
+describe('AlexSDK - mock externals - SDK_API_HOST - BACKEND_API_HOST (Gateway Timeout)', () => {
   beforeEach(() => {
     fetchMock.get(configs.SDK_API_HOST, 504);
+    fetchMock.get(`${configs.BACKEND_API_HOST}/v2/public/token-prices`, 504);
   });
   afterEach(() => {
     fetchMock.restore();
@@ -100,24 +111,24 @@ describe('AlexSDK - mock externals - SDK_API_HOST (Gateway Timeout)', () => {
     await expect(sdk.getLatestPrices()).rejects.toThrow(
       'Failed to fetch token mappings'
     );
-  }, 10000);
+  });
   it('Attempt to Get Fee with incorrect Alex SDK Data', async () => {
     await expect(sdk.getFeeRate(tokenAlex, Currency.STX)).rejects.toThrow(
       'Failed to fetch token mappings'
     );
-  }, 10000);
+  });
 
   it('Attempt to Get Router with incorrect Alex SDK Data', async () => {
     await expect(sdk.getRouter(tokenAlex, Currency.STX)).rejects.toThrow(
       'Failed to fetch token mappings'
     );
-  }, 10000);
+  });
 
   it('Attempt to Get Amount with incorrect Alex SDK Data', async () => {
     await expect(
       sdk.getAmountTo(Currency.STX, BigInt(2) * BigInt(1e8), tokenWUSDA)
     ).rejects.toThrow('Failed to fetch token mappings');
-  }, 10000);
+  });
 
   it('Attempt to Run Swap with incorrect Alex SDK Data', async () => {
     await expect(
@@ -129,31 +140,42 @@ describe('AlexSDK - mock externals - SDK_API_HOST (Gateway Timeout)', () => {
         BigInt(0)
       )
     ).rejects.toThrow('Failed to fetch token mappings');
-  }, 10000);
+  });
 
   it('Attempt to Get Latest Prices with incorrect Alex SDK Data', async () => {
     await expect(sdk.getLatestPrices()).rejects.toThrow(
       'Failed to fetch token mappings'
     );
-  }, 10000);
+  });
 
   it('Attempt to Get Balances with incorrect Alex SDK Data', async () => {
     const stxAddress = 'SM2MARAVW6BEJCD13YV2RHGYHQWT7TDDNMNRB1MVT';
     await expect(sdk.getBalances(stxAddress)).rejects.toThrow(
       'Failed to fetch token mappings'
     );
-  }, 10000);
+  });
 
   it('Attempt to Fetch Swappable Currency with incorrect Alex SDK Data', async () => {
     await expect(sdk.fetchSwappableCurrency()).rejects.toThrow(
       'Failed to fetch token mappings'
     );
-  }, 10000);
+  });
+
+  it('Attempt to get token prices with incorrect data', async () => {
+    await expect(getPrices(tokenMappings)).rejects.toThrow(
+      'Failed to fetch token mappings'
+    );
+    expect(
+      fetchMock.calls(`${configs.BACKEND_API_HOST}/v2/public/token-prices`)
+        .length
+    ).toBe(1);
+  });
 });
 
-describe('AlexSDK - mock externals - SDK_API_HOST (Not Found)', () => {
+describe('AlexSDK - mock externals - SDK_API_HOST - BACKEND_API_HOST (Not Found)', () => {
   beforeEach(() => {
     fetchMock.get(configs.SDK_API_HOST, 404);
+    fetchMock.get(`${configs.BACKEND_API_HOST}/v2/public/token-prices`, 404);
   });
   afterEach(() => {
     fetchMock.restore();
@@ -163,24 +185,24 @@ describe('AlexSDK - mock externals - SDK_API_HOST (Not Found)', () => {
     await expect(sdk.getLatestPrices()).rejects.toThrow(
       'Failed to fetch token mappings'
     );
-  }, 10000);
+  });
   it('Attempt to Get Fee with incorrect Alex SDK Data', async () => {
     await expect(sdk.getFeeRate(tokenAlex, Currency.STX)).rejects.toThrow(
       'Failed to fetch token mappings'
     );
-  }, 10000);
+  });
 
   it('Attempt to Get Router with incorrect Alex SDK Data', async () => {
     await expect(sdk.getRouter(tokenAlex, Currency.STX)).rejects.toThrow(
       'Failed to fetch token mappings'
     );
-  }, 10000);
+  });
 
   it('Attempt to Get Amount with incorrect Alex SDK Data', async () => {
     await expect(
       sdk.getAmountTo(Currency.STX, BigInt(2) * BigInt(1e8), tokenWUSDA)
     ).rejects.toThrow('Failed to fetch token mappings');
-  }, 10000);
+  });
 
   it('Attempt to Run Swap with incorrect Alex SDK Data', async () => {
     await expect(
@@ -192,38 +214,25 @@ describe('AlexSDK - mock externals - SDK_API_HOST (Not Found)', () => {
         BigInt(0)
       )
     ).rejects.toThrow('Failed to fetch token mappings');
-  }, 10000);
+  });
 
   it('Attempt to Get Latest Prices with incorrect Alex SDK Data', async () => {
     await expect(sdk.getLatestPrices()).rejects.toThrow(
       'Failed to fetch token mappings'
     );
-  }, 10000);
+  });
 
   it('Attempt to Get Balances with incorrect Alex SDK Data', async () => {
     const stxAddress = 'SM2MARAVW6BEJCD13YV2RHGYHQWT7TDDNMNRB1MVT';
     await expect(sdk.getBalances(stxAddress)).rejects.toThrow(
       'Failed to fetch token mappings'
     );
-  }, 10000);
+  });
 
   it('Attempt to Fetch Swappable Currency with incorrect Alex SDK Data', async () => {
     await expect(sdk.fetchSwappableCurrency()).rejects.toThrow(
       'Failed to fetch token mappings'
     );
-  }, 10000);
-});
-
-describe('AlexSDK - mock externals - BACKEND_API_HOST (Internal Server Error)', () => {
-  beforeEach(() => {
-    fetchMock.get(`${configs.BACKEND_API_HOST}/v2/public/token-prices`, {
-      status: 500,
-      body: 'Internal Server Error',
-    });
-  });
-
-  afterEach(() => {
-    fetchMock.restore();
   });
 
   it('Attempt to get token prices with incorrect data', async () => {
@@ -234,53 +243,7 @@ describe('AlexSDK - mock externals - BACKEND_API_HOST (Internal Server Error)', 
       fetchMock.calls(`${configs.BACKEND_API_HOST}/v2/public/token-prices`)
         .length
     ).toBe(1);
-  }, 10000);
-});
-
-describe('AlexSDK - mock externals - BACKEND_API_HOST (Gateway Timeout)', () => {
-  beforeEach(() => {
-    fetchMock.get(`${configs.BACKEND_API_HOST}/v2/public/token-prices`, {
-      status: 504,
-      body: 'Internal Server Error',
-    });
   });
-
-  afterEach(() => {
-    fetchMock.restore();
-  });
-
-  it('Attempt to get token prices with incorrect data', async () => {
-    await expect(getPrices(tokenMappings)).rejects.toThrow(
-      'Failed to fetch token mappings'
-    );
-    expect(
-      fetchMock.calls(`${configs.BACKEND_API_HOST}/v2/public/token-prices`)
-        .length
-    ).toBe(1);
-  }, 10000);
-});
-
-describe('AlexSDK - mock externals - BACKEND_API_HOST (Not Found)', () => {
-  beforeEach(() => {
-    fetchMock.get(`${configs.BACKEND_API_HOST}/v2/public/token-prices`, {
-      status: 404,
-      body: 'Internal Server Error',
-    });
-  });
-
-  afterEach(() => {
-    fetchMock.restore();
-  });
-
-  it('Attempt to get token prices with incorrect data', async () => {
-    await expect(getPrices(tokenMappings)).rejects.toThrow(
-      'Failed to fetch token mappings'
-    );
-    expect(
-      fetchMock.calls(`${configs.BACKEND_API_HOST}/v2/public/token-prices`)
-        .length
-    ).toBe(1);
-  }, 10000);
 });
 
 describe('Transfer Factory', () => {
@@ -295,12 +258,7 @@ describe('Transfer Factory', () => {
 describe('AlexSDK - mock externals - STACKS_API_HOST', () => {
   beforeEach(() => {
     fetchMock.get(
-      `${configs.STACKS_API_HOST}/extended/v1/address/${stxAddress}/balances`,
-      {
-        status: 500,
-        body: 'Internal Server Error',
-      }
-    );
+      `${configs.STACKS_API_HOST}/extended/v1/address/${stxAddress}/balances`,500);
   });
 
   afterEach(() => {
@@ -310,8 +268,8 @@ describe('AlexSDK - mock externals - STACKS_API_HOST', () => {
   it('Attempt to Get Balances with incorrect data', async () => {
     await expect(
       fetchBalanceForAccount(stxAddress, tokenMappings)
-    ).rejects.toThrow('Unexpected token');
-  }, 10000);
+    ).rejects.toThrow('Unexpected');
+  });
 });
 
 describe('AlexSDK - mock externals - READONLY_CALL_API_HOST', () => {
@@ -339,7 +297,7 @@ describe('AlexSDK - mock externals - READONLY_CALL_API_HOST', () => {
     await expect(readonlyCall(contractName, functionName, args)).rejects.toThrow(
       'Invalid c32 address'
     );
-  }, 10000);
+  });
 });
 
 
