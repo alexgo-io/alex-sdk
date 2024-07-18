@@ -21,7 +21,7 @@ import {
   dummyTokenB,
   dummyFactorA,
   dummyFactorB,
-  dummyTokenC,
+  dummyTokenC, DUMMY_DEPLOYER,
 } from './mock-data/alexSDKMockResponses';
 import { cvToValue, FungibleConditionCode } from '@stacks/transactions';
 
@@ -61,9 +61,17 @@ jest.mock('../src/utils/fetchData', () => {
     getAlexSDKData: jest.fn(async () => dummyAlexSDKData),
   };
 });
-jest.mock('../src/utils/ammRouteResolver', () => ({
-  resolveAmmRoute: jest.fn(() => dummyAmmRoute),
-}));
+jest.mock('../src/utils/ammRouteResolver', () => {
+  const originalModule = jest.requireActual('../src/utils/ammRouteResolver');
+  return {
+    resolveAmmRoute: jest.fn((tokenX, ...args) => {
+      if (tokenX === dummyTokenA) {
+        return dummyAmmRoute;
+      }
+      return originalModule.resolveAmmRoute(tokenX, ...args);
+    }),
+  }
+});
 
 describe('AlexSDK - mock helpers', () => {
   it('Verify response value of getFeeRate function', async () => {
@@ -97,7 +105,7 @@ describe('AlexSDK - mock helpers', () => {
   it('Verify response value of runSwap function', async () => {
     expect(jest.isMockFunction(SwapHelper.runSpot)).toBeTruthy();
     const result = await sdk.runSwap(
-      'SP111111111111111111111111111111111111111',
+      DUMMY_DEPLOYER,
       tokenAlex,
       tokenWUSDA,
       BigInt(1),
@@ -124,6 +132,23 @@ describe('AlexSDK - mock helpers', () => {
       FungibleConditionCode.GreaterEqual
     );
     expect(result.postConditions[0].amount).toStrictEqual(BigInt(0));
+  });
+
+  it('Verify response value of runSwap function (empty pools)', async () => {
+    expect(jest.isMockFunction(SwapHelper.runSpot)).toBeTruthy();
+    expect(jest.isMockFunction(ammRouteResolver.resolveAmmRoute)).toBeTruthy();
+    const amount = BigInt(2) * BigInt(1e8);
+    await expect(
+      sdk.runSwap(
+        configs.CONTRACT_DEPLOYER,
+        dummyTokenB,
+        dummyTokenC,
+        amount,
+        BigInt(0)
+      )
+    ).rejects.toThrow(
+      'Can\'t find AMM route'
+    );
   });
 
   it('Verify response value of getLatestPrices function', async () => {

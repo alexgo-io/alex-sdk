@@ -10,6 +10,7 @@ import { AMMRouteSegment } from '../../src/utils/ammRouteResolver';
 import { configs } from '../../src/config';
 
 const validDeployer = configs.CONTRACT_DEPLOYER;
+export const DUMMY_DEPLOYER = 'SP111111111111111111111111111111111111111';
 
 export const dummyFee = BigInt(777);
 
@@ -116,5 +117,5 @@ export const dummyPools: PoolData[] = [
 
 export const dummyAlexSDKData: AlexSDKResponse = {
   tokens: dummyCurrencies,
-  pools: dummyPools,
+  pools: [],
 };
