@@ -1,9 +1,8 @@
 import { AlexSDK, Currency, TokenInfo } from '../src';
 import fetchMock from 'fetch-mock';
 import { configs } from '../src/config';
-import { fetchBalanceForAccount, getAlexSDKData, getPrices } from '../src/utils/fetchData';
+import { fetchBalanceForAccount, getPrices } from '../src/utils/fetchData';
 import { transferFactory } from '../src/utils/postConditions';
-import { readonlyCall } from '../src/utils/readonlyCallExecutor';
 
 const sdk = new AlexSDK();
 
@@ -30,7 +29,9 @@ describe('AlexSDK - mock externals - SDK_API_HOST - BACKEND_API_HOST - STACKS_AP
     fetchMock.get(configs.SDK_API_HOST, 500);
     fetchMock.get(`${configs.BACKEND_API_HOST}/v2/public/token-prices`, 500);
     fetchMock.get(
-      `${configs.STACKS_API_HOST}/extended/v1/address/${stxAddress}/balances`,500);
+      `${configs.STACKS_API_HOST}/extended/v1/address/${stxAddress}/balances`,
+      500
+    );
   });
   afterEach(() => {
     fetchMock.restore();
@@ -111,7 +112,9 @@ describe('AlexSDK - mock externals - SDK_API_HOST - BACKEND_API_HOST - STACKS_AP
     fetchMock.get(configs.SDK_API_HOST, 504);
     fetchMock.get(`${configs.BACKEND_API_HOST}/v2/public/token-prices`, 504);
     fetchMock.get(
-      `${configs.STACKS_API_HOST}/extended/v1/address/${stxAddress}/balances`,504);
+      `${configs.STACKS_API_HOST}/extended/v1/address/${stxAddress}/balances`,
+      504
+    );
   });
   afterEach(() => {
     fetchMock.restore();
@@ -192,7 +195,9 @@ describe('AlexSDK - mock externals - SDK_API_HOST - BACKEND_API_HOST - STACKS_AP
     fetchMock.get(configs.SDK_API_HOST, 404);
     fetchMock.get(`${configs.BACKEND_API_HOST}/v2/public/token-prices`, 404);
     fetchMock.get(
-      `${configs.STACKS_API_HOST}/extended/v1/address/${stxAddress}/balances`,404);
+      `${configs.STACKS_API_HOST}/extended/v1/address/${stxAddress}/balances`,
+      404
+    );
   });
   afterEach(() => {
     fetchMock.restore();
@@ -276,8 +281,3 @@ describe('Transfer Factory', () => {
     );
   });
 });
-
-
-
-
-
