@@ -1,5 +1,6 @@
 import { AlexSDK, Currency } from '../src';
 import * as ammRouteResolver from '../src/utils/ammRouteResolver';
+import { assertNever } from '../src/utils/utils';
 import { configs } from '../src/config';
 
 const sdk = new AlexSDK();
@@ -37,4 +38,11 @@ describe('AlexSDK - mock exceptions', () => {
       )
     ).rejects.toThrow('Too many AMM pools in route');
   }, 10000);
+
+  it('Attempt assertNever to throw unexpected object', () => {
+    const unexpectedObject = '' as never;
+    expect(() => assertNever(unexpectedObject)).toThrowError(
+      'Unexpected object: ' + unexpectedObject
+    );
+  });
 });

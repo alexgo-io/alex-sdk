@@ -1,23 +1,17 @@
-import {
-  AlexSDKResponse,
-  PoolData,
-  PriceData,
-  TokenInfo,
-} from '../../src/types';
+import { AlexSDKResponse, PriceData, TokenInfo } from '../../src/types';
 import { TxToBroadCast } from '../../src/helpers/SwapHelper';
 import { Currency } from '../../src';
 import { AMMRouteSegment } from '../../src/utils/ammRouteResolver';
 import { configs } from '../../src/config';
 
 const validDeployer = configs.CONTRACT_DEPLOYER;
+export const DUMMY_DEPLOYER = 'SP111111111111111111111111111111111111111';
 
 export const dummyFee = BigInt(777);
 
 export const dummyTokenA = 'TokenA' as Currency;
 export const dummyTokenB = 'TokenB' as Currency;
 export const dummyTokenC = 'TokenC' as Currency;
-
-export const dummyRoute = [dummyTokenA, dummyTokenB, dummyTokenC];
 
 export const dummyFactorA = BigInt(670000000);
 export const dummyFactorB = BigInt(680000000);
@@ -103,20 +97,7 @@ export const dummyCurrencies: TokenInfo[] = [
   },
 ];
 
-export const dummyPools: PoolData[] = [
-  {
-    tokenX: dummyTokenA,
-    tokenY: dummyTokenC,
-    factor: BigInt(5000000),
-  },
-  {
-    tokenX: dummyTokenC,
-    tokenY: dummyTokenB,
-    factor: BigInt(5000000),
-  },
-];
-
 export const dummyAlexSDKData: AlexSDKResponse = {
   tokens: dummyCurrencies,
-  pools: dummyPools,
+  pools: [],
 };
