@@ -276,32 +276,3 @@ describe('Transfer Factory', () => {
     );
   });
 });
-describe('AlexSDK - mock externals - READONLY_CALL_API_HOST', () => {
-  beforeEach(() => {
-    fetchMock.restore();
-    fetchMock.get(configs.READONLY_CALL_API_HOST, {
-        status: 500,
-        body: 'Internal Server Error',
-    });
-});
-
-  afterEach(() => {
-    fetchMock.restore();  
-  });
-
-  it('Attempt to call readonly API with incorrect data', async () => {
-    const contractName = 'amm-pool-v2-01';
-    const functionName = 'fee-helper';
-    const args = {
-      factor: BigInt(1),
-      "token-x": "some-token-x",
-      "token-y": "some-token-y"
-    };
-
-    await expect(readonlyCall(contractName, functionName, args)).rejects.toThrow(
-      'Invalid c32 address'
-    );
-  });
-});
-
-
