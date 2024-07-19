@@ -31,6 +31,16 @@ function fetchSwappableCurrency(): Promise<TokenInfo[]>;
 
 Possible exceptions: `Failed to fetch token mappings`.
 
+### getAllPossibleRoutes
+
+This function returns all possible routes for swapping between two specified currencies. It returns an array of AMMRoute, representing possible swap routes.
+
+```typescript
+async function getAllPossibleRoutes(from: Currency, to: Currency): Promise<AMMRoute[]>;
+```
+
+Possible exceptions: `Failed to fetch token mappings`, `Can't find route`.
+
 ### getAmountTo
 
 Get the amount of destination currency that will be received when swapping from one currency to another.
@@ -81,12 +91,22 @@ async function getRoute(from: Currency, to: Currency): Promise<Currency[]>;
 
 Possible exceptions: `Failed to fetch token mappings`, `Can't find route`.
 
+### getWayPoints
+
+This function takes an AMMRoute and returns an array of TokenInfo objects representing the tokens involved in each step of the route, including the origin token.
+
+```typescript
+async function getWayPoints(route: AMMRoute): Promise<TokenInfo[]>;
+```
+
+Possible exceptions: `Failed to fetch token mappings`.
+
 ### runSwap
 
 Perform a swap between two currencies using the specified route and amount.
 
 ```typescript
-function runSwap(stxAddress: string, currencyX: Currency, currencyY: Currency, 
+async function runSwap(stxAddress: string, currencyX: Currency, currencyY: Currency, 
                   fromAmount: bigint, minDy: bigint, customRoute: Currency[]): Promise<TxToBroadCast>;
 ```
 
