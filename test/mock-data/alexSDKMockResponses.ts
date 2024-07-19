@@ -1,9 +1,4 @@
-import {
-  AlexSDKResponse,
-  PoolData,
-  PriceData,
-  TokenInfo,
-} from '../../src/types';
+import { AlexSDKResponse, PriceData, TokenInfo } from '../../src/types';
 import { TxToBroadCast } from '../../src/helpers/SwapHelper';
 import { Currency } from '../../src';
 import { AMMRouteSegment } from '../../src/utils/ammRouteResolver';
@@ -99,19 +94,6 @@ export const dummyCurrencies: TokenInfo[] = [
     underlyingToken: `${validDeployer}.token-c::tkc`,
     underlyingTokenDecimals: 6,
     isRebaseToken: false,
-  },
-];
-
-export const dummyPools: PoolData[] = [
-  {
-    tokenX: dummyTokenA,
-    tokenY: dummyTokenC,
-    factor: BigInt(5000000),
-  },
-  {
-    tokenX: dummyTokenC,
-    tokenY: dummyTokenB,
-    factor: BigInt(5000000),
   },
 ];
 
