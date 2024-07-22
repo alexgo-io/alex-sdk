@@ -111,3 +111,21 @@ async function runSwap(stxAddress: string, currencyX: Currency, currencyY: Curre
 ```
 
 Possible exceptions: `Failed to fetch token mappings`, `Can't find AMM route`, `Token mapping not found`, `Too many AMM pools in route`.
+
+## Types
+```typescript
+export type TokenInfo = { // TokenInfo represents the details of a token that can be used in the AlexSDK.
+  id: Currency; // The unique identifier of the currency.
+  name: string; // The display name of the token that ALEX maintains, usually the token symbol.
+  icon: string; // The URL to the icon image of the token, maintained by ALEX.
+  wrapToken: string; // The full asset id of the alex wrapped token in the format of "{deployer}.{contract}::{asset}".
+  wrapTokenDecimals: number; // The number of decimal places for the wrapped token.
+  underlyingToken: string; // The full asset id of the underlying token in the format of "{deployer}.{contract}::{asset}".
+  underlyingTokenDecimals: number; // The number of decimal places for the underlying token.
+  isRebaseToken: boolean; // A boolean flag indicating whether the token is a rebase token.
+  /**
+   * In a rebase token, getBalance is different from ft-balance
+   * Also postcondition would need to be adjusted since amount is different from ft-events
+   */
+};
+```
