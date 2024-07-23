@@ -13,7 +13,6 @@ import {
   dummyBalances,
   dummyCurrencies,
   dummyFee,
-  dummyPrices,
   dummyRate,
   dummyTx,
   parsedDummyPrices,
@@ -22,6 +21,7 @@ import {
   dummyFactorA,
   dummyFactorB,
   dummyTokenC,
+  DUMMY_DEPLOYER,
 } from './mock-data/alexSDKMockResponses';
 import { cvToValue, FungibleConditionCode } from '@stacks/transactions';
 
@@ -53,17 +53,31 @@ jest.mock('../src/helpers/SwapHelper', () => {
 });
 jest.mock('../src/utils/fetchData', () => {
   const originalModule = jest.requireActual('../src/utils/fetchData');
+  const { dummyPrices, dummyCurrencies } = jest.requireActual(
+    './mock-data/alexSDKMockResponses'
+  );
   return {
     __esModule: true,
     ...originalModule,
-    getPrices: jest.fn(async () => dummyPrices),
+    getPrices: jest
+      .fn()
+      .mockReturnValueOnce(dummyPrices)
+      .mockReturnValueOnce(originalModule.getPrices(dummyCurrencies)),
     fetchBalanceForAccount: jest.fn(async () => dummyBalances),
     getAlexSDKData: jest.fn(async () => dummyAlexSDKData),
   };
 });
-jest.mock('../src/utils/ammRouteResolver', () => ({
-  resolveAmmRoute: jest.fn(() => dummyAmmRoute),
-}));
+jest.mock('../src/utils/ammRouteResolver', () => {
+  const originalModule = jest.requireActual('../src/utils/ammRouteResolver');
+  return {
+    resolveAmmRoute: jest.fn((tokenX, ...args) => {
+      if (tokenX === dummyTokenA) {
+        return dummyAmmRoute;
+      }
+      return originalModule.resolveAmmRoute(tokenX, ...args);
+    }),
+  };
+});
 
 describe('AlexSDK - mock helpers', () => {
   it('Verify response value of getFeeRate function', async () => {
@@ -97,7 +111,7 @@ describe('AlexSDK - mock helpers', () => {
   it('Verify response value of runSwap function', async () => {
     expect(jest.isMockFunction(SwapHelper.runSpot)).toBeTruthy();
     const result = await sdk.runSwap(
-      'SP111111111111111111111111111111111111111',
+      DUMMY_DEPLOYER,
       tokenAlex,
       tokenWUSDA,
       BigInt(1),
@@ -126,10 +140,31 @@ describe('AlexSDK - mock helpers', () => {
     expect(result.postConditions[0].amount).toStrictEqual(BigInt(0));
   });
 
+  it('Verify response value of runSwap function (empty pools)', async () => {
+    expect(jest.isMockFunction(SwapHelper.runSpot)).toBeTruthy();
+    expect(jest.isMockFunction(ammRouteResolver.resolveAmmRoute)).toBeTruthy();
+    const amount = BigInt(2) * BigInt(1e8);
+    await expect(
+      sdk.runSwap(
+        configs.CONTRACT_DEPLOYER,
+        dummyTokenB,
+        dummyTokenC,
+        amount,
+        BigInt(0)
+      )
+    ).rejects.toThrow("Can't find AMM route");
+  });
+
   it('Verify response value of getLatestPrices function', async () => {
     expect(jest.isMockFunction(fetchData.getPrices)).toBeTruthy();
     const result = await sdk.getLatestPrices();
     expect(result).toStrictEqual(parsedDummyPrices);
+  });
+
+  it('Verify response value of getLatestPrices function (null token cases)', async () => {
+    expect(jest.isMockFunction(fetchData.getPrices)).toBeTruthy();
+    const result = await sdk.getLatestPrices();
+    expect(result).toBeDefined();
   });
 
   it('Verify response value of getBalances function', async () => {

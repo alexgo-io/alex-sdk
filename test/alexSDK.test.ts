@@ -4,6 +4,7 @@ import Ajv from 'ajv';
 import { createGenerator } from 'ts-json-schema-generator';
 import path from 'node:path';
 import { getAlexSDKData, getPrices } from '../src/utils/fetchData';
+import { TxToBroadCast } from '../src/helpers/SwapHelper';
 
 const runtimeTypescriptMatcher = (received: any, typeName: string) => {
   const validator = new Ajv().compile(
@@ -33,11 +34,39 @@ declare global {
   }
 }
 
+const checkSwapResult = (result: TxToBroadCast) => {
+  expect(typeof result).toBe('object');
+  expect(result).toHaveProperty('contractAddress');
+  expect(result).toHaveProperty('contractName');
+  expect(result).toHaveProperty('functionName');
+  expect(result).toHaveProperty('functionArgs');
+  expect(result).toHaveProperty('postConditions');
+  expect(result.contractAddress).toBe(configs.CONTRACT_DEPLOYER);
+  expect(result.contractName).toBe('amm-pool-v2-01');
+  expect([
+    'swap-helper',
+    'swap-helper-a',
+    'swap-helper-b',
+    'swap-helper-c',
+  ]).toContain(result.functionName);
+  expect(Array.isArray(result.functionArgs)).toBeTruthy();
+  expect(Array.isArray(result.postConditions)).toBeTruthy();
+};
+
 expect.extend({ toMatchType: runtimeTypescriptMatcher });
 
 const tokenAlex = 'age000-governance-token' as Currency;
 const tokenDiko = 'token-wdiko' as Currency;
+const tokenWmick = 'token-wmick' as Currency;
+const tokenSSL = 'token-ssl-all-AESDE' as Currency;
+const tokenBRC20ORMM = 'brc20-ormm' as Currency;
 const wrongTokenAlex = '' as Currency;
+
+const routeLength1 = { from: tokenAlex, to: Currency.STX };
+const routeLength2 = { from: tokenWmick, to: tokenDiko };
+const routeLength3 = { from: tokenSSL, to: tokenDiko };
+const routeLength4 = { from: tokenWmick, to: tokenBRC20ORMM };
+const alternativeRoutes = [routeLength2, routeLength3, routeLength4];
 
 const sdk = new AlexSDK();
 const CLARITY_MAX_UNSIGNED_INT = BigInt(
@@ -45,18 +74,24 @@ const CLARITY_MAX_UNSIGNED_INT = BigInt(
 );
 
 describe('AlexSDK', () => {
-  it('Verify response of getFeeRate function', async () => {
-    const result = await sdk.getFeeRate(tokenAlex, Currency.STX);
+  it('Verify response of getFeeRate function (custom route)', async () => {
+    const customRoute = await sdk.getRoute(routeLength1.from, routeLength1.to);
+    const result = await sdk.getFeeRate(
+      routeLength1.from,
+      routeLength1.to,
+      customRoute
+    );
     expect(typeof result).toBe('bigint');
     expect(result >= BigInt(0)).toBeTruthy();
   }, 10000);
 
-  it('Verify response of getFeeRate function (custom route)', async () => {
-    const customRoute = await sdk.getRoute(tokenAlex, Currency.STX);
-    const result = await sdk.getFeeRate(tokenAlex, Currency.STX, customRoute);
-    expect(typeof result).toBe('bigint');
-    expect(result >= BigInt(0)).toBeTruthy();
-  }, 10000);
+  it('Verify response of getFeeRate function (alternative routes)', async () => {
+    for (const route of alternativeRoutes) {
+      const result = await sdk.getFeeRate(route.from, route.to);
+      expect(typeof result).toBe('bigint');
+      expect(result >= BigInt(0)).toBeTruthy();
+    }
+  }, 40000);
 
   it('Attempt to Get Fee Rate with wrong tokens', async () => {
     await expect(
@@ -83,15 +118,29 @@ describe('AlexSDK', () => {
     );
   }, 10000);
 
-  it('Verify response of getAmountTo function', async () => {
+  it('Verify response of Get Rate function (custom route)', async () => {
+    const customRoute = await sdk.getRoute(routeLength1.from, routeLength1.to);
     const result = await sdk.getAmountTo(
-      Currency.STX,
-      BigInt(2) * BigInt(1e8),
-      tokenDiko
+      routeLength1.from,
+      BigInt(10000000) * BigInt(1e8),
+      routeLength1.to,
+      customRoute
     );
     expect(typeof result).toBe('bigint');
     expect(result > BigInt(0)).toBeTruthy();
   }, 10000);
+
+  it('Verify response of Get Rate function (alternative routes)', async () => {
+    for (const route of alternativeRoutes) {
+      const result = await sdk.getAmountTo(
+        route.from,
+        BigInt(10000000) * BigInt(1e8),
+        route.to
+      );
+      expect(typeof result).toBe('bigint');
+      expect(result > BigInt(0)).toBeTruthy();
+    }
+  }, 40000);
 
   it('Attempt to Get Rate with a wrong From token', async () => {
     await expect(
@@ -119,32 +168,31 @@ describe('AlexSDK', () => {
     ).rejects.toThrow('ClarityError: 2011');
   }, 10000);
 
-  it('Verify response of runSwap function', async () => {
+  it('Verify response of runSwap function (custom route)', async () => {
+    const customRoute = await sdk.getRoute(routeLength1.from, routeLength1.to);
     const result = await sdk.runSwap(
       configs.CONTRACT_DEPLOYER,
-      Currency.STX,
-      tokenDiko,
+      routeLength1.from,
+      routeLength1.to,
       BigInt(2) * BigInt(1e8),
-      BigInt(0)
+      BigInt(0),
+      customRoute
     );
-
-    expect(typeof result).toBe('object');
-    expect(result).toHaveProperty('contractAddress');
-    expect(result).toHaveProperty('contractName');
-    expect(result).toHaveProperty('functionName');
-    expect(result).toHaveProperty('functionArgs');
-    expect(result).toHaveProperty('postConditions');
-    expect(result.contractAddress).toBe(configs.CONTRACT_DEPLOYER);
-    expect(result.contractName).toBe('amm-pool-v2-01');
-    expect([
-      'swap-helper',
-      'swap-helper-a',
-      'swap-helper-b',
-      'swap-helper-c',
-    ]).toContain(result.functionName);
-    expect(Array.isArray(result.functionArgs)).toBeTruthy();
-    expect(Array.isArray(result.postConditions)).toBeTruthy();
+    checkSwapResult(result);
   }, 10000);
+
+  it('Verify response of runSwap function (alternative routes)', async () => {
+    for (const route of alternativeRoutes) {
+      const result = await sdk.runSwap(
+        configs.CONTRACT_DEPLOYER,
+        route.from,
+        route.to,
+        BigInt(2) * BigInt(1e8),
+        BigInt(0)
+      );
+      checkSwapResult(result);
+    }
+  }, 40000);
 
   it('Attempt to Get Tx with an invalid stx address (checksum mismatch)', async () => {
     await expect(
@@ -205,6 +253,12 @@ describe('AlexSDK', () => {
         expect(typeof balances[currency as Currency]).toBe('bigint');
       }
     });
+  }, 10000);
+
+  it('Verify response of getBalances function (with fungible token balance)', async () => {
+    const stxAddress = 'SP3ANPTPEQE72PNE31WE8BEV4VCKB2C38P48TPH0Q';
+    const balances = await sdk.getBalances(stxAddress);
+    expect(balances).toBeDefined();
   }, 10000);
 
   it('Attempt to Get Tx with an invalid stx address (checksum mismatch)', async () => {
