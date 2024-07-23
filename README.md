@@ -80,7 +80,16 @@ const alex = new AlexSDK();
 
   // Fetch information about all swappable currencies
   const swappableCurrencies = await alex.fetchSwappableCurrency();
-  console.log('Swappable currencies:', swappableCurrencies);    
+  console.log('Swappable currencies:', swappableCurrencies);
+  
+  // Get all possible routes for swapping currencies
+  const allRoutes = await alex.getAllPossibleRoutes(Currency.STX, Currency.ALEX);
+  console.log('All possible routes:', allRoutes);
+
+  // Get way points
+  const someRoute: AMMRoute = [x1, x2];
+  const wayPoints = await sdk.getWayPoints(someRoute);
+  console.log('Way points for the route:', wayPoints);
 })();
 ```
 
