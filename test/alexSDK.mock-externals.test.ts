@@ -104,7 +104,7 @@ describe('AlexSDK - mock externals - SDK_API_HOST - BACKEND_API_HOST - STACKS_AP
   it('Attempt to Get Balances with incorrect data', async () => {
     await expect(
       fetchBalanceForAccount(stxAddress, tokenMappings)
-    ).rejects.toThrow('Unexpected');
+    ).rejects.toThrow('Failed to fetch account balances');
   });
 });
 describe('AlexSDK - mock externals - SDK_API_HOST - BACKEND_API_HOST - STACKS_API_HOST (Gateway Timeout)', () => {
@@ -187,7 +187,7 @@ describe('AlexSDK - mock externals - SDK_API_HOST - BACKEND_API_HOST - STACKS_AP
   it('Attempt to Get Balances with incorrect data', async () => {
     await expect(
       fetchBalanceForAccount(stxAddress, tokenMappings)
-    ).rejects.toThrow('Unexpected');
+    ).rejects.toThrow('Failed to fetch account balances');
   });
 });
 describe('AlexSDK - mock externals - SDK_API_HOST - BACKEND_API_HOST - STACKS_API_HOST (Not Found)', () => {
@@ -270,7 +270,7 @@ describe('AlexSDK - mock externals - SDK_API_HOST - BACKEND_API_HOST - STACKS_AP
   it('Attempt to Get Balances with incorrect data', async () => {
     await expect(
       fetchBalanceForAccount(stxAddress, tokenMappings)
-    ).rejects.toThrow('Unexpected');
+    ).rejects.toThrow('Failed to fetch account balances');
   });
 });
 describe('Transfer Factory', () => {

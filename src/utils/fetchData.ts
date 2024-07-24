@@ -64,9 +64,13 @@ export async function fetchBalanceForAccount(
   stxAddress: string,
   tokenMappings: TokenInfo[]
 ): Promise<Partial<{ [currency in Currency]: bigint }>> {
-  const response: AddressBalanceResponse = await fetch(
+  const response = await fetch(
     `${configs.STACKS_API_HOST}/extended/v1/address/${stxAddress}/balances`
-  ).then((a) => a.json());
+  );
+  if (!response.ok) {
+    throw new Error('Failed to fetch account balances');
+  }
+  const balanceData: AddressBalanceResponse = await response.json();
   return fromEntries(
     await Promise.all(
       tokenMappings.map(async (a) => {
@@ -95,10 +99,10 @@ export async function fetchBalanceForAccount(
           ];
         }
         if (a.id === Currency.STX) {
-          return [a.id, BigInt(response.stx.balance) * BigInt(100)];
+          return [a.id, BigInt(balanceData.stx.balance) * BigInt(100)];
         }
         const fungibleToken =
-          response.fungible_tokens[a.underlyingToken]?.balance;
+          balanceData.fungible_tokens[a.underlyingToken]?.balance;
         if (fungibleToken == null) {
           return [a.id, BigInt(0)];
         }

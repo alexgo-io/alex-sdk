@@ -297,7 +297,7 @@ describe('AlexSDK', () => {
     // TODO: Implement principal address verification in the SDK methods.
     const wrongAddress = 'ABC';
     await expect(sdk.getBalances(wrongAddress)).rejects.toThrow(
-      "Cannot read properties of undefined (reading 'balance')"
+      'Failed to fetch account balances'
     );
   }, 10000);
 
