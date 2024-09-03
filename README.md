@@ -33,7 +33,7 @@ export declare class AlexSDK {
 
 For detailed API documentation, including a full list of available methods and their usage, please refer to:
 
-[SDK API Documentation](./documentation.md).
+[SDK API Documentation](https://ignaciopenia.github.io/alex-sdk/).
 
 ## Usage
 
