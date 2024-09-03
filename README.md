@@ -31,7 +31,9 @@ export declare class AlexSDK {
 }
 ```
 
-(detailed list [here](./documentation.md)).
+For detailed API documentation, including a full list of available methods and their usage, please refer to:
+
+[SDK API Documentation](./documentation.md).
 
 ## Usage
 
