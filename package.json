@@ -21,6 +21,8 @@
     "lint-fix": "dts lint --fix",
     "size": "size-limit",
     "gen:contract": "rm -rf src/generated/smartContract/* && tsx ./scripts/gen-contract.ts && prettier --write 'src/generated/smartContract'",
+    "docs": "typedoc src/index.ts",
+    "docs:watch": "typedoc src/index.ts --watch",
     "analyze": "size-limit --why",
     "ci": "pnpm run lint && pnpm run test && pnpm run size"
   },
@@ -72,6 +74,7 @@
     "ts-json-schema-generator": "^2.3.0",
     "tslib": "^2.6.3",
     "tsx": "^4.15.5",
+    "typedoc": "^0.26.6",
     "typescript": "^5.4.5"
   }
 }
