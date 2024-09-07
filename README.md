@@ -10,28 +10,11 @@ You can install Alex-SDK using npm:
 npm install alex-sdk
 ```
 
-## Functions
+## Documentation
 
-The AlexSDK class includes the following functions:
+For detailed API documentation, including a full list of available methods and their usage, please refer to:
 
-```typescript
-export declare class AlexSDK {
-  fetchSwappableCurrency(): Promise<TokenInfo[]>;
-  getAllPossibleRoutes(from: Currency, to: Currency): Promise<AMMRoute[]>;   
-  getAmountTo(from: Currency, fromAmount: bigint, to: Currency): Promise<bigint>;
-  getBalances(stxAddress: string): Promise<Partial<{ [currency in Currency]: bigint }>>;
-  getFeeRate(from: Currency, to: Currency): Promise<bigint>;
-  getLatestPrices(): Promise<Partial<{ [currency in Currency]: number }>>;
-  getRoute(from: Currency, to: Currency): Promise<AMMRoute>;
-  getRouter(from: Currency, to: Currency): Promise<Currency[]>; // deprecated
-  getWayPoints(route: AMMRoute): Promise<TokenInfo[]>;
-  runSwap(stxAddress: string, currencyX: Currency, 
-          currencyY: Currency, fromAmount: bigint, 
-          minDy: bigint, customRoute: AMMRoute): Promise<TxToBroadCast>;
-}
-```
-
-(detailed list [here](./documentation.md)).
+[SDK API Documentation](/alex-sdk/).
 
 ## Usage
 

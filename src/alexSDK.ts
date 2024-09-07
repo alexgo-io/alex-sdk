@@ -45,10 +45,11 @@ export class AlexSDK {
   }
 
   /**
-   * Fetches the list of currencies that can be swapped on the DEX.
+   * This function returns an array of TokenInfo objects, each containing detailed
+   * information about a supported swappable currency.
    *
-   * @returns {Promise<TokenInfo[]>} - A promise that resolves to an array of TokenInfo objects,
-   * representing the swappable currencies.
+   * @returns {Promise<TokenInfo[]>} - A promise that resolves to an array of 
+   * `TokenInfo` objects representing the currencies available for swaps.
    */
   fetchSwappableCurrency(): Promise<TokenInfo[]> {
     return this.getTokenInfos();
@@ -59,12 +60,13 @@ export class AlexSDK {
   }
 
   /**
-   * Retrieves all possible routes for swapping from one currency to another.
+   * This function returns all possible routes for swapping between two specified currencies. 
+   * It returns an array of AMMRoute, representing possible swap routes.
    *
    * @param {Currency} from - The currency to swap from.
    * @param {Currency} to - The currency to swap to.
    * @returns {Promise<AMMRoute[]>} - A promise that resolves to an array of AMMRoute objects,
-   * representing all possible routes for the swap.
+   * representing all possible swap routes between the two specified currencies.
    */
   async getAllPossibleRoutes(
     from: Currency,
@@ -74,7 +76,7 @@ export class AlexSDK {
   }
 
   /**
-   * Retrieves the best route for swapping from one currency to another.
+   * Get the router path for swapping between two currencies.
    *
    * @param {Currency} from - The currency to swap from.
    * @param {Currency} to - The currency to swap to.
@@ -85,7 +87,8 @@ export class AlexSDK {
   }
 
   /**
-   * Displays the detailed route information.
+   * This function takes an AMMRoute and returns an array of TokenInfo objects representing
+   * the tokens involved in each step of the route, including the origin token.
    *
    * @param {AMMRoute} route - The route to display.
    * @returns {Promise<TokenInfo[]>} - A promise that resolves to an array of TokenInfo objects,
@@ -101,7 +104,7 @@ export class AlexSDK {
   }
 
   /**
-   * Calculates the fee rate for a swap between two currencies.
+   * Get the swap fee (liquidity provider fee) between two currencies.
    *
    * @param {Currency} from - The currency to swap from.
    * @param {Currency} to - The currency to swap to.
@@ -123,7 +126,7 @@ export class AlexSDK {
   }
 
   /**
-   * Calculates the amount of the destination currency that will be received for a given amount of the source currency.
+   * Get the amount of destination currency that will be received when swapping from one currency to another.
    *
    * @param {Currency} from - The currency to swap from.
    * @param {bigint} fromAmount - The amount of the source currency to swap.
@@ -148,7 +151,7 @@ export class AlexSDK {
   }
 
   /**
-   * Executes a swap transaction between two currencies.
+   * Perform a swap between two currencies using the specified route and amount.
    *
    * @param {string} stxAddress - The Stacks (STX) address to execute the swap from.
    * @param {Currency} currencyX - The currency to swap from.
@@ -179,7 +182,8 @@ export class AlexSDK {
   }
 
   /**
-   * Retrieves the latest prices for all supported currencies.
+   * This function fetches the current price data for all supported tokens. It returns an object where
+   * the keys are the currency identifiers (as defined in the Currency enum) and the values are the corresponding prices in USD.
    *
    * @returns {Promise<Partial<{ [currency in Currency]: number }>>} - A promise that resolves to an object containing the latest prices for each currency.
    */
@@ -193,7 +197,9 @@ export class AlexSDK {
   }
 
   /**
-   * Retrieves the balances of all supported currencies for a given Stacks (STX) address.
+   * This function fetches the current balances of all supported tokens for a specified STX address. 
+   * It returns an object where the keys are the currency identifiers (as defined in the Currency enum) 
+   * and the values are the corresponding balances as bigint values.
    *
    * @param {string} stxAddress - The Stacks (STX) address to retrieve the balances for.
    * @returns {Promise<Partial<{ [currency in Currency]: bigint }>>} - A promise that resolves to an object containing the balances of each currency for the given address.
