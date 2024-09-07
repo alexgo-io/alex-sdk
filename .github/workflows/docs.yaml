@@ -5,9 +5,18 @@ on:
     branches:
       - main  # or your default branch name
 
+# Add this permissions block
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     
     steps:
     - name: Checkout repository
@@ -27,7 +36,7 @@ jobs:
       run: pnpm install
 
     - name: Build docs
-      run: pnpm docs
+      run: pnpm run docs
 
     - name: Setup Pages
       uses: actions/configure-pages@v4

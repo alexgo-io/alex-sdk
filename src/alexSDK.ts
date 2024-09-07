@@ -48,7 +48,7 @@ export class AlexSDK {
    * This function returns an array of TokenInfo objects, each containing detailed
    * information about a supported swappable currency.
    *
-   * @returns {Promise<TokenInfo[]>} - A promise that resolves to an array of 
+   * @returns {Promise<TokenInfo[]>} - A promise that resolves to an array of
    * `TokenInfo` objects representing the currencies available for swaps.
    */
   fetchSwappableCurrency(): Promise<TokenInfo[]> {
@@ -60,7 +60,7 @@ export class AlexSDK {
   }
 
   /**
-   * This function returns all possible routes for swapping between two specified currencies. 
+   * This function returns all possible routes for swapping between two specified currencies.
    * It returns an array of AMMRoute, representing possible swap routes.
    *
    * @param {Currency} from - The currency to swap from.
@@ -197,8 +197,8 @@ export class AlexSDK {
   }
 
   /**
-   * This function fetches the current balances of all supported tokens for a specified STX address. 
-   * It returns an object where the keys are the currency identifiers (as defined in the Currency enum) 
+   * This function fetches the current balances of all supported tokens for a specified STX address.
+   * It returns an object where the keys are the currency identifiers (as defined in the Currency enum)
    * and the values are the corresponding balances as bigint values.
    *
    * @param {string} stxAddress - The Stacks (STX) address to retrieve the balances for.
