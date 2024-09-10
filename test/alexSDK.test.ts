@@ -164,7 +164,7 @@ describe('AlexSDK', () => {
 
   it('Attempt to Get Rate with an overflowing From amount (decoders)', async () => {
     await expect(
-      sdk.getAmountTo(Currency.STX, BigInt(99999223372036854775807), tokenDiko)
+      sdk.getAmountTo(Currency.STX, BigInt(9999223372036854775807), tokenDiko)
     ).rejects.toThrow('ClarityError: 2011');
   }, 10000);
 
