@@ -14,7 +14,7 @@ npm install alex-sdk
 
 For detailed API documentation, including a full list of available methods and their usage, please refer to:
 
-[SDK API Documentation](/alex-sdk/).
+[SDK API Documentation](https://alexgo-io.github.io/alex-sdk/).
 
 ## Usage
 
