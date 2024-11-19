@@ -55,6 +55,19 @@ export class AlexSDK {
     return this.getTokenInfos();
   }
 
+  /**
+   * Fetch the token info for a given token address.
+   * @param tokenAddress - The address of the token to fetch info for. e.g SP102V8P0F7JX67ARQ77WEA3D3CFB5XW39REDT0AM.token-alex
+   * @returns A promise that resolves to a `TokenInfo` object or `null` if the token is not found.
+   */
+  async fetchTokenInfo(tokenAddress: string): Promise<TokenInfo | null> {
+    return (
+      (await this.getTokenInfos()).find(
+        (x) => x.underlyingToken.split('::')[0] === tokenAddress.split('::')[0]
+      ) ?? null
+    );
+  }
+
   private async getPrices(): Promise<PriceData[]> {
     return getPrices(await this.getTokenInfos());
   }
