@@ -2,7 +2,10 @@ import { unwrapResponse } from 'clarity-codegen';
 import { readonlyCall } from '../utils/readonlyCallExecutor';
 import type { Currency } from '../currency';
 import type { PoolData } from '../types';
-import { type AMMRouteSegment, resolveAmmRoute } from '../utils/ammRouteResolver';
+import {
+  type AMMRouteSegment,
+  resolveAmmRoute,
+} from '../utils/ammRouteResolver';
 import { hasLength } from '../utils/arrayHelper';
 
 export async function getLiquidityProviderFee(

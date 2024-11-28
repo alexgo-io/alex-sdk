@@ -30,7 +30,7 @@ const defaultReadonlyCallExecutor: ReadonlyCallExecutor = async (options) => {
       client: {
         ...STACKS_MAINNET.client,
         baseUrl: configs.READONLY_CALL_API_HOST,
-      }
+      },
     },
   });
 };

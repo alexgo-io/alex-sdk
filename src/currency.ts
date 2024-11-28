@@ -6,9 +6,8 @@ export type Currency = string & {
   readonly brand: unique symbol;
 };
 
-// ignore duplicate
-// eslint-disable-next-line @typescript-eslint/no-redeclare
 /** The `Currency` namespace contains predefined constants for tokens in the AlexSDK.*/
+// eslint-disable-next-line @typescript-eslint/no-redeclare
 export namespace Currency {
   /** Represents the `STX` token */
   export const STX = createCurrency('token-wstx');

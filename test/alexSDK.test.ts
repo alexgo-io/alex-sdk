@@ -158,7 +158,11 @@ describe('AlexSDK', () => {
 
   it('Attempt to Get Rate with an overflowing From amount (parseReadOnlyResponse)', async () => {
     await expect(
-      sdk.getAmountTo(Currency.STX, BigInt('9999999992233720368547758007'), tokenDiko)
+      sdk.getAmountTo(
+        Currency.STX,
+        BigInt('9999999992233720368547758007'),
+        tokenDiko
+      )
     ).rejects.toThrow('ArithmeticOverflow');
   }, 10000);
 

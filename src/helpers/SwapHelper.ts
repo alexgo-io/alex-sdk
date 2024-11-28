@@ -12,7 +12,10 @@ import { AlexContracts } from '../generated/smartContract/contracts_Alex';
 import { configs } from '../config';
 import type { Currency } from '../currency';
 import type { PoolData, TokenInfo } from '../types';
-import { type AMMRouteSegment, resolveAmmRoute } from '../utils/ammRouteResolver';
+import {
+  type AMMRouteSegment,
+  resolveAmmRoute,
+} from '../utils/ammRouteResolver';
 import { transferFactory } from '../utils/postConditions';
 import { hasLength } from '../utils/arrayHelper';
 
@@ -38,7 +41,9 @@ const composeTx = <
     : never,
   postConditions: (FungiblePostCondition | StxPostCondition)[]
 ): TxToBroadCast => {
-  const functionDescriptor = AlexContracts[contractName][functionName] as OpenCallFunctionDescriptor;
+  const functionDescriptor = AlexContracts[contractName][
+    functionName
+  ] as OpenCallFunctionDescriptor;
   const clarityArgs = functionDescriptor.input.map((arg) =>
     arg.type.encode(args[arg.name])
   );
@@ -61,7 +66,8 @@ export function runSpot(
   mappings: TokenInfo[],
   customRoute?: AMMRouteSegment[]
 ): TxToBroadCast {
-  const ammRoute = customRoute ?? resolveAmmRoute(currencyX, currencyY, ammPools);
+  const ammRoute =
+    customRoute ?? resolveAmmRoute(currencyX, currencyY, ammPools);
   const getContractId = (currency: Currency) => {
     const mapping = mappings.find((x) => x.id === currency);
     if (!mapping) {
@@ -90,7 +96,12 @@ export function runSpot(
       },
       [
         transfer(stxAddress, currencyX, fromAmount),
-        transfer(AlexVault, currencyY, minDy, FungibleConditionCode.GreaterEqual),
+        transfer(
+          AlexVault,
+          currencyY,
+          minDy,
+          FungibleConditionCode.GreaterEqual
+        ),
       ]
     );
   }
@@ -123,7 +134,12 @@ export function runSpot(
           BigInt(0),
           FungibleConditionCode.GreaterEqual
         ),
-        transfer(AlexVault, currencyY, minDy, FungibleConditionCode.GreaterEqual),
+        transfer(
+          AlexVault,
+          currencyY,
+          minDy,
+          FungibleConditionCode.GreaterEqual
+        ),
       ]
     );
   }
@@ -170,7 +186,12 @@ export function runSpot(
           BigInt(0),
           FungibleConditionCode.GreaterEqual
         ),
-        transfer(AlexVault, currencyY, minDy, FungibleConditionCode.GreaterEqual),
+        transfer(
+          AlexVault,
+          currencyY,
+          minDy,
+          FungibleConditionCode.GreaterEqual
+        ),
       ]
     );
   }
@@ -231,7 +252,12 @@ export function runSpot(
           BigInt(0),
           FungibleConditionCode.GreaterEqual
         ),
-        transfer(AlexVault, currencyY, minDy, FungibleConditionCode.GreaterEqual),
+        transfer(
+          AlexVault,
+          currencyY,
+          minDy,
+          FungibleConditionCode.GreaterEqual
+        ),
       ]
     );
   }

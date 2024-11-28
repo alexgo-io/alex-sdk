@@ -38,8 +38,8 @@ export const transferFactory =
     const nativeAmount = (amount * BigInt(scale)) / BigInt(1e8);
 
     // validate sender address
-    addressToString(parsePrincipalString(senderAddress).address)
-    
+    addressToString(parsePrincipalString(senderAddress).address);
+
     if (currency === Currency.STX) {
       return {
         type: 'stx-postcondition',
@@ -50,8 +50,8 @@ export const transferFactory =
     }
 
     // For rebase tokens, use GreaterEqual with amount 0
-    const finalConditionCode = mapping.isRebaseToken 
-      ? FungibleConditionCode.GreaterEqual 
+    const finalConditionCode = mapping.isRebaseToken
+      ? FungibleConditionCode.GreaterEqual
       : conditionCode;
     const finalAmount = mapping.isRebaseToken ? BigInt(0) : nativeAmount;
 

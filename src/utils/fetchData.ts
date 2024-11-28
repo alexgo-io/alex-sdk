@@ -90,7 +90,7 @@ export async function fetchBalanceForAccount(
               client: {
                 ...STACKS_MAINNET.client,
                 baseUrl: configs.READONLY_CALL_API_HOST,
-              }
+              },
             },
           });
           const amount = unwrapResponse(
