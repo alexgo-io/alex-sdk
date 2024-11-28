@@ -134,8 +134,8 @@ describe('AlexSDK - mock helpers', () => {
     expect(cvToValue(result.functionArgs[3])).toStrictEqual(dummyFactorA);
     expect(cvToValue(result.functionArgs[4])).toStrictEqual(dummyFactorB);
     expect(cvToValue(result.functionArgs[5])).toStrictEqual(amount);
-    expect(result.postConditions[0].conditionCode).toStrictEqual(
-      FungibleConditionCode.GreaterEqual
+    expect(result.postConditions[0].condition).toStrictEqual(
+      'gte'
     );
     expect(result.postConditions[0].amount).toStrictEqual(BigInt(0));
   });

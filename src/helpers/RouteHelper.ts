@@ -1,6 +1,6 @@
-import { Currency } from '../currency';
-import { PoolData } from '../types';
-import { AMMRouteSegment, resolveAmmRoute } from '../utils/ammRouteResolver';
+import type { Currency } from '../currency';
+import type { PoolData } from '../types';
+import { type AMMRouteSegment, resolveAmmRoute } from '../utils/ammRouteResolver';
 
 export async function getAllPossibleRoute(
   from: Currency,

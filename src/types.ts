@@ -1,4 +1,4 @@
-import { Currency } from './currency';
+import type { Currency } from './currency';
 
 /**
  * TokenInfo represents the details of a token that can be used in the AlexSDK.

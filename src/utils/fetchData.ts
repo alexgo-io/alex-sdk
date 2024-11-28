@@ -2,14 +2,14 @@ import { Currency } from '../currency';
 import type { AddressBalanceResponse } from '@stacks/stacks-blockchain-api-types';
 import { configs } from '../config';
 import { fromEntries, isNotNull } from './utils';
-import {
+import type {
   AlexSDKResponse,
   BackendAPIPriceResponse,
   PriceData,
   TokenInfo,
 } from '../types';
-import { callReadOnlyFunction } from '@stacks/transactions';
-import { StacksMainnet } from '@stacks/network';
+import { fetchCallReadOnlyFunction } from '@stacks/transactions';
+import { STACKS_MAINNET } from '@stacks/network';
 import {
   principalCV,
   responseSimpleT,
@@ -79,15 +79,19 @@ export async function fetchBalanceForAccount(
           const [contractAddr, contractName] = a.underlyingToken
             .split('::')[0]
             .split('.');
-          const response = await callReadOnlyFunction({
+          const response = await fetchCallReadOnlyFunction({
             senderAddress: stxAddress,
             contractAddress: contractAddr,
             contractName: contractName,
             functionName: 'get-balance',
             functionArgs: [principalCV(stxAddress)],
-            network: new StacksMainnet({
-              url: configs.READONLY_CALL_API_HOST,
-            }),
+            network: {
+              ...STACKS_MAINNET,
+              client: {
+                ...STACKS_MAINNET.client,
+                baseUrl: configs.READONLY_CALL_API_HOST,
+              }
+            },
           });
           const amount = unwrapResponse(
             responseSimpleT(uintT).decode(response)

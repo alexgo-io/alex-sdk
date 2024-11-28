@@ -1,11 +1,11 @@
 import {
-  callReadOnlyFunction,
-  ClarityValue,
-  ReadOnlyFunctionOptions,
+  fetchCallReadOnlyFunction,
+  type ClarityValue,
+  type ReadOnlyFunctionOptions,
 } from '@stacks/transactions';
 import { configs } from '../config';
-import { StacksMainnet } from '@stacks/network';
-import {
+import { STACKS_MAINNET } from '@stacks/network';
+import type {
   ParameterObjOfDescriptor,
   ReadonlyFunctionDescriptor,
   ReturnTypeOfDescriptor,
@@ -22,12 +22,16 @@ type ReadonlyCallExecutor = (
 ) => Promise<ClarityValue>;
 
 const defaultReadonlyCallExecutor: ReadonlyCallExecutor = async (options) => {
-  return callReadOnlyFunction({
+  return fetchCallReadOnlyFunction({
     ...options,
     senderAddress: configs.CONTRACT_DEPLOYER,
-    network: new StacksMainnet({
-      url: configs.READONLY_CALL_API_HOST,
-    }),
+    network: {
+      ...STACKS_MAINNET,
+      client: {
+        ...STACKS_MAINNET.client,
+        baseUrl: configs.READONLY_CALL_API_HOST,
+      }
+    },
   });
 };
 

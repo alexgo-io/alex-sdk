@@ -158,13 +158,13 @@ describe('AlexSDK', () => {
 
   it('Attempt to Get Rate with an overflowing From amount (parseReadOnlyResponse)', async () => {
     await expect(
-      sdk.getAmountTo(Currency.STX, BigInt(999999223372036854775807), tokenDiko)
+      sdk.getAmountTo(Currency.STX, BigInt('9999999992233720368547758007'), tokenDiko)
     ).rejects.toThrow('ArithmeticOverflow');
   }, 10000);
 
   it('Attempt to Get Rate with an overflowing From amount (decoders)', async () => {
     await expect(
-      sdk.getAmountTo(Currency.STX, BigInt(9999223372036854775807), tokenDiko)
+      sdk.getAmountTo(Currency.STX, BigInt('9999223372036854775807'), tokenDiko)
     ).rejects.toThrow('ClarityError: 2011');
   }, 10000);
 
@@ -197,7 +197,7 @@ describe('AlexSDK', () => {
   it('Attempt to Get Tx with an invalid stx address (checksum mismatch)', async () => {
     await expect(
       sdk.runSwap(
-        'SP25DP4A9EXT42KC40QDMYQPMQCT1P0R5234GWEGS',
+        'SP25DP4A9EXT42KC40DMYQPMQCT1P0R5234GWEGS',
         Currency.STX,
         tokenDiko,
         BigInt(100),
@@ -237,10 +237,10 @@ describe('AlexSDK', () => {
     const result = await sdk.getLatestPrices();
     expect(result).toBeDefined();
     expect(typeof result).toBe('object');
-    Object.values(result).forEach((value) => {
+    for (const value of Object.values(result)) {
       expect(typeof value).toBe('number');
-      expect(isNaN(Number(value))).toBe(false);
-    });
+      expect(Number.isNaN(Number(value))).toBe(false);
+    }
   }, 10000);
 
   it('Verify response of getBalances function', async () => {
@@ -248,11 +248,11 @@ describe('AlexSDK', () => {
     const balances = await sdk.getBalances(stxAddress);
     expect(balances).toBeDefined();
     expect(typeof balances).toBe('object');
-    Object.keys(balances).forEach((currency) => {
+    for (const currency of Object.keys(balances)) {
       if (Object.values(Currency).includes(currency as Currency)) {
         expect(typeof balances[currency as Currency]).toBe('bigint');
       }
-    });
+    }
   }, 10000);
 
   it('Verify response of getBalances function (with fungible token balance)', async () => {
@@ -261,26 +261,14 @@ describe('AlexSDK', () => {
     expect(balances).toBeDefined();
   }, 10000);
 
-  it('Attempt to Get Tx with an invalid stx address (checksum mismatch)', async () => {
-    await expect(
-      sdk.runSwap(
-        'SP25DP4A9EXT42KC40QDMYQPMQCT1P0R5234GWEGS',
-        Currency.STX,
-        tokenDiko,
-        BigInt(100),
-        BigInt(0)
-      )
-    ).rejects.toThrow('Invalid c32check string: checksum mismatch');
-  });
-
   it('Verify response of getLatestPrices function', async () => {
     const result = await sdk.getLatestPrices();
     expect(result).toBeDefined();
     expect(typeof result).toBe('object');
-    Object.values(result).forEach((value) => {
+    for (const value of Object.values(result)) {
       expect(typeof value).toBe('number');
-      expect(isNaN(Number(value))).toBe(false);
-    });
+      expect(Number.isNaN(Number(value))).toBe(false);
+    }
   });
 
   it('Verify response of getBalances function', async () => {
@@ -288,9 +276,9 @@ describe('AlexSDK', () => {
     const balances = await sdk.getBalances(stxAddress);
     expect(balances).toBeDefined();
     expect(typeof balances).toBe('object');
-    Object.keys(balances).forEach((currency) => {
+    for (const currency of Object.keys(balances)) {
       expect(typeof balances[currency as Currency]).toBe('bigint');
-    });
+    }
   });
 
   it('Attempt to get balances with invalid address', async () => {
