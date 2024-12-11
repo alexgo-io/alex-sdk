@@ -103,7 +103,11 @@ export class AlexSDK {
    * @returns {Promise<AMMRoute>} - A promise that resolves to an AMMRoute object, representing the best route for the swap.
    */
   async getRoute(from: Currency, to: Currency): Promise<AMMRoute> {
-    return (await this.getAllPossibleRoutes(from, to))[0];
+    const allPossibleRoutes = await this.getAllPossibleRoutes(from, to);
+    if (allPossibleRoutes.length === 0) {
+      throw new Error("Can't find route");
+    }
+    return allPossibleRoutes[0];
   }
 
   /**
