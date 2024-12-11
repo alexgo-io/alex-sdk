@@ -11,7 +11,7 @@ import { getAllPossibleRoute } from './helpers/RouteHelper';
 import { getYAmountFromXAmount } from './helpers/RateHelper';
 import { fromEntries } from './utils/utils';
 import type { AMMRoute } from './utils/ammRouteResolver';
-import { broadcastSponsoredTx, requiredStxAmountForSponsorTx, runSponsoredSpotTx } from './helpers/SponsorTxHelper';
+import { broadcastSponsoredTx, requiredStxAmountForSponsorTx, runSponsoredSpotTx, SponsoredTxError, SponsoredTxErrorCode } from './helpers/SponsorTxHelper';
 
 /**
  * The AlexSDK class provides methods for interacting with a decentralized exchange (DEX) system,
@@ -186,11 +186,14 @@ export class AlexSDK {
       to,
       route
     )
-    const sponsorFeeAmount = await this.getAmountTo(
+    const sponsorFeeAmount = from === Currency.STX ? stxAmount : await this.getAmountTo(
       Currency.STX,
       stxAmount,
       from
     )
+    if (sponsorFeeAmount > fromAmount) {
+      return BigInt(0)
+    }
     return getYAmountFromXAmount(
       from,
       to,
@@ -258,11 +261,14 @@ export class AlexSDK {
       currencyY,
       route
     )
-    const sponsorFeeAmount = await this.getAmountTo(
+    const sponsorFeeAmount = currencyX === Currency.STX ? stxAmount : await this.getAmountTo(
       Currency.STX,
       stxAmount,
       currencyX
     )
+    if (sponsorFeeAmount > fromAmount) {
+      throw new SponsoredTxError(SponsoredTxErrorCode.insufficient_funds, 'Insufficient funds to cover sponsor fee')
+    }
     return runSponsoredSpotTx(
       stxAddress,
       currencyX,

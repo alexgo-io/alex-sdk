@@ -21,8 +21,8 @@ export function runSponsoredSpotTx(
     currencyX: Currency,
     currencyY: Currency,
     totalAmount: bigint,
-    feeAmount: bigint,
     minDy: bigint,
+    feeAmount: bigint,
     ammPools: PoolData[],
     mappings: TokenInfo[],
     customRoute?: AMMRouteSegment[]
@@ -244,6 +244,8 @@ export enum SponsoredTxErrorCode {
     "invalid_nonce" = "invalid_nonce",
     // Worker failed to broadcast the tx
     "broadcast_error" = "broadcast_error",
+    // Insufficient funds to cover sponsor fee
+    "insufficient_funds" = "insufficient_funds",
     "unknown_error" = "unknown_error",
 }
 
