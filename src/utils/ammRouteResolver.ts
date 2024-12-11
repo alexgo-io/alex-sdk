@@ -1,6 +1,6 @@
 import { isNotNull } from './utils';
-import { Currency } from '../currency';
-import { PoolData } from '../types';
+import type { Currency } from '../currency';
+import type { PoolData } from '../types';
 
 export type AMMRouteSegment = {
   neighbour: Currency;
@@ -45,4 +45,45 @@ export function resolveAmmRoute(
     }
   }
   return [];
+}
+
+
+export function resolveAmmRoutes(
+  tokenX: Currency,
+  tokenY: Currency,
+  pools: PoolData[]
+): AMMRouteSegment[][] {
+  if (pools.length === 0) {
+    return [];
+  }
+
+  const allRoutes: AMMRouteSegment[][] = [];
+
+  function findRoutes(
+    currentToken: Currency,
+    targetToken: Currency,
+    currentPath: AMMRouteSegment[],
+    depth: number
+  ): void {
+    // Contract only supports up to 4 segments
+    if (depth > 4) return;
+
+    const neighborSegments = neighbours(currentToken, pools);
+    for (const segment of neighborSegments) {
+      // Avoid cycles by checking if we've already visited this token
+      if (currentPath.some(route => route.neighbour === segment.neighbour)) {
+        continue;
+      }
+
+      const newPath = [...currentPath, segment];
+      if (segment.neighbour === targetToken) {
+        allRoutes.push(newPath);
+      } else {
+        findRoutes(segment.neighbour, targetToken, newPath, depth + 1);
+      }
+    }
+  }
+
+  findRoutes(tokenX, tokenY, [], 0);
+  return allRoutes.sort((a, b) => a.length - b.length);
 }

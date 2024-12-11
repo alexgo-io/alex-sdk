@@ -1,7 +1,7 @@
 import { Currency } from './currency';
-import { runSpot, TxToBroadCast } from './helpers/SwapHelper';
+import { runSpot, type TxToBroadCast } from './helpers/SwapHelper';
 import { getLiquidityProviderFee } from './helpers/FeeHelper';
-import { AlexSDKResponse, PoolData, PriceData, TokenInfo } from './types';
+import type { AlexSDKResponse, PoolData, PriceData, TokenInfo } from './types';
 import {
   fetchBalanceForAccount,
   getAlexSDKData,
@@ -10,7 +10,8 @@ import {
 import { getAllPossibleRoute } from './helpers/RouteHelper';
 import { getYAmountFromXAmount } from './helpers/RateHelper';
 import { fromEntries } from './utils/utils';
-import { AMMRoute } from './utils/ammRouteResolver';
+import type { AMMRoute } from './utils/ammRouteResolver';
+import { broadcastSponsoredTx, requiredStxAmountForSponsorTx, runSponsoredSpotTx } from './helpers/SponsorTxHelper';
 
 /**
  * The AlexSDK class provides methods for interacting with a decentralized exchange (DEX) system,
@@ -164,6 +165,43 @@ export class AlexSDK {
   }
 
   /**
+   * Get the amount of destination currency that will be received when swapping from one currency to another 
+   * in the context of sponsor tx.
+   *
+   * @param {Currency} from - The currency to swap from.
+   * @param {bigint} fromAmount - The amount of the source currency to swap.
+   * @param {Currency} to - The currency to swap to.
+   * @param {AMMRoute} [customRoute] - An optional custom route for the swap.
+   * @returns {Promise<bigint>} - A promise that resolves to a bigint representing the amount of the destination currency that will be received.
+   */
+  async getAmountToForSponsorTx(
+    from: Currency,
+    fromAmount: bigint,
+    to: Currency,
+    customRoute?: AMMRoute
+  ): Promise<bigint> {
+    const route = customRoute ?? await this.getRoute(from, to)
+    const stxAmount = await requiredStxAmountForSponsorTx(
+      from,
+      to,
+      route
+    )
+    const sponsorFeeAmount = await this.getAmountTo(
+      Currency.STX,
+      stxAmount,
+      from
+    )
+    return getYAmountFromXAmount(
+      from,
+      to,
+      fromAmount - sponsorFeeAmount,
+      await this.getPools(),
+      await this.getContractId(),
+      customRoute
+    );
+  }
+
+  /**
    * Perform a swap between two currencies using the specified route and amount.
    *
    * @param {string} stxAddress - The Stacks (STX) address to execute the swap from.
@@ -192,6 +230,60 @@ export class AlexSDK {
       await this.getTokenInfos(),
       customRoute
     );
+  }
+
+  /**
+   * Perform a swap between two currencies using the specified route and amount.
+   * Targetting sponsor tx.
+   *
+   * @param {string} stxAddress - The Stacks (STX) address to execute the swap from.
+   * @param {Currency} currencyX - The currency to swap from.
+   * @param {Currency} currencyY - The currency to swap to.
+   * @param {bigint} fromAmount - The amount of the source currency to swap.
+   * @param {bigint} minDy - The minimum amount of the destination currency to receive.
+   * @param {AMMRoute} [customRoute] - An optional custom route for the swap.
+   * @returns {Promise<TxToBroadCast>} - A promise that resolves to a TxToBroadCast object, representing the transaction to be broadcasted.
+   */
+  async runSwapForSponsorTx(
+    stxAddress: string,
+    currencyX: Currency,
+    currencyY: Currency,
+    fromAmount: bigint,
+    minDy: bigint,
+    customRoute?: AMMRoute
+  ): Promise<TxToBroadCast> {
+    const route = customRoute ?? await this.getRoute(currencyX, currencyY)
+    const stxAmount = await requiredStxAmountForSponsorTx(
+      currencyX,
+      currencyY,
+      route
+    )
+    const sponsorFeeAmount = await this.getAmountTo(
+      Currency.STX,
+      stxAmount,
+      currencyX
+    )
+    return runSponsoredSpotTx(
+      stxAddress,
+      currencyX,
+      currencyY,
+      fromAmount,
+      minDy,
+      sponsorFeeAmount,
+      await this.getPools(),
+      await this.getTokenInfos(),
+      customRoute
+    );
+  }
+
+  /**
+   * Broadcast a sponsored transaction.
+   *
+   * @param {string} tx - The signed sponsor transaction to be broadcast.
+   * @returns {Promise<string>} - A promise that resolves to the transaction ID.
+   */
+  async broadcastSponsoredTx(tx: string): Promise<string> {
+    return broadcastSponsoredTx(tx)
   }
 
   /**

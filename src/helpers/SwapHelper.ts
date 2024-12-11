@@ -29,7 +29,7 @@ export type TxToBroadCast = {
   postConditions: Array<FungiblePostCondition | StxPostCondition>;
 };
 
-const composeTx = <
+export const composeTx = <
   T extends keyof Contracts,
   F extends keyof Contracts[T],
   Descriptor extends Contracts[T][F]
@@ -51,7 +51,7 @@ const composeTx = <
     contractName,
     functionName: String(functionName),
     functionArgs: clarityArgs,
-    contractAddress: configs.CONTRACT_DEPLOYER,
+    contractAddress: contractName === 'sponsor-dex-v01' ? configs.SPONSOR_TX_DEPLOYER : configs.CONTRACT_DEPLOYER,
     postConditions,
   };
 };

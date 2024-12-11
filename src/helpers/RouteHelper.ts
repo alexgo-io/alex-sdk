@@ -2,7 +2,7 @@ import type { Currency } from '../currency';
 import type { PoolData } from '../types';
 import {
   type AMMRouteSegment,
-  resolveAmmRoute,
+  resolveAmmRoutes,
 } from '../utils/ammRouteResolver';
 
 export async function getAllPossibleRoute(
@@ -10,10 +10,5 @@ export async function getAllPossibleRoute(
   to: Currency,
   pools: PoolData[]
 ): Promise<AMMRouteSegment[][]> {
-  const ammRoute = resolveAmmRoute(from, to, pools);
-  if (ammRoute.length > 0) {
-    // TODO: add all possible routes later
-    return [ammRoute];
-  }
-  throw new Error("Can't find route");
+  return resolveAmmRoutes(from, to, pools);
 }
