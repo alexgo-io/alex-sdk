@@ -184,7 +184,7 @@ export class AlexSDK {
    * @param {AMMRoute} [customRoute] - An optional custom route for the swap.
    * @returns {Promise<bigint>} - A promise that resolves to a bigint representing the amount of the destination currency that will be received.
    */
-  async getAmountToForSponsorTx(
+  async getAmountToForSponsoredTx(
     from: Currency,
     fromAmount: bigint,
     to: Currency,
@@ -252,7 +252,7 @@ export class AlexSDK {
    * @param {AMMRoute} [customRoute] - An optional custom route for the swap.
    * @returns {Promise<TxToBroadCast>} - A promise that resolves to a TxToBroadCast object, representing the transaction to be broadcasted.
    */
-  async runSwapForSponsorTx(
+  async runSwapForSponsoredTx(
     stxAddress: string,
     currencyX: Currency,
     currencyY: Currency,
