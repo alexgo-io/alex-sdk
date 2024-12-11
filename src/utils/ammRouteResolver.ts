@@ -47,7 +47,6 @@ export function resolveAmmRoute(
   return [];
 }
 
-
 export function resolveAmmRoutes(
   tokenX: Currency,
   tokenY: Currency,
@@ -71,7 +70,7 @@ export function resolveAmmRoutes(
     const neighborSegments = neighbours(currentToken, pools);
     for (const segment of neighborSegments) {
       // Avoid cycles by checking if we've already visited this token
-      if (currentPath.some(route => route.neighbour === segment.neighbour)) {
+      if (currentPath.some((route) => route.neighbour === segment.neighbour)) {
         continue;
       }
 

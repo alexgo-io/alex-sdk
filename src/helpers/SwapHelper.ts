@@ -51,7 +51,10 @@ export const composeTx = <
     contractName,
     functionName: String(functionName),
     functionArgs: clarityArgs,
-    contractAddress: contractName === 'sponsor-dex-v01' ? configs.SPONSOR_TX_DEPLOYER : configs.CONTRACT_DEPLOYER,
+    contractAddress:
+      contractName === 'sponsor-dex-v01'
+        ? configs.SPONSOR_TX_DEPLOYER
+        : configs.CONTRACT_DEPLOYER,
     postConditions,
   };
 };

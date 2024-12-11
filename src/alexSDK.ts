@@ -11,7 +11,13 @@ import { getAllPossibleRoute } from './helpers/RouteHelper';
 import { getYAmountFromXAmount } from './helpers/RateHelper';
 import { fromEntries } from './utils/utils';
 import type { AMMRoute } from './utils/ammRouteResolver';
-import { broadcastSponsoredTx, requiredStxAmountForSponsorTx, runSponsoredSpotTx, SponsoredTxError, SponsoredTxErrorCode } from './helpers/SponsorTxHelper';
+import {
+  broadcastSponsoredTx,
+  requiredStxAmountForSponsorTx,
+  runSponsoredSpotTx,
+  SponsoredTxError,
+  SponsoredTxErrorCode,
+} from './helpers/SponsorTxHelper';
 
 /**
  * The AlexSDK class provides methods for interacting with a decentralized exchange (DEX) system,
@@ -165,7 +171,7 @@ export class AlexSDK {
   }
 
   /**
-   * Get the amount of destination currency that will be received when swapping from one currency to another 
+   * Get the amount of destination currency that will be received when swapping from one currency to another
    * in the context of sponsor tx.
    *
    * @param {Currency} from - The currency to swap from.
@@ -180,19 +186,14 @@ export class AlexSDK {
     to: Currency,
     customRoute?: AMMRoute
   ): Promise<bigint> {
-    const route = customRoute ?? await this.getRoute(from, to)
-    const stxAmount = await requiredStxAmountForSponsorTx(
-      from,
-      to,
-      route
-    )
-    const sponsorFeeAmount = from === Currency.STX ? stxAmount : await this.getAmountTo(
-      Currency.STX,
-      stxAmount,
-      from
-    )
+    const route = customRoute ?? (await this.getRoute(from, to));
+    const stxAmount = await requiredStxAmountForSponsorTx(from, to, route);
+    const sponsorFeeAmount =
+      from === Currency.STX
+        ? stxAmount
+        : await this.getAmountTo(Currency.STX, stxAmount, from);
     if (sponsorFeeAmount > fromAmount) {
-      return BigInt(0)
+      return BigInt(0);
     }
     return getYAmountFromXAmount(
       from,
@@ -255,19 +256,21 @@ export class AlexSDK {
     minDy: bigint,
     customRoute?: AMMRoute
   ): Promise<TxToBroadCast> {
-    const route = customRoute ?? await this.getRoute(currencyX, currencyY)
+    const route = customRoute ?? (await this.getRoute(currencyX, currencyY));
     const stxAmount = await requiredStxAmountForSponsorTx(
       currencyX,
       currencyY,
       route
-    )
-    const sponsorFeeAmount = currencyX === Currency.STX ? stxAmount : await this.getAmountTo(
-      Currency.STX,
-      stxAmount,
-      currencyX
-    )
+    );
+    const sponsorFeeAmount =
+      currencyX === Currency.STX
+        ? stxAmount
+        : await this.getAmountTo(Currency.STX, stxAmount, currencyX);
     if (sponsorFeeAmount > fromAmount) {
-      throw new SponsoredTxError(SponsoredTxErrorCode.insufficient_funds, 'Insufficient funds to cover sponsor fee')
+      throw new SponsoredTxError(
+        SponsoredTxErrorCode.insufficient_funds,
+        'Insufficient funds to cover sponsor fee'
+      );
     }
     return runSponsoredSpotTx(
       stxAddress,
@@ -289,7 +292,7 @@ export class AlexSDK {
    * @returns {Promise<string>} - A promise that resolves to the transaction ID.
    */
   async broadcastSponsoredTx(tx: string): Promise<string> {
-    return broadcastSponsoredTx(tx)
+    return broadcastSponsoredTx(tx);
   }
 
   /**
