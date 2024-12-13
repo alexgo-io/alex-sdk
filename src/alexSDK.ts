@@ -13,6 +13,7 @@ import { fromEntries } from './utils/utils';
 import type { AMMRoute } from './utils/ammRouteResolver';
 import {
   broadcastSponsoredTx,
+  getSponsorData,
   requiredStxAmountForSponsorTx,
   runSponsoredSpotTx,
   SponsoredTxError,
@@ -175,6 +176,16 @@ export class AlexSDK {
   }
 
   /**
+   * Check if the sponsor service is available.
+   * 
+   * @returns {Promise<boolean>} - A promise that resolves to true if the sponsor service is available, false otherwise.
+   */
+  async isSponsoredTxServiceAvailable(): Promise<boolean> {
+    const { status } = await getSponsorData();
+    return status === 'ok';
+  }
+
+  /**
    * Get the amount of destination currency that will be received when swapping from one currency to another
    * in the context of sponsor tx.
    *
@@ -195,7 +206,9 @@ export class AlexSDK {
     const sponsorFeeAmount =
       from === Currency.STX
         ? stxAmount
-        : await this.getAmountTo(Currency.STX, stxAmount, from);
+        : await this.getAmountTo(Currency.STX, BigInt(1e8), from).then(
+          (x) => (x * stxAmount) / BigInt(1e8)
+        );
     if (sponsorFeeAmount > fromAmount) {
       return BigInt(0);
     }
@@ -269,7 +282,9 @@ export class AlexSDK {
     const sponsorFeeAmount =
       currencyX === Currency.STX
         ? stxAmount
-        : await this.getAmountTo(Currency.STX, stxAmount, currencyX);
+        : await this.getAmountTo(Currency.STX, BigInt(1e8), currencyX).then(
+          (x) => (x * stxAmount) / BigInt(1e8)
+        );
     if (sponsorFeeAmount > fromAmount) {
       throw new SponsoredTxError(
         SponsoredTxErrorCode.insufficient_funds,

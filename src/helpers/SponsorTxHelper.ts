@@ -11,13 +11,26 @@ import { hasLength } from '../utils/arrayHelper';
 import { transferFactory } from '../utils/postConditions';
 import { composeTx, type TxToBroadCast } from './SwapHelper';
 
+let sponsorData: Promise<{ status: 'ok' | string, perRouteFee: bigint }> | undefined;
+
+export function getSponsorData(): Promise<{ status: 'ok' | string, perRouteFee: bigint }> {
+  if (sponsorData == null) {
+    sponsorData = fetch(configs.SPONSORED_TX_STATUS, {
+      method: 'GET',
+      mode: 'cors',
+    }).then(res => res.json()).then(data => ({ status: data.status, perRouteFee: BigInt(data.per_route_fee) }));
+  }
+  return sponsorData;
+}
+
 export const requiredStxAmountForSponsorTx = async (
   _from: Currency,
   _to: Currency,
   customRoute: AMMRoute
 ): Promise<bigint> => {
-  const feePerSegment = 0.05 * 1e8;
-  return BigInt(Math.floor(customRoute.length * feePerSegment));
+  // we need to convert the fee to the same unit as the amount
+  const feePerSegment = await getSponsorData().then(data => data.perRouteFee * BigInt(1e8) / BigInt(1e6));
+  return BigInt(customRoute.length) * feePerSegment;
 };
 
 export function runSponsoredSpotTx(
@@ -62,11 +75,16 @@ export function runSponsoredSpotTx(
         fee: feeAmount,
       },
       [
-        transfer(stxAddress, currencyX, totalAmount),
+        transfer(
+          stxAddress,
+          currencyX,
+          totalAmount,
+          FungibleConditionCode.LessEqual
+        ),
         transfer(
           AlexVault,
           currencyY,
-          minDy,
+          BigInt(0),
           FungibleConditionCode.GreaterEqual
         ),
       ]
@@ -89,7 +107,12 @@ export function runSponsoredSpotTx(
         fee: feeAmount,
       },
       [
-        transfer(stxAddress, currencyX, totalAmount),
+        transfer(
+          stxAddress,
+          currencyX,
+          totalAmount,
+          FungibleConditionCode.LessEqual
+        ),
         transfer(
           AlexVault,
           segment1.neighbour,
@@ -105,7 +128,7 @@ export function runSponsoredSpotTx(
         transfer(
           AlexVault,
           currencyY,
-          minDy,
+          BigInt(0),
           FungibleConditionCode.GreaterEqual
         ),
       ]
@@ -158,7 +181,7 @@ export function runSponsoredSpotTx(
         transfer(
           AlexVault,
           currencyY,
-          minDy,
+          BigInt(0),
           FungibleConditionCode.GreaterEqual
         ),
       ]
@@ -225,7 +248,7 @@ export function runSponsoredSpotTx(
         transfer(
           AlexVault,
           currencyY,
-          minDy,
+          BigInt(0),
           FungibleConditionCode.GreaterEqual
         ),
       ]

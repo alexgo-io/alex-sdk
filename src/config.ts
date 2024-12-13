@@ -6,4 +6,5 @@ export const configs = {
   STACKS_API_HOST: 'https://api.hiro.so',
   READONLY_CALL_API_HOST: 'https://stacks-node.alexlab.co',
   SPONSORED_TX_EXECUTOR: 'https://api.stxer.xyz/sponsor/execute',
+  SPONSORED_TX_STATUS: 'https://api.stxer.xyz/sponsor/status',
 };
