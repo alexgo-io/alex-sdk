@@ -3,6 +3,7 @@ import type { Currency } from '../currency';
 import type { PoolData } from '../types';
 
 export type AMMRouteSegment = {
+  from: Currency;
   neighbour: Currency;
   pool: PoolData;
 };
@@ -12,8 +13,8 @@ export type AMMRoute = AMMRouteSegment[];
 function neighbours(token: Currency, pools: PoolData[]): AMMRouteSegment[] {
   return pools
     .map((pool) => {
-      if (pool.tokenX === token) return { neighbour: pool.tokenY, pool };
-      if (pool.tokenY === token) return { neighbour: pool.tokenX, pool };
+      if (pool.tokenX === token) return { from: pool.tokenX, neighbour: pool.tokenY, pool };
+      if (pool.tokenY === token) return { from: pool.tokenY, neighbour: pool.tokenX, pool };
       return null;
     })
     .filter(isNotNull);
@@ -70,7 +71,7 @@ export function resolveAmmRoutes(
     const neighborSegments = neighbours(currentToken, pools);
     for (const segment of neighborSegments) {
       // Avoid cycles by checking if we've already visited this token
-      if (currentPath.some((route) => route.neighbour === segment.neighbour)) {
+      if (currentPath.some((route) => route.from === segment.neighbour || route.neighbour === segment.neighbour)) {
         continue;
       }
 
