@@ -37,6 +37,7 @@ describe('resolveAmmRoute', function () {
     ).toEqual<AMMRouteSegment[]>([
       {
         pool: TestPool.AMM_SWAP_POOL_WXUSD_WUSDA,
+        from: TestCurrency.W_USDA,
         neighbour: TestCurrency.W_XUSD,
       },
     ]);

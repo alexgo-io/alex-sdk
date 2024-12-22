@@ -17,6 +17,7 @@ export const dummyFactorA = BigInt(670000000);
 export const dummyFactorB = BigInt(680000000);
 export const dummyAmmRoute: AMMRouteSegment[] = [
   {
+    from: dummyTokenA,
     neighbour: dummyTokenC,
     pool: {
       tokenX: dummyTokenA,
@@ -25,6 +26,7 @@ export const dummyAmmRoute: AMMRouteSegment[] = [
     },
   },
   {
+    from: dummyTokenC,
     neighbour: dummyTokenB,
     pool: {
       tokenX: dummyTokenC,
