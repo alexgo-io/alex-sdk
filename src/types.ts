@@ -51,6 +51,7 @@ export type PoolData = {
   tokenX: Currency;
   tokenY: Currency;
   factor: bigint;
+  poolId: bigint
 };
 
 export type PriceData = {

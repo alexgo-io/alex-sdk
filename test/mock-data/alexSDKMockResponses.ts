@@ -23,6 +23,7 @@ export const dummyAmmRoute: AMMRouteSegment[] = [
       tokenX: dummyTokenA,
       tokenY: dummyTokenC,
       factor: dummyFactorA,
+      poolId: BigInt(1),
     },
   },
   {
@@ -32,6 +33,7 @@ export const dummyAmmRoute: AMMRouteSegment[] = [
       tokenX: dummyTokenC,
       tokenY: dummyTokenB,
       factor: dummyFactorB,
+      poolId: BigInt(2),
     },
   },
 ];

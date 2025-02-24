@@ -108,5 +108,6 @@ function toPoolData(pool: string): PoolData {
     tokenX: tokenX as Currency,
     tokenY: tokenY as Currency,
     factor: BigInt(Number(factor) * 1e8),
+    poolId: BigInt(0),
   };
 }
