@@ -1,4 +1,5 @@
 import type { Currency } from './currency';
+import type { AtLeastOne } from "./utils/arrayHelper";
 
 /**
  * TokenInfo represents the details of a token that can be used in the AlexSDK.
@@ -51,7 +52,7 @@ export type PoolData = {
   tokenX: Currency;
   tokenY: Currency;
   factor: bigint;
-  poolId: bigint
+  poolId: bigint;
 };
 
 export type PriceData = {
@@ -65,3 +66,36 @@ export type AlexSDKResponse = {
 };
 
 export type BackendAPIPriceResponse = PriceData[];
+
+export interface StacksContractAddress {
+  deployerAddress: string;
+  contractName: string;
+}
+
+export interface StacksAssetContractAddress extends StacksContractAddress {
+  tokenId: string;
+}
+export function deserializeAssetIdentifier(
+  a: string
+): undefined | StacksAssetContractAddress {
+  const step1Res = a.split('.');
+  if (step1Res.length !== 2) return undefined;
+
+  const [deployerAddress, contractNameAndRest] = step1Res;
+  const step2Res = contractNameAndRest.split('::');
+  if (!(step2Res.length > 1)) return undefined;
+
+  const [contractName, tokenId] = step2Res;
+  return { deployerAddress, contractName, tokenId };
+}
+
+export type DetailedAMMRoutes = {
+  fromCurrency: Currency;
+  fromTokenAddress: StacksAssetContractAddress;
+  swapPools: AtLeastOne<{
+    toCurrency: Currency;
+    toTokenAddress: StacksAssetContractAddress;
+    poolId: bigint;
+    pool: PoolData;
+  }>;
+};
