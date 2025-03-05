@@ -2,6 +2,7 @@ import {
   type ClarityValue,
   FungibleConditionCode,
   type FungiblePostCondition,
+  type PostCondition,
   type StxPostCondition,
 } from '@stacks/transactions';
 import type {
@@ -26,7 +27,7 @@ export type TxToBroadCast = {
   contractName: string;
   functionName: string;
   functionArgs: ClarityValue[];
-  postConditions: Array<FungiblePostCondition | StxPostCondition>;
+  postConditions: PostCondition[];
 };
 
 export const composeTx = <
@@ -39,7 +40,7 @@ export const composeTx = <
   args: Descriptor extends OpenCallFunctionDescriptor
     ? ParameterObjOfDescriptor<Descriptor>
     : never,
-  postConditions: (FungiblePostCondition | StxPostCondition)[]
+  postConditions: PostCondition[][]
 ): TxToBroadCast => {
   const functionDescriptor = AlexContracts[contractName][
     functionName
@@ -55,7 +56,7 @@ export const composeTx = <
       contractName === 'sponsor-dex-v01'
         ? configs.SPONSOR_TX_DEPLOYER
         : configs.CONTRACT_DEPLOYER,
-    postConditions,
+    postConditions: postConditions.flat(),
   };
 };
 

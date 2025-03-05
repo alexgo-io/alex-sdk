@@ -46,6 +46,12 @@ export type TokenInfo = {
    * Also postcondition would need to be adjusted since amount is different from ft-events
    */
   isRebaseToken: boolean;
+
+  /**
+   * A boolean flag indicating whether the token is a vault wrap token.
+   * In a vault wrap token, the reserve is stored in the wrap token contract and not the vault for security.
+   */
+  isVaultWrapToken: boolean;
 };
 
 export type PoolData = {
