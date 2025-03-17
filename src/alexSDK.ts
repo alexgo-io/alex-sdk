@@ -78,7 +78,9 @@ export class AlexSDK {
   async fetchTokenInfo(tokenAddress: string): Promise<TokenInfo | null> {
     return (
       (await this.getTokenInfos()).find(
-        (x) => x.underlyingToken.split('::')[0] === tokenAddress.split('::')[0]
+        (x) =>
+          x.wrapToken.split('::')[0] === tokenAddress.split('::')[0] ||
+          x.underlyingToken.split('::')[0] === tokenAddress.split('::')[0]
       ) ?? null
     );
   }
