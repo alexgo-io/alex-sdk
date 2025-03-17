@@ -104,4 +104,6 @@ export type DetailedAMMRoutes = {
     poolId: bigint;
     pool: PoolData;
   }>;
+  fromAmount: bigint;
+  toAmount: bigint;
 };
