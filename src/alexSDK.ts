@@ -1,25 +1,7 @@
 import { Currency } from './currency';
-import { runSpot, type TxToBroadCast } from './helpers/SwapHelper';
 import { getLiquidityProviderFee } from './helpers/FeeHelper';
-import {
-  deserializeAssetIdentifier,
-  type AlexSDKResponse,
-  type DetailedAMMRoutes as DetailedAMMRoute,
-  type DetailedAMMRoutes,
-  type PoolData,
-  type PriceData,
-  type StacksAssetContractAddress,
-  type TokenInfo,
-} from './types';
-import {
-  fetchBalanceForAccount,
-  getAlexSDKData,
-  getPrices,
-} from './utils/fetchData';
-import { getAllPossibleRoute } from './helpers/RouteHelper';
 import { getYAmountFromXAmount } from './helpers/RateHelper';
-import { fromEntries, isNotNull } from './utils/utils';
-import type { AMMRoute } from './utils/ammRouteResolver';
+import { getAllPossibleRoute, getDetailedRoute } from './helpers/RouteHelper';
 import {
   broadcastSponsoredTx,
   getSponsorData,
@@ -28,8 +10,22 @@ import {
   SponsoredTxError,
   SponsoredTxErrorCode,
 } from './helpers/SponsorTxHelper';
+import { runSpot, type TxToBroadCast } from './helpers/SwapHelper';
+import {
+  type AlexSDKResponse,
+  type DetailedAMMRoutes as DetailedAMMRoute,
+  type PoolData,
+  type PriceData,
+  type TokenInfo,
+} from './types';
+import type { AMMRoute } from './utils/ammRouteResolver';
+import {
+  fetchBalanceForAccount,
+  getAlexSDKData,
+  getPrices,
+} from './utils/fetchData';
 import { props } from './utils/promiseHelpers';
-import { announceAtLeastOne, hasLength } from './utils/arrayHelper';
+import { fromEntries, isNotNull } from './utils/utils';
 
 /**
  * The AlexSDK class provides methods for interacting with a decentralized exchange (DEX) system,
@@ -113,16 +109,19 @@ export class AlexSDK {
    *
    * @param {Currency} from - The currency to swap from.
    * @param {Currency} to - The currency to swap to.
+   * @param {bigint} fromAmount - The amount of the source currency to swap,
+   * if `fromAmount` is 0, the `toAmount` of the `DetailedAMMRoute` will be 0.
    * @returns {Promise<DetailedAMMRoute[]>} - A promise that resolves to an array of DetailedAMMRoute objects,
    * representing all possible swap routes between the two specified currencies with additional details.
    */
   async getAllPossibleRoutesWithDetails(
     from: Currency,
-    to: Currency
+    to: Currency,
+    fromAmount: bigint
   ): Promise<DetailedAMMRoute[]> {
     const routes = await this.getAllPossibleRoutes(from, to);
     const detailedRoutes = await Promise.all(
-      routes.map((r) => this.getDetailedRoute(r))
+      routes.map((r) => this.getDetailedRoute(r, fromAmount))
     );
     return detailedRoutes.filter(isNotNull);
   }
@@ -131,6 +130,8 @@ export class AlexSDK {
    * This function returns a detailed route for a given AMMRoute.
    *
    * @param {AMMRoute} route - The AMM route to get details for.
+   * @param {bigint} fromAmount - The amount of the source currency to swap,
+   * if `fromAmount` is 0, the `toAmount` of the `DetailedAMMRoute` will be 0.
    * @returns {Promise<undefined | DetailedAMMRoute>} - A promise that resolves to a DetailedAMMRoute object
    * if the route details can be fetched, or undefined if any token information is missing.
    *
@@ -139,70 +140,18 @@ export class AlexSDK {
    * currencies, token addresses, and pool details for each step in the route.
    */
   async getDetailedRoute(
-    route: AMMRoute
+    route: AMMRoute,
+    fromAmount: bigint
   ): Promise<undefined | DetailedAMMRoute> {
-    const detailRoute = await Promise.all(
-      route.map(
-        async (
-          segment
-        ): Promise<
-          | undefined
-          | (DetailedAMMRoutes['swapPools'][number] & {
-              fromCurrency: Currency;
-              fromTokenAddress: StacksAssetContractAddress;
-            })
-        > => {
-          const [fromTokenInfo, toTokenInfo] = await Promise.all([
-            this.fetchTokenInfo(segment.from),
-            this.fetchTokenInfo(segment.neighbour),
-          ]);
-          if (fromTokenInfo == null || toTokenInfo == null) {
-            return undefined;
-          }
-
-          const fromTokenAddress = deserializeAssetIdentifier(
-            fromTokenInfo.wrapToken
-          );
-          const toTokenAddress = deserializeAssetIdentifier(
-            toTokenInfo.wrapToken
-          );
-          if (fromTokenAddress == null || toTokenAddress == null) {
-            return undefined;
-          }
-
-          return {
-            fromCurrency: segment.from,
-            fromTokenAddress,
-            toCurrency: segment.neighbour,
-            toTokenAddress,
-            poolId: segment.pool.poolId,
-            pool: segment.pool,
-          };
-        }
-      )
+    return getDetailedRoute(
+      await props({
+        ammPools: this.getPools(),
+        getContractId: this.getContractId(),
+        tokenInfoMappings: this.getTokenMappings(),
+      }),
+      route,
+      fromAmount
     );
-
-    if (detailRoute.some((x) => x == null)) return undefined;
-    const _detailRoute = detailRoute as NonNullable<
-      (typeof detailRoute)[number]
-    >[];
-
-    if (hasLength(_detailRoute, 0)) return undefined;
-
-    const firstSegment = _detailRoute[0];
-
-    return {
-      fromCurrency: firstSegment.fromCurrency,
-      fromTokenAddress: firstSegment.fromTokenAddress,
-      swapPools: announceAtLeastOne(
-        _detailRoute.map((segment) => ({
-          toCurrency: segment.toCurrency,
-          toTokenAddress: segment.toTokenAddress,
-          poolId: segment.poolId,
-          pool: segment.pool,
-        }))
-      ),
-    };
   }
 
   /**
