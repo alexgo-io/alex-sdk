@@ -1,5 +1,5 @@
 import type { Currency } from './currency';
-import type { AtLeastOne } from "./utils/arrayHelper";
+import type { AtLeastOne } from './utils/arrayHelper';
 
 /**
  * TokenInfo represents the details of a token that can be used in the AlexSDK.

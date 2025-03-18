@@ -18,18 +18,20 @@ import {
 } from 'clarity-codegen';
 
 export async function getAlexSDKData(): Promise<AlexSDKResponse> {
-  return fetch(configs.SDK_API_HOST).then((r): Promise<AlexSDKResponse> => {
-    if (r.ok) {
-      return r.json();
-    }
-    throw new Error('Failed to fetch token mappings');
-  }).then(x => {
-    for (const a of x.pools) {
-      a.poolId = BigInt(a.poolId)
-      a.factor = BigInt(a.factor)
-    }
-    return x
-  });
+  return fetch(configs.SDK_API_HOST)
+    .then((r): Promise<AlexSDKResponse> => {
+      if (r.ok) {
+        return r.json();
+      }
+      throw new Error('Failed to fetch token mappings');
+    })
+    .then((x) => {
+      for (const a of x.pools) {
+        a.poolId = BigInt(a.poolId);
+        a.factor = BigInt(a.factor);
+      }
+      return x;
+    });
 }
 
 export async function getPrices(
@@ -105,7 +107,7 @@ export async function fetchBalanceForAccount(
           return [
             a.id,
             (BigInt(amount) * BigInt(1e8)) /
-            BigInt(10 ** a.underlyingTokenDecimals),
+              BigInt(10 ** a.underlyingTokenDecimals),
           ];
         }
         if (a.id === Currency.STX) {
@@ -119,7 +121,7 @@ export async function fetchBalanceForAccount(
         return [
           a.id,
           (BigInt(fungibleToken) * BigInt(1e8)) /
-          BigInt(10 ** a.underlyingTokenDecimals),
+            BigInt(10 ** a.underlyingTokenDecimals),
         ];
       })
     )

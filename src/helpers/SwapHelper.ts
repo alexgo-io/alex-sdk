@@ -1,9 +1,7 @@
 import {
   type ClarityValue,
   FungibleConditionCode,
-  type FungiblePostCondition,
   type PostCondition,
-  type StxPostCondition,
 } from '@stacks/transactions';
 import type {
   OpenCallFunctionDescriptor,

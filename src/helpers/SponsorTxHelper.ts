@@ -11,14 +11,24 @@ import { hasLength } from '../utils/arrayHelper';
 import { transferFactory } from '../utils/postConditions';
 import { composeTx, type TxToBroadCast } from './SwapHelper';
 
-let sponsorData: Promise<{ status: 'ok' | string, perRouteFee: bigint }> | undefined;
+let sponsorData:
+  | Promise<{ status: 'ok' | string; perRouteFee: bigint }>
+  | undefined;
 
-export function getSponsorData(): Promise<{ status: 'ok' | string, perRouteFee: bigint }> {
+export function getSponsorData(): Promise<{
+  status: 'ok' | string;
+  perRouteFee: bigint;
+}> {
   if (sponsorData == null) {
     sponsorData = fetch(configs.SPONSORED_TX_STATUS, {
       method: 'GET',
       mode: 'cors',
-    }).then(res => res.json()).then(data => ({ status: data.status, perRouteFee: BigInt(data.per_route_fee) }));
+    })
+      .then((res) => res.json())
+      .then((data) => ({
+        status: data.status,
+        perRouteFee: BigInt(data.per_route_fee),
+      }));
   }
   return sponsorData;
 }
@@ -29,7 +39,9 @@ export const requiredStxAmountForSponsorTx = async (
   customRoute: AMMRoute
 ): Promise<bigint> => {
   // we need to convert the fee to the same unit as the amount
-  const feePerSegment = await getSponsorData().then(data => data.perRouteFee * BigInt(1e8) / BigInt(1e6));
+  const feePerSegment = await getSponsorData().then(
+    (data) => (data.perRouteFee * BigInt(1e8)) / BigInt(1e6)
+  );
   return BigInt(customRoute.length) * feePerSegment;
 };
 
