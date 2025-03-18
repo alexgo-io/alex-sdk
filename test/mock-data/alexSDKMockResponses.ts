@@ -78,6 +78,7 @@ export const dummyCurrencies: TokenInfo[] = [
     underlyingToken: `${validDeployer}.token-a::tka`,
     underlyingTokenDecimals: 6,
     isRebaseToken: true,
+    isVaultWrapToken: false,
   },
   {
     id: dummyTokenB,
@@ -88,6 +89,7 @@ export const dummyCurrencies: TokenInfo[] = [
     underlyingToken: `${validDeployer}.token-b::tkb`,
     underlyingTokenDecimals: 6,
     isRebaseToken: false,
+    isVaultWrapToken: false,
   },
   {
     id: dummyTokenC,
@@ -98,6 +100,7 @@ export const dummyCurrencies: TokenInfo[] = [
     underlyingToken: `${validDeployer}.token-c::tkc`,
     underlyingTokenDecimals: 6,
     isRebaseToken: false,
+    isVaultWrapToken: false,
   },
 ];
 

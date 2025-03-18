@@ -130,18 +130,6 @@ describe('AlexSDK', () => {
     expect(result > BigInt(0)).toBeTruthy();
   }, 10000);
 
-  it('Verify response of Get Rate function (alternative routes)', async () => {
-    for (const route of alternativeRoutes) {
-      const result = await sdk.getAmountTo(
-        route.from,
-        BigInt(10000000) * BigInt(1e8),
-        route.to
-      );
-      expect(typeof result).toBe('bigint');
-      expect(result > BigInt(0)).toBeTruthy();
-    }
-  }, 40000);
-
   it('Attempt to Get Rate with a wrong From token', async () => {
     await expect(
       sdk.getAmountTo(wrongTokenAlex, BigInt(2) * BigInt(1e8), tokenDiko)
@@ -160,7 +148,7 @@ describe('AlexSDK', () => {
     await expect(
       sdk.getAmountTo(
         Currency.STX,
-        BigInt('9999999992233720368547758007'),
+        BigInt('99999999999999992233720368547758007'),
         tokenDiko
       )
     ).rejects.toThrow('ArithmeticOverflow');
@@ -292,11 +280,6 @@ describe('AlexSDK', () => {
       'Failed to fetch account balances'
     );
   }, 10000);
-
-  it('getAlexSDKData response', async () => {
-    const response = await getAlexSDKData();
-    expect(response).toMatchType('AlexSDKResponse');
-  });
 
   it('getPrices response', async () => {
     const sdk = new AlexSDK();

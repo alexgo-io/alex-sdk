@@ -19,6 +19,7 @@ const tokenMappings: TokenInfo[] = [
     underlyingToken: 'underlying-token-x',
     underlyingTokenDecimals: 8,
     isRebaseToken: false,
+    isVaultWrapToken: false,
   },
 ];
 

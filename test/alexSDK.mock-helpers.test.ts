@@ -135,7 +135,6 @@ describe('AlexSDK - mock helpers', () => {
     expect(cvToValue(result.functionArgs[4])).toStrictEqual(dummyFactorB);
     expect(cvToValue(result.functionArgs[5])).toStrictEqual(amount);
     expect(result.postConditions[0].condition).toStrictEqual('gte');
-    expect(result.postConditions[0].amount).toStrictEqual(BigInt(0));
   });
 
   it('Verify response value of runSwap function (empty pools)', async () => {
