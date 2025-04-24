@@ -22,7 +22,7 @@ export const getYAmountFromXAmount = async (
   }
   if (hasLength(ammRoute, 1)) {
     const [segment] = ammRoute;
-    return await readonlyCall('amm-pool-v2-01', 'get-helper', {
+    return await readonlyCall('alex-amm-pool-v2-01-get-helper', 'get-helper-with-fee', {
       'token-x': getContractId(tokenX),
       'token-y': getContractId(segment.neighbour),
       dx: fromAmount,
@@ -31,7 +31,7 @@ export const getYAmountFromXAmount = async (
   }
   if (hasLength(ammRoute, 2)) {
     const [segment1, segment2] = ammRoute;
-    return await readonlyCall('amm-pool-v2-01', 'get-helper-a', {
+    return await readonlyCall('alex-amm-pool-v2-01-get-helper', 'get-helper-with-fee-a', {
       'token-x': getContractId(tokenX),
       'token-y': getContractId(segment1.neighbour),
       'token-z': getContractId(segment2.neighbour),
@@ -42,7 +42,7 @@ export const getYAmountFromXAmount = async (
   }
   if (hasLength(ammRoute, 3)) {
     const [segment1, segment2, segment3] = ammRoute;
-    return await readonlyCall('amm-pool-v2-01', 'get-helper-b', {
+    return await readonlyCall('alex-amm-pool-v2-01-get-helper', 'get-helper-with-fee-b', {
       'token-x': getContractId(tokenX),
       'token-y': getContractId(segment1.neighbour),
       'token-z': getContractId(segment2.neighbour),
@@ -55,7 +55,7 @@ export const getYAmountFromXAmount = async (
   }
   if (hasLength(ammRoute, 4)) {
     const [segment1, segment2, segment3, segment4] = ammRoute;
-    return await readonlyCall('amm-pool-v2-01', 'get-helper-c', {
+    return await readonlyCall('alex-amm-pool-v2-01-get-helper', 'get-helper-with-fee-c', {
       'token-x': getContractId(tokenX),
       'token-y': getContractId(segment1.neighbour),
       'token-z': getContractId(segment2.neighbour),

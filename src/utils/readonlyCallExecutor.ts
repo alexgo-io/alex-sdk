@@ -60,7 +60,7 @@ export async function readonlyCall<
     contractName,
     functionName: String(functionName),
     functionArgs: clarityArgs,
-    contractAddress: configs.CONTRACT_DEPLOYER,
+    contractAddress: contractName === 'alex-amm-pool-v2-01-get-helper' ? configs.QUOTE_CONTRACT_DEPLOYER : configs.CONTRACT_DEPLOYER,
   });
   return functionDescriptor.output.decode(result);
 }
