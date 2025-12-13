@@ -19,11 +19,14 @@ For detailed API documentation, including a full list of available methods and t
 ## Usage
 
 ```typescript
-import { AlexSDK, Currency } from 'alex-sdk';
+import { AlexSDK, Currency, AMMRoute } from 'alex-sdk';
 
 const alex = new AlexSDK();
 
 (async () => {
+  // Define your STX address
+  const stxAddress = 'SM2MARAVW6BEJCD13YV2RHGYHQWT7TDDNMNRB1MVT';
+  
   // Get swap fee between STX and ALEX
   const feeRate = await alex.getFeeRate(Currency.STX, Currency.ALEX);
   console.log('Swap fee:', feeRate);
@@ -41,6 +44,7 @@ const alex = new AlexSDK();
   console.log('Amount to receive:', Number(amountTo) / 1e8);
 
   // To get the transaction to broadcast
+  const amount = 100; // Amount to swap
   const tx = await alex.runSwap(
     stxAddress,
     Currency.STX,
@@ -56,8 +60,7 @@ const alex = new AlexSDK();
   const latestPrices = await alex.getLatestPrices();
   console.log('Latest prices:', latestPrices);
 
-  // Get balances for a specific STX address
-  const stxAddress = 'SM2MARAVW6BEJCD13YV2RHGYHQWT7TDDNMNRB1MVT';
+  // Get balances for the STX address
   const balances = await alex.getBalances(stxAddress);
   console.log('Balances:', balances);
 
@@ -69,9 +72,9 @@ const alex = new AlexSDK();
   const allRoutes = await alex.getAllPossibleRoutes(Currency.STX, Currency.ALEX);
   console.log('All possible routes:', allRoutes);
 
-  // Get way points
-  const someRoute: AMMRoute = [x1, x2];
-  const wayPoints = await sdk.getWayPoints(someRoute);
+  // Get way points for a route
+  const someRoute: AMMRoute = allRoutes[0]; // Use the first available route
+  const wayPoints = await alex.getWayPoints(someRoute);
   console.log('Way points for the route:', wayPoints);
 })();
 ```
