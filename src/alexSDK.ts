@@ -1,3 +1,4 @@
+import { AlexSDKError, AlexErrorType } from './errors'
 import { Currency } from './currency';
 import { getLiquidityProviderFee } from './helpers/FeeHelper';
 import { getYAmountFromXAmount } from './helpers/RateHelper';
@@ -166,7 +167,7 @@ export class AlexSDK {
   async getRoute(from: Currency, to: Currency): Promise<AMMRoute> {
     const allPossibleRoutes = await this.getAllPossibleRoutes(from, to);
     if (allPossibleRoutes.length === 0) {
-      throw new Error("Can't find route");
+      throw new AlexSDKError(AlexErrorType.RouteNotFound, 'Route Not Found', 404, "Can't find route");
     }
     return allPossibleRoutes[0];
   }

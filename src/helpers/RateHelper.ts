@@ -1,3 +1,4 @@
+import { AlexSDKError, AlexErrorType } from '../errors'
 import { unwrapResponse } from 'clarity-codegen';
 import { readonlyCall } from '../utils/readonlyCallExecutor';
 import type { Currency } from '../currency';
@@ -18,7 +19,7 @@ export const getYAmountFromXAmount = async (
 ): Promise<bigint> => {
   const ammRoute = customRoute ?? resolveAmmRoute(tokenX, tokenY, ammPools);
   if (ammRoute.length === 0) {
-    throw new Error('No AMM pool found for the given route');
+    throw new AlexSDKError(AlexErrorType.RouteNotFound, 'Route Not Found', 404, 'No AMM pool found for the given route');
   }
   if (hasLength(ammRoute, 1)) {
     const [segment] = ammRoute;
@@ -68,5 +69,5 @@ export const getYAmountFromXAmount = async (
       dx: fromAmount,
     }).then(unwrapResponse);
   }
-  throw new Error('Too many AMM pools in route');
+  throw new AlexSDKError(AlexErrorType.TooManyPools, 'Route Too Complex', 422, 'Too many AMM pools in route: maximum supported is 4');
 };

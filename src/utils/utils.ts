@@ -1,9 +1,10 @@
+import { AlexSDKError, AlexErrorType } from '../errors'
 export function isNotNull<T>(input: T | undefined | null): input is T {
   return input != null;
 }
 
 export function assertNever(x: never): never {
-  throw new Error('Unexpected object: ' + x);
+  throw new AlexSDKError(AlexErrorType.RouteNotFound, 'Unexpected Value', 500, 'Unexpected object: ' + x);
 }
 
 export function fromEntries<K extends string, V>(

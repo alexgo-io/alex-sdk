@@ -1,3 +1,4 @@
+import { AlexSDKError, AlexErrorType } from '../errors'
 import { unwrapResponse } from 'clarity-codegen';
 import { readonlyCall } from '../utils/readonlyCallExecutor';
 import type { Currency } from '../currency';
@@ -17,7 +18,7 @@ export async function getLiquidityProviderFee(
 ): Promise<bigint> {
   const ammRoute = customRoute ?? resolveAmmRoute(tokenX, tokenY, pools);
   if (ammRoute.length === 0) {
-    throw new Error('No AMM pools in route');
+    throw new AlexSDKError(AlexErrorType.RouteNotFound, 'Route Not Found', 404, 'No AMM pools in route');
   }
   if (hasLength(ammRoute, 1)) {
     const [segment] = ammRoute;
@@ -63,5 +64,5 @@ export async function getLiquidityProviderFee(
       'factor-w': segment4.pool.factor,
     }).then(unwrapResponse);
   }
-  throw new Error('Too many AMM pools in route');
+  throw new AlexSDKError(AlexErrorType.TooManyPools, 'Route Too Complex', 422, 'Too many AMM pools in route: maximum supported is 4');
 }

@@ -1,3 +1,4 @@
+import { AlexSDKError, AlexErrorType } from '../errors'
 import { Currency } from '../currency';
 import type { AddressBalanceResponse } from '@stacks/stacks-blockchain-api-types';
 import { configs } from '../config';
@@ -17,13 +18,16 @@ import {
   unwrapResponse,
 } from 'clarity-codegen';
 
+type RawPriceEntry = { contract_id: string; last_price_usd: number }
+type RawPricesResponse = { data: RawPriceEntry[] }
+
 export async function getAlexSDKData(): Promise<AlexSDKResponse> {
   return fetch(configs.SDK_API_HOST)
     .then((r): Promise<AlexSDKResponse> => {
       if (r.ok) {
         return r.json();
       }
-      throw new Error('Failed to fetch token mappings');
+      throw new AlexSDKError(AlexErrorType.FetchFailed, 'SDK Data Fetch Failed', r.status, `Failed to fetch SDK data: HTTP ${r.status}`);
     })
     .then((x) => {
       for (const a of x.pools) {
@@ -42,11 +46,11 @@ export async function getPrices(
       if (r.ok) {
         return r.json();
       }
-      throw new Error('Failed to fetch token mappings');
+      throw new AlexSDKError(AlexErrorType.FetchFailed, 'Token Prices Fetch Failed', r.status, `Failed to fetch token prices: HTTP ${r.status}`);
     })
-    .then((x: any) =>
+    .then((x: RawPricesResponse) =>
       x.data
-        .map((a: any): PriceData | null => {
+        .map((a: RawPriceEntry): PriceData | null => {
           if (a.contract_id === 'STX') {
             return {
               token: Currency.STX,
@@ -76,7 +80,7 @@ export async function fetchBalanceForAccount(
     `${configs.STACKS_API_HOST}/extended/v1/address/${stxAddress}/balances`
   );
   if (!response.ok) {
-    throw new Error('Failed to fetch account balances');
+    throw new AlexSDKError(AlexErrorType.FetchFailed, 'Account Balances Fetch Failed', response.status, `Failed to fetch account balances: HTTP ${response.status}`);
   }
   const balanceData: AddressBalanceResponse = await response.json();
   return fromEntries(
