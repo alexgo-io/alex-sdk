@@ -1,3 +1,4 @@
+import { AlexSDKError, AlexErrorType } from '../errors'
 import {
   type ClarityValue,
   FungibleConditionCode,
@@ -73,13 +74,13 @@ export function runSpot(
   const getContractId = (currency: Currency) => {
     const mapping = mappings.find((x) => x.id === currency);
     if (!mapping) {
-      throw new Error(`Token mapping not found for currency: ${currency}`);
+      throw new AlexSDKError(AlexErrorType.TokenMappingNotFound, 'Token Mapping Not Found', 404, `Token mapping not found for currency: ${currency}`);
     }
     return mapping.wrapToken.split('::')[0] as `${string}.${string}`;
   };
   const AlexVault = `${configs.CONTRACT_DEPLOYER}.amm-vault-v2-01`;
   if (ammRoute.length === 0) {
-    throw new Error("Can't find AMM route");
+    throw new AlexSDKError(AlexErrorType.RouteNotFound, 'Route Not Found', 404, "Can't find AMM route");
   }
 
   const transfer = transferFactory(mappings);
@@ -264,5 +265,5 @@ export function runSpot(
     );
   }
 
-  throw new Error('Too many AMM pools in route');
+  throw new AlexSDKError(AlexErrorType.TooManyPools, 'Route Too Complex', 422, 'Too many AMM pools in route: maximum supported is 4');
 }

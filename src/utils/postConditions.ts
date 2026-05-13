@@ -1,3 +1,4 @@
+import { AlexSDKError, AlexErrorType } from '../errors'
 import {
   addressToString,
   FungibleConditionCode,
@@ -32,7 +33,7 @@ export const transferFactory =
   ): PostCondition[] => {
     const mapping = tokenMapping.find((m) => m.id === currency);
     if (!mapping) {
-      throw new Error('Token mapping not found');
+      throw new AlexSDKError(AlexErrorType.TokenMappingNotFound, 'Token Mapping Not Found', 404, 'Token mapping not found');
     }
     const scale = BigInt(10 ** mapping.underlyingTokenDecimals);
     const nativeAmount = (amount * BigInt(scale)) / BigInt(1e8);
